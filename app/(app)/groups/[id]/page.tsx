@@ -6,6 +6,7 @@ import {
   type Member,
   type Message,
 } from "@/components/group-feed";
+import { LockedGroupView, type Final } from "@/components/locked-group-view";
 
 export default async function GroupPage({
   params,
@@ -21,10 +22,20 @@ export default async function GroupPage({
 
   const { data: group } = await supabase
     .from("groups")
-    .select("id, name, kind, status, expires_at, owner_id")
+    .select("id, name, kind, status, expires_at, owner_id, final_leaderboard")
     .eq("id", id)
     .maybeSingle();
-  if (!group) redirect("/groups"); // RLS hides groups you're not in
+  if (!group) redirect("/groups");
+
+  if (group.status === "locked") {
+    return (
+      <LockedGroupView
+        groupName={group.name}
+        final={group.final_leaderboard as unknown as Final | null}
+        me={user.id}
+      />
+    );
+  }
 
   const { data: members } = await supabase
     .from("group_members")
@@ -32,19 +43,16 @@ export default async function GroupPage({
       "user_id, hide_amount, role, profile:profiles!group_members_user_id_fkey(display_name, avatar_id, username)",
     )
     .eq("group_id", id);
-
   const { data: cats } = await supabase
     .from("group_listened_categories")
     .select("category")
     .eq("group_id", id);
-
   const { data: invite } = await supabase
     .from("group_invites")
     .select("code")
     .eq("group_id", id)
     .limit(1)
     .maybeSingle();
-
   const { data: messages } = await supabase
     .from("group_messages")
     .select(

@@ -43,6 +43,12 @@ export default async function Profile() {
     .or(`requester_id.eq.${user.id},addressee_id.eq.${user.id}`)
     .eq("status", "accepted");
 
+  const { data: trophies } = await supabase
+    .from("trophies")
+    .select("id, title, emoji, group_name, awarded_at")
+    .eq("user_id", user.id)
+    .order("awarded_at", { ascending: false });
+
   const lvl = levelInfo(p?.xp ?? 0);
 
   return (
@@ -95,7 +101,36 @@ export default async function Profile() {
         joined{" "}
         {p?.created_at ? new Date(p.created_at).toLocaleDateString() : "—"}
       </p>
-
+      <section className="flex flex-col gap-2">
+        <h2 className="font-mono text-xs uppercase tracking-widest text-gold">
+          🏆 Trophy room · {trophies?.length ?? 0}
+        </h2>
+        {!trophies || trophies.length === 0 ? (
+          <div className="surface-card px-6 py-6 text-center text-sm text-ink-dim">
+            No trophies yet. Win a temporal group to earn titles!
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 gap-3">
+            {trophies.map((t) => (
+              <div
+                key={t.id}
+                className="surface-card flex flex-col items-center gap-1 p-4 text-center"
+              >
+                <span className="text-3xl">{t.emoji}</span>
+                <span className="font-display text-sm font-bold text-gold">
+                  {t.title}
+                </span>
+                <span className="font-mono text-[10px] text-ink-dim">
+                  {t.group_name}
+                </span>
+                <span className="font-mono text-[10px] text-ink-dim">
+                  {new Date(t.awarded_at).toLocaleDateString()}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
       <SignOutButton />
     </main>
   );

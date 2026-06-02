@@ -24,7 +24,9 @@ export async function updateSession(request: NextRequest) {
           return request.cookies.getAll();
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
+          cookiesToSet.forEach(({ name, value }) =>
+            request.cookies.set(name, value),
+          );
           supabaseResponse = NextResponse.next({ request });
           cookiesToSet.forEach(({ name, value, options }) =>
             supabaseResponse.cookies.set(name, value, options),
@@ -35,16 +37,15 @@ export async function updateSession(request: NextRequest) {
   );
 
   // IMPORTANT: nothing async between client creation and getUser()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { data } = await supabase.auth.getClaims();
+  const userId = data?.claims?.sub ?? null;
 
   const path = request.nextUrl.pathname;
   const isAuthRoute = path.startsWith("/auth");
   const isLogin = path === "/login";
   const isOnboarding = path === "/onboarding";
 
-  if (!user) {
+  if (!userId) {
     if (isLogin || isAuthRoute) return supabaseResponse;
     return redirectTo("/login", request, supabaseResponse);
   }
@@ -53,7 +54,7 @@ export async function updateSession(request: NextRequest) {
   const { data: profile } = await supabase
     .from("profiles")
     .select("id")
-    .eq("id", user.id)
+    .eq("id", userId)
     .maybeSingle();
 
   if (!profile) {
@@ -61,7 +62,8 @@ export async function updateSession(request: NextRequest) {
     return redirectTo("/onboarding", request, supabaseResponse);
   }
 
-  if (isLogin || isOnboarding) return redirectTo("/dashboard", request, supabaseResponse);
+  if (isLogin || isOnboarding)
+    return redirectTo("/dashboard", request, supabaseResponse);
 
   return supabaseResponse;
 }

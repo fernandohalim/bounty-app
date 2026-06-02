@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { CATEGORIES, type Category } from "@/lib/categories";
 import { formatCoins } from "@/lib/format";
+import { enqueue } from "@/lib/offline-queue";
 
 type Mode = "oneoff" | "recurring";
 const KEYS = ["7", "8", "9", "4", "5", "6", "1", "2", "3", "000", "0", "del"];
@@ -44,6 +45,7 @@ export default function AddPage() {
     } = await supabase.auth.getUser();
     if (!user) return router.replace("/login");
 
+    const clientUuid = crypto.randomUUID();
     const base = {
       user_id: user.id,
       amount,
@@ -51,11 +53,24 @@ export default function AddPage() {
       note: note.trim() || null,
     };
 
+    // Offline: queue one-offs locally; recurring needs a connection.
+    if (!navigator.onLine) {
+      if (mode === "recurring") {
+        setErr("You're offline — scheduling needs a connection.");
+        setSaving(false);
+        return;
+      }
+      await enqueue({ client_uuid: clientUuid, ...base });
+      router.push("/expenses");
+      router.refresh();
+      return;
+    }
+
     const { error } =
       mode === "oneoff"
         ? await supabase
             .from("expenses")
-            .insert({ ...base, client_uuid: crypto.randomUUID() })
+            .insert({ ...base, client_uuid: clientUuid })
         : await supabase
             .from("recurring_expenses")
             .insert({ ...base, cadence, next_occurrence: startDate });

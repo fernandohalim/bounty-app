@@ -1,26 +1,112 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ───────────────────────────────────────────────
+   BOUNTY · "Neon Arcade" design tokens (Tailwind v4)
+   Dark-only. Deep indigo void + electric cyan/pink/lime.
+─────────────────────────────────────────────── */
+@theme {
+  /* — Surfaces (deep, slightly indigo — never pure black) — */
+  --color-void: #0a0913;
+  --color-surface: #15131f;
+  --color-surface-2: #1e1b2e;
+  --color-line: #2c2740;
+
+  /* — Text — */
+  --color-ink: #f3f1ff;
+  --color-ink-dim: #9b96bd;
+
+  /* — Neon accents — */
+  --color-neon-cyan: #2ee6ff;
+  --color-neon-pink: #ff2d95;
+  --color-neon-lime: #c2ff48;
+  --color-neon-violet: #9d5cff;
+
+  /* — Semantic (built on the neons) — */
+  --color-win: #c2ff48;     /* under budget / saver wins  */
+  --color-over: #ff4d6d;    /* blown budget / danger      */
+  --color-gold: #ffcf3a;    /* titles, trophies, streaks  */
+
+  /* — Radii (gamey = generous rounding) — */
+  --radius-card: 1.25rem;
+  --radius-pill: 999px;
+
+  /* — Neon glow shadows — */
+  --shadow-glow-cyan: 0 0 24px -2px color-mix(in oklch, var(--color-neon-cyan) 60%, transparent);
+  --shadow-glow-pink: 0 0 24px -2px color-mix(in oklch, var(--color-neon-pink) 60%, transparent);
+  --shadow-glow-lime: 0 0 24px -2px color-mix(in oklch, var(--color-neon-lime) 55%, transparent);
+  --shadow-card: 0 8px 30px -12px rgb(0 0 0 / 0.7);
+
+  /* — Animation primitives (referenced as animate-* utilities) — */
+  --animate-float-up: float-up 1.15s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  --animate-pop-in: pop-in 0.42s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+  --animate-pulse-glow: pulse-glow 2.4s ease-in-out infinite;
+  --animate-coin-bounce: coin-bounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  --animate-shimmer: shimmer 1.4s linear infinite;
 }
 
+/* Wire next/font CSS variables into the theme (must be `inline`) */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-unbounded);
+  --font-sans: var(--font-jakarta);
+  --font-mono: var(--font-martian);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ── Keyframes ── */
+@keyframes float-up {
+  0%   { opacity: 0; transform: translateY(0) scale(0.6); }
+  15%  { opacity: 1; transform: translateY(-8px) scale(1.1); }
+  100% { opacity: 0; transform: translateY(-120px) scale(0.9); }
+}
+@keyframes pop-in {
+  0%   { opacity: 0; transform: translateY(12px) scale(0.96); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: var(--shadow-glow-cyan); }
+  50%      { box-shadow: 0 0 38px 2px color-mix(in oklch, var(--color-neon-cyan) 70%, transparent); }
+}
+@keyframes coin-bounce {
+  0%   { transform: translateY(0) rotate(0); }
+  40%  { transform: translateY(-14px) rotate(-12deg); }
+  100% { transform: translateY(0) rotate(0); }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ── Base layer ── */
+@layer base {
+  html { color-scheme: dark; }
+  body {
+    background-color: var(--color-void);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    /* subtle arcade grid + corner glows for atmosphere (not flat black) */
+    background-image:
+      radial-gradient(60rem 60rem at 85% -10%, color-mix(in oklch, var(--color-neon-violet) 14%, transparent), transparent 60%),
+      radial-gradient(50rem 50rem at -10% 110%, color-mix(in oklch, var(--color-neon-cyan) 10%, transparent), transparent 60%),
+      linear-gradient(var(--color-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--color-line) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 44px 44px, 44px 44px;
+    background-attachment: fixed;
+    -webkit-tap-highlight-color: transparent;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ── A couple of foundational utilities the whole app reuses ── */
+@layer components {
+  .surface-card {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+  }
+  /* neon outline text for the wordmark / big stats */
+  .text-neon {
+    color: var(--color-ink);
+    text-shadow:
+      0 0 8px color-mix(in oklch, var(--color-neon-cyan) 70%, transparent),
+      0 0 22px color-mix(in oklch, var(--color-neon-pink) 45%, transparent);
+  }
 }

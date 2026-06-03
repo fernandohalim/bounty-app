@@ -6,10 +6,10 @@ import packageJson from "../package.json";
 type AboutModalProps = { isOpen: boolean; onClose: () => void };
 
 const SOCIALS = [
-  { label: "web", href: "https://fernando-halim.vercel.app" },
-  { label: "in", href: "https://linkedin.com/in/fernando-halimm" },
-  { label: "gh", href: "https://github.com/fernandohalim" },
-  { label: "mail", href: "mailto:fernandohalim26@gmail.com" },
+  { label: "Website", href: "https://fernando-halim.vercel.app" },
+  { label: "LinkedIn", href: "https://linkedin.com/in/fernando-halimm" },
+  { label: "GitHub", href: "https://github.com/fernandohalim" },
+  { label: "Mail", href: "mailto:fernandohalim26@gmail.com" },
 ];
 
 export function AboutModal({ isOpen, onClose }: AboutModalProps) {
@@ -46,7 +46,7 @@ export function AboutModal({ isOpen, onClose }: AboutModalProps) {
             BOUNTY
           </h2>
           <p className="mb-6 mt-1 text-sm text-ink-dim">
-            spend together, gamified.
+            Spend together, gamified.
           </p>
 
           <div className="flex w-full flex-col gap-2.5">
@@ -59,7 +59,7 @@ export function AboutModal({ isOpen, onClose }: AboutModalProps) {
             >
               <span className="text-lg">📜</span>
               <span className="flex-1 text-sm font-semibold text-ink">
-                changelog
+                Changelog
               </span>
               <span className="rounded-pill bg-neon-cyan/15 px-2 py-0.5 font-mono text-xs text-neon-cyan">
                 v{packageJson.version} →
@@ -74,10 +74,10 @@ export function AboutModal({ isOpen, onClose }: AboutModalProps) {
             >
               <span className="text-lg">💾</span>
               <span className="flex-1 text-sm font-semibold text-ink">
-                source code
+                Source Code
               </span>
               <span className="font-mono text-xs text-neon-violet">
-                github ↗
+                GitHub ↗
               </span>
             </a>
 

@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
+  <img src="public/icon-512.png" alt="Bounty logo" width="120" />
 
-## Getting Started
+  # 🪙 Bounty
+  **Spend together — the social, gamified expense tracker.**
 
-First, run the development server:
+  [![Next.js](https://img.shields.io/badge/Next.js_16-black?style=flat-square&logo=next.js)](https://nextjs.org/)
+  [![React 19](https://img.shields.io/badge/React_19-149ECA?style=flat-square&logo=react&logoColor=white)](https://react.dev/)
+  [![Tailwind CSS v4](https://img.shields.io/badge/Tailwind_v4-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+  [![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=flat-square&logo=supabase&logoColor=white)](https://supabase.com/)
+  [![PWA](https://img.shields.io/badge/PWA-5A0FC8?style=flat-square&logo=pwa&logoColor=white)](https://web.dev/progressive-web-apps/)
+
+  [Live Demo](https://bounty-app-iota.vercel.app/) • [Report a Bug](https://github.com/fernandohalim/bounty-app/issues)
+</div>
+
+## 👋 What is Bounty?
+
+**Bounty** turns budgeting into a game you play with friends. Log your spending solo, or form groups where every purchase in a watched category broadcasts a **bounty card** to a live feed — friends react in real time, leaderboards keep score, and timed groups crown winners when the clock runs out. It works great as a private tracker on its own, and it's installable on any device as a progressive web app (PWA).
+
+## ✨ Features
+
+* 🪙 **Fast logging:** A silent numeric keypad, fixed categories, and notes — log one-off or recurring expenses in seconds.
+* 📊 **Personal dashboard:** Today's total, a weekly budget bar that turns red on a blowout, a category donut, the recurring-vs-one-off split, and a 12-week spending heatmap.
+* 💬 **Live bounty feed:** Spend in a group's watched category and a bounty card lands in everyone's feed instantly, powered by Supabase Realtime.
+* 🎉 **Reactions:** Hit a bounty with 🔥 🪙 💀 🤡 👀 👑 — reactions float up the card and sync live to every member.
+* 🏆 **Gamification:** Climb XP levels, keep daily streaks, unlock avatars, and win titles — The Whale 🐋, The Sniper 🎯, Sticky Fingers 🫳, The Monk 🧘 — that live in your Trophy Room.
+* 👥 **Friends & groups:** Add friends by username, then build permanent or timed groups with global, in-group, and head-to-head leaderboards.
+* 📱 **PWA + offline:** Install Bounty to your home screen, log expenses offline, and let them auto-sync the moment you reconnect.
+* 🔔 **Push notifications:** Get notified about new bounties, reactions, and friend requests — with per-type toggles.
+* 🔒 **Secure & authenticated:** Google sign-in, with row-level security on a dedicated Postgres schema so every query is locked to the right user.
+
+## 🛠️ Tech Stack
+
+* **Framework:** [Next.js 16](https://nextjs.org/) (App Router)
+* **Library:** [React 19](https://react.dev/)
+* **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
+* **Database, Auth & Realtime:** [Supabase](https://supabase.com/) (Postgres, RLS, Realtime, Edge Functions)
+* **Notifications:** Web Push (VAPID)
+* **Type Safety:** TypeScript
+* **Fonts:** Unbounded, Plus Jakarta Sans, Martian Mono
+
+## 🚀 Getting Started
 
 ```bash
+# Clone the repository
+git clone https://github.com/fernandohalim/bounty.git
+
+# Jump into the directory
+cd bounty
+
+# Install the dependencies
+npm install
+
+# Add your keys to .env.local
+# NEXT_PUBLIC_SUPABASE_URL=...
+# NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+# NEXT_PUBLIC_VAPID_PUBLIC_KEY=...
+
+# Start the local development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

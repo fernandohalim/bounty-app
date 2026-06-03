@@ -98,9 +98,9 @@ export function BudgetCard({
             Weekly limit
             <input
               inputMode="numeric"
-              value={digits}
+              value={digits ? formatCoins(parseInt(digits, 10)) : ""}
               onChange={(e) => setDigits(e.target.value.replace(/\D/g, ""))}
-              placeholder="500000"
+              placeholder="500,000"
               className="w-32 rounded-pill border border-line bg-surface-2 px-3 py-1.5 text-right font-mono text-ink outline-none"
             />
           </label>

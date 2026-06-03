@@ -11,7 +11,8 @@ import {
   todayLocal,
 } from "@/lib/metrics";
 import { avatarEmoji } from "@/lib/avatars";
-import { Donut, BarList, Heatmap } from "@/components/dashboard-charts";
+import { CategoryChart } from "@/components/category-chart";
+import { InteractiveHeatmap } from "@/components/interactive-heatmap";
 import { BudgetCard } from "@/components/budget-card";
 import { getUserId } from "@/lib/supabase/user";
 
@@ -56,6 +57,7 @@ export default async function Dashboard() {
     xs.reduce((s, e) => s + e.amount, 0);
 
   const todayTotal = sum(exps.filter((e) => e.day === today));
+  const todayCount = exps.filter((e) => e.day === today).length;
   const weekOneOff = sum(
     exps.filter((e) => e.day >= wkStart && !e.is_recurring),
   );
@@ -77,8 +79,6 @@ export default async function Dashboard() {
   }))
     .filter((c) => c.value > 0)
     .sort((a, b) => b.value - a.value);
-  const segments = catItems.map((c) => ({ value: c.value, color: c.accent }));
-  const maxCat = catItems[0]?.value ?? 0;
 
   // heatmap: 12 weeks ending the current week
   const dayTotals = new Map<string, number>();
@@ -114,12 +114,6 @@ export default async function Dashboard() {
             </h1>
           </div>
         </div>
-        <Link
-          href="/expenses"
-          className="rounded-pill border border-line bg-surface-2 px-3 py-1.5 font-mono text-xs text-ink-dim active:scale-95"
-        >
-          History →
-        </Link>
       </header>
 
       <div className="grid grid-cols-3 gap-3">
@@ -136,45 +130,54 @@ export default async function Dashboard() {
         />
       </div>
 
-      <section className="surface-card flex items-center justify-between p-5">
-        <span className="font-mono text-xs uppercase tracking-widest text-ink-dim">
-          Today
-        </span>
-        <span className="font-mono text-2xl font-bold text-neon-cyan">
-          🪙{formatCoins(todayTotal)}
-        </span>
-      </section>
-
-      <section className="surface-card flex flex-col gap-3 p-5">
-        <div className="flex items-center justify-between">
-          <h2 className="font-display font-bold text-ink">Recent</h2>
-          <Link href="/expenses" className="font-mono text-xs text-neon-cyan">
-            all →
+      {/* Today + recent, merged */}
+      <section className="surface-card flex flex-col gap-4 p-5">
+        <div className="flex items-start justify-between">
+          <div className="flex flex-col gap-0.5">
+            <span className="font-mono text-xs uppercase tracking-widest text-ink-dim">
+              Today
+            </span>
+            <span className="font-mono text-3xl font-bold text-neon-cyan">
+              🪙{formatCoins(todayTotal)}
+            </span>
+            <span className="font-mono text-[11px] text-ink-dim">
+              {todayCount === 0
+                ? "nothing logged yet"
+                : `${todayCount} ${todayCount === 1 ? "expense" : "expenses"} today`}
+            </span>
+          </div>
+          <Link
+            href="/expenses"
+            className="rounded-pill border border-line bg-surface-2 px-3 py-1.5 font-mono text-xs text-ink-dim active:scale-95"
+          >
+            History →
           </Link>
         </div>
-        {recent.length === 0 ? (
-          <p className="py-2 text-center text-sm text-ink-dim">
-            Nothing logged yet.
-          </p>
-        ) : (
-          recent.map((e) => {
-            const m = categoryMeta(e.category as Category);
-            return (
-              <Link
-                key={e.id}
-                href={`/expenses/${e.id}`}
-                className="flex items-center gap-3"
-              >
-                <span className="text-xl">{m.emoji}</span>
-                <span className="flex-1 truncate text-sm text-ink">
-                  {e.note || m.label}
-                </span>
-                <span className="font-mono text-sm font-bold text-ink">
-                  🪙{formatCoins(e.amount)}
-                </span>
-              </Link>
-            );
-          })
+
+        {recent.length > 0 && (
+          <div className="flex flex-col gap-3 border-t border-line pt-3">
+            <span className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">
+              Recent
+            </span>
+            {recent.map((e) => {
+              const m = categoryMeta(e.category as Category);
+              return (
+                <Link
+                  key={e.id}
+                  href={`/expenses/${e.id}`}
+                  className="flex items-center gap-3"
+                >
+                  <span className="text-xl">{m.emoji}</span>
+                  <span className="flex-1 truncate text-sm text-ink">
+                    {e.note || m.label}
+                  </span>
+                  <span className="font-mono text-sm font-bold text-ink">
+                    🪙{formatCoins(e.amount)}
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
         )}
       </section>
 
@@ -193,10 +196,7 @@ export default async function Dashboard() {
             Nothing logged this month yet.
           </p>
         ) : (
-          <div className="flex items-center gap-4">
-            <Donut segments={segments} total={monthTotal} />
-            <BarList items={catItems} max={maxCat} />
-          </div>
+          <CategoryChart items={catItems} total={monthTotal} />
         )}
       </section>
 
@@ -229,7 +229,7 @@ export default async function Dashboard() {
 
       <section className="surface-card flex flex-col gap-3 p-5">
         <h2 className="font-display font-bold text-ink">Spending heatmap</h2>
-        <Heatmap weeks={weeks} />
+        <InteractiveHeatmap weeks={weeks} />
       </section>
     </main>
   );

@@ -10,6 +10,18 @@ export type Release = {
 
 export const releases: Release[] = [
   {
+    version: "1.2",
+    date: "June 2026",
+    title: "Home, leveled up 🏠",
+    badge: "feature",
+    features: [
+      "Today and Recent are now one card — today's total, how many you've logged today, and your latest expenses at a glance",
+      "Tap any category in the month breakdown to focus it; the donut and bars highlight just that slice",
+      "The spending heatmap is tappable now — tap a day to see its date and total (no more invisible hover tooltips on mobile)",
+      "Weekly budget input formats with thousand separators as you type",
+    ],
+  },
+  {
     version: "1.1",
     date: "June 2026",
     title: "Faster & fresher 🚀",

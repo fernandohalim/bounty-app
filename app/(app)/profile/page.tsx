@@ -6,6 +6,7 @@ import { levelInfo } from "@/lib/xp";
 import { SignOutButton } from "@/components/sign-out-button";
 import { AvatarPicker } from "@/components/avatar-picker";
 import { getUserId } from "@/lib/supabase/user";
+import { AboutButton } from "@/components/about-button";
 
 function Stat({ label, value }: { label: string; value: React.ReactNode }) {
   return (
@@ -136,6 +137,7 @@ export default async function Profile() {
       >
         ⚙️ Notification settings
       </Link>
+      <AboutButton />
       <SignOutButton />
     </main>
   );

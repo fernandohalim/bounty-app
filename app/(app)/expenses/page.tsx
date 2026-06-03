@@ -4,13 +4,12 @@ import { createClient } from "@/lib/supabase/server";
 import { categoryMeta, type Category } from "@/lib/categories";
 import { formatCoins } from "@/lib/format";
 import { RecurringList } from "@/components/recurring-list";
+import { getUserId } from "@/lib/supabase/user";
 
 export default async function ExpensesPage() {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
+  const userId = await getUserId();
+  if (!userId) redirect("/login");
 
   const { data: expenses } = await supabase
     .from("expenses")

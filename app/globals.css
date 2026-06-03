@@ -110,3 +110,13 @@
       0 0 22px color-mix(in oklch, var(--color-neon-pink) 45%, transparent);
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

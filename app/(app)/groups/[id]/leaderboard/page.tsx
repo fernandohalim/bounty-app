@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { avatarEmoji } from "@/lib/avatars";
 import { formatCoins } from "@/lib/format";
+import { getUserId } from "@/lib/supabase/user";
 
 export default async function GroupLeaderboard({
   params,
@@ -10,11 +11,10 @@ export default async function GroupLeaderboard({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
+  const userId = await getUserId();
+  if (!userId) redirect("/login");
 
   const { data: group } = await supabase
     .from("groups")
@@ -74,7 +74,7 @@ export default async function GroupLeaderboard({
         {ranked.map((r, i) => (
           <div
             key={r.user_id}
-            className={`surface-card flex items-center gap-3 px-4 py-3 ${r.user_id === user.id ? "border-neon-cyan" : ""}`}
+            className={`surface-card flex items-center gap-3 px-4 py-3 ${r.user_id === userId ? "border-neon-cyan" : ""}`}
           >
             <span className="w-5 text-center font-mono text-sm font-bold text-ink-dim">
               {i + 1}

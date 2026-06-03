@@ -5,6 +5,7 @@ import { avatarEmoji } from "@/lib/avatars";
 import { categoryMeta, type Category } from "@/lib/categories";
 import { InviteFriends } from "@/components/invite-friends";
 import { GroupActions } from "@/components/group-actions";
+import { getUserId } from "@/lib/supabase/user";
 
 function Row({
   label,
@@ -31,11 +32,10 @@ export default async function GroupInfo({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
+  const userId = await getUserId();
+  if (!userId) redirect("/login");
 
   const { data: group } = await supabase
     .from("groups")
@@ -93,11 +93,11 @@ export default async function GroupInfo({
   const memberRows = (members ?? []) as unknown as MemberRow[];
   const memberIds = new Set(memberRows.map((m) => m.user_id));
   const friends = ((fr ?? []) as unknown as FrRow[]).map((r) =>
-    r.requester_id === user.id ? r.addressee : r.requester,
+    r.requester_id === userId ? r.addressee : r.requester,
   );
   const invitable = friends.filter((f) => !memberIds.has(f.id));
 
-  const isOwner = group.owner_id === user.id;
+  const isOwner = group.owner_id === userId;
   const isActive = group.status === "active";
 
   return (

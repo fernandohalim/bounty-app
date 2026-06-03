@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { avatarEmoji } from "@/lib/avatars";
+import { getUserId } from "@/lib/supabase/user";
 
 function medal(i: number) {
   return i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : `${i + 1}`;
@@ -9,15 +10,13 @@ function medal(i: number) {
 
 export default async function LeaderboardsPage() {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
+  const userId = await getUserId();
+  if (!userId) redirect("/login");
 
   const { data: meP } = await supabase
     .from("profiles")
     .select("id, display_name, avatar_id, xp, level, current_streak")
-    .eq("id", user.id)
+    .eq("id", userId)
     .single();
   if (!meP) redirect("/login");
 
@@ -45,7 +44,7 @@ export default async function LeaderboardsPage() {
     addressee: P;
   };
   const friends = ((fr ?? []) as unknown as FrRow[]).map((r) =>
-    r.requester_id === user.id ? r.addressee : r.requester,
+    r.requester_id === userId ? r.addressee : r.requester,
   );
 
   const board = [meP, ...friends].sort((a, b) => b.xp - a.xp);
@@ -62,7 +61,7 @@ export default async function LeaderboardsPage() {
       </div>
       <section className="flex flex-col gap-2">
         {board.map((p, i) => {
-          const isMe = p.id === user.id;
+          const isMe = p.id === userId;
           const inner = (
             <div
               className={`surface-card flex items-center gap-3 px-4 py-3 ${isMe ? "border-neon-cyan" : ""}`}

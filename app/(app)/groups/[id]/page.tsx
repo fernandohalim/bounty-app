@@ -7,6 +7,7 @@ import {
   type Message,
 } from "@/components/group-feed";
 import { LockedGroupView, type Final } from "@/components/locked-group-view";
+import { getUserId } from "@/lib/supabase/user";
 
 export default async function GroupPage({
   params,
@@ -14,11 +15,10 @@ export default async function GroupPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
+  const userId = await getUserId();
+  if (!userId) redirect("/login");
 
   const { data: group } = await supabase
     .from("groups")
@@ -32,7 +32,7 @@ export default async function GroupPage({
       <LockedGroupView
         groupName={group.name}
         final={group.final_leaderboard as unknown as Final | null}
-        me={user.id}
+        me={userId}
       />
     );
   }
@@ -64,7 +64,7 @@ export default async function GroupPage({
   return (
     <GroupFeed
       groupId={id}
-      me={user.id}
+      me={userId}
       group={group as unknown as Group}
       members={(members ?? []) as unknown as Member[]}
       listenedCategories={(cats ?? []).map((c) => c.category as string)}

@@ -40,14 +40,13 @@ export default function AddPage() {
     setErr(null);
 
     const supabase = createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (!user) return router.replace("/login");
+    const { data: claims } = await supabase.auth.getClaims();
+    const userId = claims?.claims?.sub;
+    if (!userId) return router.replace("/login");
 
     const clientUuid = crypto.randomUUID();
     const base = {
-      user_id: user.id,
+      user_id: userId,
       amount,
       category: category!,
       note: note.trim() || null,

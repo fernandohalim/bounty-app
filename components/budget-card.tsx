@@ -26,10 +26,9 @@ export function BudgetCard({
   async function save() {
     setBusy(true);
     const supabase = createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (!user) return router.replace("/login");
+    const { data: claims } = await supabase.auth.getClaims();
+    const userId = claims?.claims?.sub;
+    if (!userId) return router.replace("/login");
     await supabase
       .from("budgets")
       .update({
@@ -37,7 +36,7 @@ export function BudgetCard({
         share_blowout: share,
         updated_at: new Date().toISOString(),
       })
-      .eq("user_id", user.id);
+      .eq("user_id", userId);
     setEditing(false);
     setBusy(false);
     router.refresh();

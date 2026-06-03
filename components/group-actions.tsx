@@ -18,15 +18,14 @@ export function GroupActions({
   async function leave() {
     setBusy(true);
     const supabase = createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    if (!user) return router.replace("/login");
+    const { data: claims } = await supabase.auth.getClaims();
+    const userId = claims?.claims?.sub;
+    if (!userId) return router.replace("/login");
     await supabase
       .from("group_members")
       .delete()
       .eq("group_id", groupId)
-      .eq("user_id", user.id);
+      .eq("user_id", userId);
     router.push("/groups");
     router.refresh();
   }

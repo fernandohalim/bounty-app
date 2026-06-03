@@ -13,25 +13,24 @@ import {
 import { avatarEmoji } from "@/lib/avatars";
 import { Donut, BarList, Heatmap } from "@/components/dashboard-charts";
 import { BudgetCard } from "@/components/budget-card";
+import { getUserId } from "@/lib/supabase/user";
 
 export default async function Dashboard() {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
+  const userId = await getUserId();
+  if (!userId) redirect("/login");
 
   const { data: profile } = await supabase
     .from("profiles")
     .select("display_name, avatar_id, level, xp, current_streak, timezone")
-    .eq("id", user.id)
+    .eq("id", userId)
     .single();
   const tz = profile?.timezone ?? "Asia/Jakarta";
 
   const { data: budget } = await supabase
     .from("budgets")
     .select("weekly_limit, share_blowout")
-    .eq("user_id", user.id)
+    .eq("user_id", userId)
     .maybeSingle();
 
   const cutoff = daysAgoISO(95);

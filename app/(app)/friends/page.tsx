@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { avatarEmoji } from "@/lib/avatars";
 import { AddFriend } from "@/components/add-friend";
 import { IncomingRequests } from "@/components/incoming-requests";
+import { getUserId } from "@/lib/supabase/user";
 
 type Prof = {
   id: string;
@@ -14,15 +15,13 @@ type Prof = {
 
 export default async function FriendsPage() {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
+  const userId = await getUserId();
+  if (!userId) redirect("/login");
 
   const { data: me } = await supabase
     .from("profiles")
     .select("username")
-    .eq("id", user.id)
+    .eq("id", userId)
     .single();
 
   const { data: rows } = await supabase
@@ -45,13 +44,13 @@ export default async function FriendsPage() {
 
   const all = (rows ?? []) as unknown as Row[];
   const otherOf = (r: Row): Prof =>
-    r.requester_id === user.id ? r.addressee : r.requester;
+    r.requester_id === userId ? r.addressee : r.requester;
 
   const incoming = all
-    .filter((r) => r.status === "pending" && r.addressee_id === user.id)
+    .filter((r) => r.status === "pending" && r.addressee_id === userId)
     .map((r) => ({ id: r.id, profile: r.requester }));
   const outgoing = all
-    .filter((r) => r.status === "pending" && r.requester_id === user.id)
+    .filter((r) => r.status === "pending" && r.requester_id === userId)
     .map((r) => ({ id: r.id, profile: r.addressee }));
   const friends = all.filter((r) => r.status === "accepted").map(otherOf);
 

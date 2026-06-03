@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { avatarEmoji } from "@/lib/avatars";
+import { getUserId } from "@/lib/supabase/user";
 
 function Side({ emoji, name }: { emoji: string; name: string }) {
   return (
@@ -19,18 +20,16 @@ export default async function VersusPage({
 }) {
   const { id } = await params;
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
-  if (id === user.id) redirect("/leaderboards");
+  const userId = await getUserId();
+  if (!userId) redirect("/login");
+  if (id === userId) redirect("/leaderboards");
 
   const sel =
     "display_name, avatar_id, xp, level, current_streak, longest_streak";
   const { data: meP } = await supabase
     .from("profiles")
     .select(sel)
-    .eq("id", user.id)
+    .eq("id", userId)
     .single();
   const { data: them } = await supabase
     .from("profiles")

@@ -5,6 +5,7 @@ import { avatarEmoji } from "@/lib/avatars";
 import { levelInfo } from "@/lib/xp";
 import { SignOutButton } from "@/components/sign-out-button";
 import { AvatarPicker } from "@/components/avatar-picker";
+import { getUserId } from "@/lib/supabase/user";
 
 function Stat({ label, value }: { label: string; value: React.ReactNode }) {
   return (
@@ -19,17 +20,15 @@ function Stat({ label, value }: { label: string; value: React.ReactNode }) {
 
 export default async function Profile() {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
+  const userId = await getUserId();
+  if (!userId) redirect("/login");
 
   const { data: p } = await supabase
     .from("profiles")
     .select(
       "username, display_name, avatar_id, level, xp, current_streak, longest_streak, created_at",
     )
-    .eq("id", user.id)
+    .eq("id", userId)
     .single();
 
   const { data: avatars } = await supabase
@@ -40,13 +39,13 @@ export default async function Profile() {
   const { count: friends } = await supabase
     .from("friendships")
     .select("id", { count: "exact", head: true })
-    .or(`requester_id.eq.${user.id},addressee_id.eq.${user.id}`)
+    .or(`requester_id.eq.${userId},addressee_id.eq.${userId}`)
     .eq("status", "accepted");
 
   const { data: trophies } = await supabase
     .from("trophies")
     .select("id, title, emoji, group_name, awarded_at")
-    .eq("user_id", user.id)
+    .eq("user_id", userId)
     .order("awarded_at", { ascending: false });
 
   const lvl = levelInfo(p?.xp ?? 0);
@@ -131,6 +130,12 @@ export default async function Profile() {
           </div>
         )}
       </section>
+      <Link
+        href="/settings"
+        className="rounded-pill border border-line bg-surface-2 py-3 text-center font-semibold text-ink active:scale-95"
+      >
+        ⚙️ Notification settings
+      </Link>
       <SignOutButton />
     </main>
   );

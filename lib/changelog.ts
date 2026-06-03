@@ -10,6 +10,17 @@ export type Release = {
 
 export const releases: Release[] = [
   {
+    version: "1.1",
+    date: "June 2026",
+    title: "Faster & fresher 🚀",
+    badge: "patch",
+    features: [
+      "Snappier navigation — screens you've visited reuse their data instead of re-fetching everything on every tap",
+      "Fixed the bug where groups (and other screens) showed up empty until you manually refreshed",
+      "The app no longer serves stale cached pages and now auto-updates to the newest version instead of getting stuck on an old build",
+    ],
+  },
+  {
     version: "1.0",
     date: "June 2026",
     title: "Bounty is Live 🪙",

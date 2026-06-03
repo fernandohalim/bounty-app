@@ -24,6 +24,7 @@ export function JoinGroup() {
       return;
     }
     router.push(`/groups/${data}`);
+    router.refresh();
   }
 
   return (

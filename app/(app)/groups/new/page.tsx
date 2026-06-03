@@ -50,6 +50,7 @@ export default function NewGroupPage() {
       return;
     }
     router.push(`/groups/${data}`);
+    router.refresh();
   }
 
   return (

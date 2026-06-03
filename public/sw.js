@@ -1,4 +1,4 @@
-const CACHE = "bounty-v1";
+const CACHE = "bounty-v2";
 
 const OFFLINE_HTML = `<!doctype html><html><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -31,6 +31,11 @@ self.addEventListener("fetch", (e) => {
   const url = new URL(req.url);
   if (url.origin !== location.origin) return; // skip Supabase / cross-origin
 
+  // In-app navigations (RSC payloads): never cache — Next's client Router
+  // Cache handles reuse. Caching here is what served stale/empty data.
+  if (req.headers.get("RSC") === "1" || url.searchParams.has("_rsc")) return;
+
+  // Full-document loads: network-first, fall back to cache then offline page.
   if (req.mode === "navigate") {
     e.respondWith(
       fetch(req)
@@ -40,34 +45,40 @@ self.addEventListener("fetch", (e) => {
           return res;
         })
         .catch(() =>
-          caches
-            .match(req)
-            .then(
-              (r) =>
-                r ||
-                new Response(OFFLINE_HTML, {
-                  headers: { "Content-Type": "text/html" },
-                }),
-            ),
+          caches.match(req).then(
+            (r) =>
+              r ||
+              new Response(OFFLINE_HTML, {
+                headers: { "Content-Type": "text/html" },
+              }),
+          ),
         ),
     );
     return;
   }
 
-  // static assets: cache-first
-  e.respondWith(
-    caches.match(req).then(
-      (r) =>
-        r ||
-        fetch(req).then((res) => {
-          if (res.ok && res.type === "basic") {
-            const copy = res.clone();
-            caches.open(CACHE).then((c) => c.put(req, copy));
-          }
-          return res;
-        }),
-    ),
-  );
+  // Static build assets only: cache-first (content-hashed, safe to keep).
+  if (
+    url.pathname.startsWith("/_next/static/") ||
+    /\.(?:css|js|woff2?|png|jpe?g|gif|svg|webp|ico)$/.test(url.pathname)
+  ) {
+    e.respondWith(
+      caches.match(req).then(
+        (r) =>
+          r ||
+          fetch(req).then((res) => {
+            if (res.ok && res.type === "basic") {
+              const copy = res.clone();
+              caches.open(CACHE).then((c) => c.put(req, copy));
+            }
+            return res;
+          }),
+      ),
+    );
+    return;
+  }
+
+  // Everything else → straight to network (no respondWith).
 });
 
 self.addEventListener("push", (event) => {
@@ -92,9 +103,12 @@ self.addEventListener("notificationclick", (event) => {
   event.notification.close();
   const url = event.notification.data?.url || "/dashboard";
   event.waitUntil(
-    self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((list) => {
-      for (const c of list) if (c.url.includes(url) && "focus" in c) return c.focus();
-      return self.clients.openWindow(url);
-    }),
+    self.clients
+      .matchAll({ type: "window", includeUncontrolled: true })
+      .then((list) => {
+        for (const c of list)
+          if (c.url.includes(url) && "focus" in c) return c.focus();
+        return self.clients.openWindow(url);
+      }),
   );
 });

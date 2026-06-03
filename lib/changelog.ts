@@ -10,6 +10,13 @@ export type Release = {
 
 export const releases: Release[] = [
   {
+    version: "1.2.1",
+    date: "June 2026",
+    title: "Wipe recurring vs. one-off 🏠",
+    badge: "patch",
+    features: ["Removing unecessary section in home dashboard"],
+  },
+  {
     version: "1.2",
     date: "June 2026",
     title: "Home, leveled up 🏠",
@@ -25,7 +32,7 @@ export const releases: Release[] = [
     version: "1.1",
     date: "June 2026",
     title: "Faster & fresher 🚀",
-    badge: "patch",
+    badge: "feature",
     features: [
       "Snappier navigation — screens you've visited reuse their data instead of re-fetching everything on every tap",
       "Fixed the bug where groups (and other screens) showed up empty until you manually refreshed",

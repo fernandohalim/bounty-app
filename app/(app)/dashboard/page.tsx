@@ -64,8 +64,6 @@ export default async function Dashboard() {
 
   const monthExps = exps.filter((e) => e.day.startsWith(monthKey));
   const monthTotal = sum(monthExps);
-  const recurringTotal = sum(monthExps.filter((e) => e.is_recurring));
-  const oneOffTotal = monthTotal - recurringTotal;
 
   const catTotals = new Map<Category, number>();
   for (const e of monthExps)
@@ -97,8 +95,6 @@ export default async function Dashboard() {
       return { date, amount, level, future: date > today };
     }),
   );
-
-  const splitPct = monthTotal > 0 ? (oneOffTotal / monthTotal) * 100 : 0;
 
   return (
     <main className="flex flex-col gap-5 px-5 pb-4 pt-8">
@@ -198,33 +194,6 @@ export default async function Dashboard() {
         ) : (
           <CategoryChart items={catItems} total={monthTotal} />
         )}
-      </section>
-
-      <section className="surface-card flex flex-col gap-3 p-5">
-        <h2 className="font-display font-bold text-ink">
-          Recurring vs one-off
-        </h2>
-        <div className="flex h-3 overflow-hidden rounded-pill bg-surface-2">
-          <div
-            className="h-full"
-            style={{
-              width: `${splitPct}%`,
-              background: "var(--color-neon-cyan)",
-            }}
-          />
-          <div
-            className="h-full flex-1"
-            style={{ background: "var(--color-neon-violet)" }}
-          />
-        </div>
-        <div className="flex justify-between font-mono text-xs">
-          <span className="text-neon-cyan">
-            one-off 🪙{formatCoins(oneOffTotal)}
-          </span>
-          <span className="text-neon-violet">
-            recurring 🪙{formatCoins(recurringTotal)}
-          </span>
-        </div>
       </section>
 
       <section className="surface-card flex flex-col gap-3 p-5">

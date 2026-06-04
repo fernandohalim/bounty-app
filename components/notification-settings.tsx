@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { enablePush, isPushEnabled, pushSupported } from "@/lib/push";
+import { Toggle } from "./ui/toggle";
 
 type Settings = {
   on_bounty_card: boolean;
@@ -130,12 +131,7 @@ export function NotificationSettings({ initial }: { initial: Settings }) {
               <span className="block text-sm text-ink">{t.label}</span>
               <span className="block text-xs text-ink-dim">{t.hint}</span>
             </span>
-            <input
-              type="checkbox"
-              checked={settings[t.key]}
-              onChange={() => toggle(t.key)}
-              className="h-5 w-5 shrink-0 accent-neon-pink"
-            />
+            <Toggle checked={settings[t.key]} onChange={() => toggle(t.key)} />
           </label>
         ))}
       </section>

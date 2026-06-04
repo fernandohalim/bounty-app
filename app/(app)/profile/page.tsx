@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { avatarEmoji } from "@/lib/avatars";
 import { levelInfo } from "@/lib/xp";
 import { SignOutButton } from "@/components/sign-out-button";
-import { AvatarPicker } from "@/components/avatar-picker";
+import { EditProfile } from "@/components/edit-profile";
 import { getUserId } from "@/lib/supabase/user";
 import { AboutButton } from "@/components/about-button";
 
@@ -57,9 +57,10 @@ export default async function Profile() {
         <span className="flex h-20 w-20 items-center justify-center rounded-card border border-neon-cyan/40 bg-surface-2 text-5xl shadow-glow-cyan">
           {avatarEmoji(p?.avatar_id)}
         </span>
-        <AvatarPicker
+        <EditProfile
           avatars={avatars ?? []}
-          current={p?.avatar_id ?? "rookie_fox"}
+          currentAvatar={p?.avatar_id ?? "rookie_fox"}
+          currentName={p?.display_name ?? ""}
           level={p?.level ?? 1}
         />
         <div>

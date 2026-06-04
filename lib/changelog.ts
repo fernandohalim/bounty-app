@@ -10,6 +10,18 @@ export type Release = {
 
 export const releases: Release[] = [
   {
+    version: "1.3.2",
+    date: "June 2026",
+    title: "Profiles, toggles & editable recurring ✏️",
+    badge: "patch",
+    features: [
+      "Notification settings traded their tickboxes for sliding toggles — on/off is obvious at a glance now",
+      "Changing your avatar no longer fires the moment you tap one — pick it, then confirm with Save",
+      "A new Edit profile sheet rolls your display name and avatar change into one place",
+      "Recurring expenses are editable at last — tap one in History to change its amount, category, note, cadence or next charge date, or stop it, just like a normal expense",
+    ],
+  },
+  {
     version: "1.3.1",
     date: "June 2026",
     title: "Cleaner category donut 🍩",

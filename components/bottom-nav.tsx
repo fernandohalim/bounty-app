@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAddSheet } from "@/components/add-sheet";
 
 const NAV = [
   { href: "/dashboard", label: "Home", icon: "🏠", enabled: true },
@@ -13,6 +14,7 @@ const NAV = [
 
 export function BottomNav() {
   const path = usePathname();
+  const { open } = useAddSheet();
 
   return (
     <nav className="fixed inset-x-0 bottom-0 z-40 mx-auto flex max-w-md items-end justify-around border-t border-line bg-surface/90 px-2 pb-3 pt-2 backdrop-blur">
@@ -31,14 +33,10 @@ export function BottomNav() {
               {item.icon}
             </div>
           );
-          return item.enabled ? (
-            <Link key={item.href} href={item.href}>
+          return (
+            <button key={item.href} onClick={open} aria-label="Add expense">
               {Center}
-            </Link>
-          ) : (
-            <div key={item.href} aria-disabled>
-              {Center}
-            </div>
+            </button>
           );
         }
 

@@ -10,6 +10,19 @@ export type Release = {
 
 export const releases: Release[] = [
   {
+    version: "1.3.0",
+    date: "June 2026",
+    title: "Logging & history, reborn ⚡",
+    badge: "feature",
+    features: [
+      "Tap + and the add screen now slides up full-screen — categories in a custom dropdown, an exact date & time via a custom picker, and a keypad the keyboard can't shove around anymore",
+      "Expenses save with an editable date and time now, not just 'right now'",
+      "History got real filters: narrow by month or category, and sort by newest, oldest, biggest, smallest, or A–Z",
+      "Expenses are grouped by day with Today / Yesterday headers and show the time you logged them",
+      "Tapping an expense opens a detail card first — edit or delete from there, so no more accidental edits",
+    ],
+  },
+  {
     version: "1.2.1",
     date: "June 2026",
     title: "Wipe recurring vs. one-off 🏠",

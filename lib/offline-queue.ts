@@ -10,6 +10,7 @@ export type QueuedExpense = {
   amount: number;
   category: Category;
   note: string | null;
+  spent_at?: string;
 };
 
 function openDB(): Promise<IDBDatabase> {
@@ -72,6 +73,7 @@ export async function flushQueue(): Promise<void> {
       category: it.category,
       note: it.note,
       client_uuid: it.client_uuid,
+      spent_at: it.spent_at,
     });
     if (!error || error.code === "23505") {
       await dequeue(it.client_uuid);

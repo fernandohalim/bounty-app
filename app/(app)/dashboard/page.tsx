@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { CATEGORIES, categoryMeta, type Category } from "@/lib/categories";
+import { CATEGORIES, type Category } from "@/lib/categories";
 import { formatCoins } from "@/lib/format";
+import { RecentExpenses } from "@/components/recent-expenses";
 import {
   localDate,
   addDays,
@@ -152,31 +153,7 @@ export default async function Dashboard() {
           </Link>
         </div>
 
-        {recent.length > 0 && (
-          <div className="flex flex-col gap-3 border-t border-line pt-3">
-            <span className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">
-              Recent
-            </span>
-            {recent.map((e) => {
-              const m = categoryMeta(e.category as Category);
-              return (
-                <Link
-                  key={e.id}
-                  href={`/expenses/${e.id}`}
-                  className="flex items-center gap-3"
-                >
-                  <span className="text-xl">{m.emoji}</span>
-                  <span className="flex-1 truncate text-sm text-ink">
-                    {e.note || m.label}
-                  </span>
-                  <span className="font-mono text-sm font-bold text-ink">
-                    🪙{formatCoins(e.amount)}
-                  </span>
-                </Link>
-              );
-            })}
-          </div>
-        )}
+        {recent.length > 0 && <RecentExpenses expenses={recent} />}
       </section>
 
       <BudgetCard

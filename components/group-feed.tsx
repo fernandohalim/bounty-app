@@ -20,7 +20,6 @@ export type Message = {
   sender_id: string | null;
   category: string | null;
   amount: number | null;
-  amount_hidden: boolean;
   note: string | null;
   body: string | null;
   created_at: string;
@@ -133,6 +132,30 @@ export function GroupFeed({
         (payload) => {
           const r = payload.old as unknown as ReactRow;
           removeReaction(r.message_id, r.id);
+        },
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "bounty",
+          table: "group_messages",
+          filter: `group_id=eq.${groupId}`,
+        },
+        (payload) => {
+          const m = payload.new as unknown as MsgRow;
+          setMessages((prev) =>
+            prev.map((x) => (x.id === m.id ? { ...x, ...m } : x)),
+          );
+        },
+      )
+      .on(
+        "postgres_changes",
+        { event: "DELETE", schema: "bounty", table: "group_messages" }, // no filter on purpose — see note
+        (payload) => {
+          const oldId = (payload.old as { id?: string }).id;
+          if (!oldId) return;
+          setMessages((prev) => prev.filter((x) => x.id !== oldId));
         },
       )
       .subscribe();

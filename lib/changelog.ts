@@ -10,7 +10,7 @@ export type Release = {
 
 export const releases: Release[] = [
   {
-    version: "1.3.0",
+    version: "1.3",
     date: "June 2026",
     title: "Logging & history, reborn ⚡",
     badge: "feature",

@@ -27,6 +27,21 @@ export default async function GroupsPage() {
     .map((m) => m.group)
     .filter(Boolean);
 
+  const groupIds = groups.map((g) => g.id);
+  const { data: lastMsgs } = groupIds.length
+    ? await supabase
+        .from("group_messages")
+        .select("group_id, created_at")
+        .in("group_id", groupIds)
+        .order("created_at", { ascending: false })
+    : { data: [] };
+
+  const lastActivity = new Map<string, string>();
+  for (const m of lastMsgs ?? []) {
+    if (!lastActivity.has(m.group_id))
+      lastActivity.set(m.group_id, m.created_at);
+  }
+
   return (
     <main className="flex flex-col gap-6 px-5 pb-4 pt-8">
       <div className="flex items-center justify-between">
@@ -47,32 +62,58 @@ export default async function GroupsPage() {
             No groups yet. Create one or join with a code.
           </div>
         ) : (
-          groups.map((g) => (
-            <Link
-              key={g.id}
-              href={`/groups/${g.id}`}
-              className="surface-card flex items-center justify-between px-4 py-4"
-            >
-              <div>
-                <p className="font-display font-bold text-ink">{g.name}</p>
-                <p className="font-mono text-xs text-ink-dim">
-                  {g.kind}
-                  {g.expires_at && g.status === "active"
-                    ? ` · ends ${new Date(g.expires_at).toLocaleDateString()}`
-                    : ""}
-                </p>
-              </div>
-              {g.status === "locked" ? (
-                <span className="rounded-pill bg-gold/15 px-2 py-1 font-mono text-xs text-gold">
-                  locked 🏁
+          groups.map((g) => {
+            const last = lastActivity.get(g.id);
+            const locked = g.status === "locked";
+            return (
+              <Link
+                key={g.id}
+                href={`/groups/${g.id}`}
+                className="surface-card flex items-center gap-3 px-4 py-3.5 active:scale-[0.99]"
+              >
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-card border border-line bg-surface-2 font-display text-lg font-bold text-neon-cyan">
+                  {g.name.charAt(0).toUpperCase()}
                 </span>
-              ) : (
-                <span className="text-neon-cyan">→</span>
-              )}
-            </Link>
-          ))
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="truncate font-display font-bold text-ink">
+                      {g.name}
+                    </p>
+                    <span className="shrink-0 font-mono text-[10px] text-ink-dim">
+                      {relativeTime(last)}
+                    </span>
+                  </div>
+                  <div className="mt-0.5 flex items-center gap-2">
+                    <span className="truncate font-mono text-[11px] text-ink-dim">
+                      {g.kind === "temporal" ? "Temporal ⏳" : "Permanent ♾️"}
+                      {g.expires_at && g.status === "active"
+                        ? ` · ends ${new Date(g.expires_at).toLocaleDateString()}`
+                        : ""}
+                    </span>
+                    {locked && (
+                      <span className="ml-auto shrink-0 rounded-pill bg-gold/15 px-2 py-0.5 font-mono text-[10px] text-gold">
+                        locked 🏁
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </Link>
+            );
+          })
         )}
       </section>
     </main>
   );
+}
+
+function relativeTime(iso?: string): string {
+  if (!iso) return "no activity yet";
+  const min = Math.floor((Date.now() - new Date(iso).getTime()) / 60000);
+  if (min < 1) return "just now";
+  if (min < 60) return `${min}m ago`;
+  const hr = Math.floor(min / 60);
+  if (hr < 24) return `${hr}h ago`;
+  const day = Math.floor(hr / 24);
+  if (day < 7) return `${day}d ago`;
+  return new Date(iso).toLocaleDateString();
 }

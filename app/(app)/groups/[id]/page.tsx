@@ -40,23 +40,13 @@ export default async function GroupPage({
   const { data: members } = await supabase
     .from("group_members")
     .select(
-      "user_id, hide_amount, role, profile:profiles!group_members_user_id_fkey(display_name, avatar_id, username)",
+      "user_id, role, profile:profiles!group_members_user_id_fkey(display_name, avatar_id, username)",
     )
     .eq("group_id", id);
-  const { data: cats } = await supabase
-    .from("group_listened_categories")
-    .select("category")
-    .eq("group_id", id);
-  const { data: invite } = await supabase
-    .from("group_invites")
-    .select("code")
-    .eq("group_id", id)
-    .limit(1)
-    .maybeSingle();
   const { data: messages } = await supabase
     .from("group_messages")
     .select(
-      "id, type, sender_id, category, amount, amount_hidden, note, body, created_at, reactions(id, user_id, type)",
+      "id, type, sender_id, category, amount, note, body, created_at, reactions(id, user_id, type)",
     )
     .eq("group_id", id)
     .order("created_at", { ascending: true });
@@ -67,8 +57,6 @@ export default async function GroupPage({
       me={userId}
       group={group as unknown as Group}
       members={(members ?? []) as unknown as Member[]}
-      listenedCategories={(cats ?? []).map((c) => c.category as string)}
-      inviteCode={invite?.code ?? null}
       initialMessages={(messages ?? []) as unknown as Message[]}
     />
   );

@@ -45,11 +45,13 @@ export default async function Dashboard() {
     day: localDate(r.spent_at, tz),
   }));
 
-  const recent = [...(rows ?? [])]
+  const today = todayLocal(tz);
+
+  const recent = exps
+    .filter((e) => e.day === today)
     .sort((a, b) => (a.spent_at < b.spent_at ? 1 : -1))
     .slice(0, 5);
 
-  const today = todayLocal(tz);
   const monthKey = today.slice(0, 7);
   const wkStart = weekStart(today);
 

@@ -6,6 +6,7 @@ import { categoryMeta, type Category } from "@/lib/categories";
 import { InviteFriends } from "@/components/invite-friends";
 import { GroupActions } from "@/components/group-actions";
 import { getUserId } from "@/lib/supabase/user";
+import { InviteCode } from "@/components/invite-code";
 
 function Row({
   label,
@@ -82,6 +83,7 @@ export default async function GroupInfo({
     user_id: string;
     role: string;
     profile: Prof & { level: number };
+    hide_amount: boolean;
   };
   type FrRow = {
     requester_id: string;
@@ -132,7 +134,10 @@ export default async function GroupInfo({
         )}
         <Row label="Status" value={isActive ? "Active" : "Locked 🏁"} />
         {invite && isActive && (
-          <Row label="Invite code" value={invite.code} mono />
+          <div className="flex justify-between">
+            <span className="text-ink-dim">Invite code</span>
+            <InviteCode code={invite.code} />
+          </div>
         )}
         <div className="flex flex-wrap gap-1 pt-1">
           {(cats ?? []).map((c) => {

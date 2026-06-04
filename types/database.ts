@@ -238,21 +238,18 @@ export type Database = {
           group_id: string;
           user_id: string;
           role: Database["bounty"]["Enums"]["member_role"];
-          hide_amount: boolean;
           joined_at: string;
         };
         Insert: {
           group_id: string;
           user_id: string;
           role?: Database["bounty"]["Enums"]["member_role"];
-          hide_amount?: boolean;
           joined_at?: string;
         };
         Update: {
           group_id?: string;
           user_id?: string;
           role?: Database["bounty"]["Enums"]["member_role"];
-          hide_amount?: boolean;
           joined_at?: string;
         };
         Relationships: [
@@ -281,7 +278,6 @@ export type Database = {
           expense_id: string | null;
           category: Database["bounty"]["Enums"]["expense_category"] | null;
           amount: number | null;
-          amount_hidden: boolean;
           note: string | null;
           body: string | null;
           created_at: string;
@@ -294,7 +290,6 @@ export type Database = {
           expense_id?: string | null;
           category?: Database["bounty"]["Enums"]["expense_category"] | null;
           amount?: number | null;
-          amount_hidden?: boolean;
           note?: string | null;
           body?: string | null;
           created_at?: string;
@@ -307,7 +302,6 @@ export type Database = {
           expense_id?: string | null;
           category?: Database["bounty"]["Enums"]["expense_category"] | null;
           amount?: number | null;
-          amount_hidden?: boolean;
           note?: string | null;
           body?: string | null;
           created_at?: string;

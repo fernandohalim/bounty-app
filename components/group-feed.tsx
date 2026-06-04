@@ -10,7 +10,6 @@ import { formatCoins } from "@/lib/format";
 
 export type Member = {
   user_id: string;
-  hide_amount: boolean;
   role: string;
   profile: { display_name: string; avatar_id: string; username: string };
 };
@@ -49,16 +48,12 @@ export function GroupFeed({
   me,
   group,
   members,
-  listenedCategories,
-  inviteCode,
   initialMessages,
 }: {
   groupId: string;
   me: string;
   group: Group;
   members: Member[];
-  listenedCategories: string[];
-  inviteCode: string | null;
   initialMessages: Message[];
 }) {
   const [supabase] = useState(() => createClient());
@@ -66,10 +61,6 @@ export function GroupFeed({
   const [floaters, setFloaters] = useState<
     { key: number; msgId: string; emoji: string }[]
   >([]);
-  const [hideAmount, setHideAmount] = useState(
-    members.find((m) => m.user_id === me)?.hide_amount ?? false,
-  );
-  const [copied, setCopied] = useState(false);
   const floatId = useRef(0);
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -170,24 +161,6 @@ export function GroupFeed({
     }
   }
 
-  async function togglePrivacy() {
-    const next = !hideAmount;
-    setHideAmount(next);
-    await supabase
-      .from("group_members")
-      .update({ hide_amount: next })
-      .eq("group_id", groupId)
-      .eq("user_id", me);
-  }
-
-  function copyCode() {
-    if (!inviteCode) return;
-    navigator.clipboard.writeText(inviteCode).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
-    });
-  }
-
   return (
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-10 flex flex-col gap-2 border-b border-line bg-void/90 px-5 py-3 backdrop-blur">
@@ -214,39 +187,6 @@ export function GroupFeed({
             🏆
           </Link>
         </div>
-        <div className="flex items-center gap-2 text-xs">
-          {inviteCode && (
-            <button
-              onClick={copyCode}
-              className="rounded-pill border border-line bg-surface-2 px-2 py-1 font-mono text-ink-dim"
-            >
-              code: <span className="text-neon-cyan">{inviteCode}</span>{" "}
-              {copied ? "✓" : "⧉"}
-            </button>
-          )}
-          <label className="ml-auto flex items-center gap-1 text-ink-dim">
-            hide my 🪙
-            <input
-              type="checkbox"
-              checked={hideAmount}
-              onChange={togglePrivacy}
-              className="h-4 w-4 accent-neon-pink"
-            />
-          </label>
-        </div>
-        <div className="flex flex-wrap gap-1">
-          {listenedCategories.map((c) => {
-            const m = categoryMeta(c as Category);
-            return (
-              <span
-                key={c}
-                className="rounded-pill bg-surface-2 px-2 py-0.5 text-[10px] text-ink-dim"
-              >
-                {m.emoji} {m.label}
-              </span>
-            );
-          })}
-        </div>
       </header>
 
       {locked && (
@@ -265,9 +205,19 @@ export function GroupFeed({
 
         {messages.map((msg) => {
           if (msg.type !== "bounty_card") {
+            const who = msg.sender_id
+              ? memberMap.get(msg.sender_id)?.display_name
+              : null;
             return (
               <p key={msg.id} className="text-center text-xs text-ink-dim">
-                {msg.body}
+                {msg.type === "budget_blowout" ? (
+                  <>
+                    <span className="text-over">{who ?? "Someone"}</span>{" "}
+                    {msg.body}
+                  </>
+                ) : (
+                  msg.body
+                )}
               </p>
             );
           }
@@ -320,9 +270,9 @@ export function GroupFeed({
                   </span>
                 )}
                 <span className="ml-auto font-mono font-bold text-ink">
-                  {msg.amount_hidden
-                    ? "🪙 •••"
-                    : `🪙 ${formatCoins(msg.amount ?? 0)}`}
+                  {msg.amount == null
+                    ? "🪙 —"
+                    : `🪙 ${formatCoins(msg.amount)}`}
                 </span>
               </div>
 

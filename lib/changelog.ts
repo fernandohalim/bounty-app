@@ -10,6 +10,19 @@ export type Release = {
 
 export const releases: Release[] = [
   {
+    version: "1.4",
+    date: "June 2026",
+    title: "Home & Groups, refreshed 💬",
+    badge: "feature",
+    features: [
+      "Groups list now reads like a chat home — each group shows its last activity, type, and when it ends",
+      "Home's Today card now lists only today's expenses (up to 5), not your all-time recent",
+      "Budget-blowout messages now name who blew it",
+      "Retired the hide-my-coins option entirely — bounty cards always show the amount now, keeping the feed honest",
+      "The invite code moved to the group info page and is tap-to-copy",
+    ],
+  },
+  {
     version: "1.3.3",
     date: "June 2026",
     title: "Tap to see anyone 👤",

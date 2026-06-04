@@ -10,6 +10,19 @@ export type Release = {
 
 export const releases: Release[] = [
   {
+    version: "1.4.1",
+    date: "June 2026",
+    title: "Edits that actually stick 🔧",
+    badge: "patch",
+    features: [
+      "Editing an expense now keeps its bounty card in sync across every group — amount, category and note update instead of drifting, and the card leaves a group's feed if you move it to a category that group isn't watching",
+      "Deleting an expense clears its bounty cards too — no more ghost cards stuck in group feeds",
+      "Group feeds update live when a card is edited or removed, not only when new ones arrive",
+      "Editing or deleting an expense from Home now opens the same quick detail card as History, instead of the old full-page editor",
+      "An expense only appears in a group if it happened after the group was formed — no more cards that show in the feed but never count on the leaderboard",
+    ],
+  },
+  {
     version: "1.4",
     date: "June 2026",
     title: "Home & Groups, refreshed 💬",

@@ -1,5 +1,7 @@
 # supabase rls policies log
+
 ## query used
+
 ```sql
 select tablename, policyname, cmd, roles, qual, with_check
 from pg_policies
@@ -8,6 +10,7 @@ order by tablename, policyname;
 ```
 
 ## responses
+
 ```json
 [
   {

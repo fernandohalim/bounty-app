@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { CATEGORIES, type Category } from "@/lib/categories";
 import { formatCoins } from "@/lib/format";
+import { DateTimePicker } from "@/components/ui/datetime-picker";
 
 export default function ExpenseDetail() {
   const { id } = useParams<{ id: string }>();
@@ -14,7 +15,7 @@ export default function ExpenseDetail() {
   const [digits, setDigits] = useState("");
   const [category, setCategory] = useState<Category>("other");
   const [note, setNote] = useState("");
-  const [spentAt, setSpentAt] = useState("");
+  const [when, setWhen] = useState<Date>(() => new Date());
   const [isRecurring, setIsRecurring] = useState(false);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -31,7 +32,7 @@ export default function ExpenseDetail() {
         setDigits(String(data.amount));
         setCategory(data.category as Category);
         setNote(data.note ?? "");
-        setSpentAt(new Date(data.spent_at).toISOString().slice(0, 10));
+        setWhen(new Date(data.spent_at));
         setIsRecurring(data.is_recurring);
       }
       setLoading(false);
@@ -50,7 +51,7 @@ export default function ExpenseDetail() {
         amount,
         category,
         note: note.trim() || null,
-        spent_at: new Date(spentAt).toISOString(),
+        spent_at: when.toISOString(),
       })
       .eq("id", id);
     if (error) {
@@ -123,15 +124,12 @@ export default function ExpenseDetail() {
         className="rounded-pill border border-line bg-surface px-4 py-2.5 text-ink outline-none placeholder:text-ink-dim/50"
       />
 
-      <label className="flex items-center justify-between rounded-pill border border-line bg-surface px-4 py-2 text-sm text-ink-dim">
-        Date
-        <input
-          type="date"
-          value={spentAt}
-          onChange={(e) => setSpentAt(e.target.value)}
-          className="bg-transparent text-ink outline-none"
-        />
-      </label>
+      <DateTimePicker
+        value={when}
+        onChange={setWhen}
+        mode="datetime"
+        label="When"
+      />
 
       {err && <p className="text-center text-sm text-over">{err}</p>}
 

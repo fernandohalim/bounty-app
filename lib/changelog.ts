@@ -10,6 +10,16 @@ export type Release = {
 
 export const releases: Release[] = [
   {
+    version: "1.3.1",
+    date: "June 2026",
+    title: "Cleaner category donut 🍩",
+    badge: "patch",
+    features: [
+      "The month total now sits above the category breakdown instead of crammed inside the donut",
+      "Tapping a slice fills the donut's center with that category and its share of your spending",
+    ],
+  },
+  {
     version: "1.3",
     date: "June 2026",
     title: "Logging & history, reborn ⚡",

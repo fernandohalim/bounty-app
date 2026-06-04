@@ -4,6 +4,7 @@ import { avatarEmoji } from "@/lib/avatars";
 import { AddFriend } from "@/components/add-friend";
 import { IncomingRequests } from "@/components/incoming-requests";
 import { getUserId } from "@/lib/supabase/user";
+import { FriendsList } from "@/components/friends-list";
 
 type Prof = {
   id: string;
@@ -52,7 +53,9 @@ export default async function FriendsPage() {
   const outgoing = all
     .filter((r) => r.status === "pending" && r.requester_id === userId)
     .map((r) => ({ id: r.id, profile: r.addressee }));
-  const friends = all.filter((r) => r.status === "accepted").map(otherOf);
+  const friends = all
+    .filter((r) => r.status === "accepted")
+    .map((r) => ({ friendshipId: r.id, profile: otherOf(r) }));
 
   return (
     <main className="flex flex-col gap-6 px-5 pb-4 pt-8">
@@ -89,32 +92,7 @@ export default async function FriendsPage() {
         </section>
       )}
 
-      <section className="flex flex-col gap-2">
-        <h2 className="font-mono text-xs uppercase tracking-widest text-ink-dim">
-          Friends · {friends.length}
-        </h2>
-        {friends.length === 0 ? (
-          <div className="surface-card px-6 py-8 text-center text-sm text-ink-dim">
-            No friends yet. Add someone above!
-          </div>
-        ) : (
-          friends.map((f) => (
-            <div
-              key={f.id}
-              className="surface-card flex items-center gap-3 px-4 py-3"
-            >
-              <span className="text-2xl">{avatarEmoji(f.avatar_id)}</span>
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm text-ink">{f.display_name}</p>
-                <p className="font-mono text-xs text-ink-dim">@{f.username}</p>
-              </div>
-              <span className="rounded-pill bg-neon-cyan/10 px-2 py-0.5 font-mono text-xs text-neon-cyan">
-                LVL {f.level}
-              </span>
-            </div>
-          ))
-        )}
-      </section>
+      <FriendsList friends={friends} />
     </main>
   );
 }

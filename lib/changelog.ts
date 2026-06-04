@@ -10,6 +10,17 @@ export type Release = {
 
 export const releases: Release[] = [
   {
+    version: "1.3.3",
+    date: "June 2026",
+    title: "Tap to see anyone 👤",
+    badge: "patch",
+    features: [
+      "Tap any friend — in your friends list or on the leaderboard — to see their full profile: level, XP, streaks and trophy room, in a quick pop-up",
+      "Unfriend someone right from their profile, with a confirm so it's never an accident",
+      "Retired the head-to-head VS screen — a friend's profile now tells the whole story in one tap",
+    ],
+  },
+  {
     version: "1.3.2",
     date: "June 2026",
     title: "Profiles, toggles & editable recurring ✏️",

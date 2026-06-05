@@ -10,6 +10,15 @@ export type Release = {
 
 export const releases: Release[] = [
   {
+    version: "1.5.1",
+    date: "June 2026",
+    title: "Budget changes ping the group 🔔",
+    badge: "patch",
+    features: [
+      "When someone in a shared-blowout group changes their weekly budget, the group now gets a push notification — not just a feed message",
+    ],
+  },
+  {
     version: "1.5",
     date: "June 2026",
     title: "Groups, fair & in your control 🤝",

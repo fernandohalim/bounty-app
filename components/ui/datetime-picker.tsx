@@ -167,16 +167,16 @@ export function DateTimePicker({
                   onChange(n);
                   setView(n);
                 }}
-                className="flex-1 rounded-pill border border-neon-cyan/40 py-2 text-sm font-semibold text-neon-cyan active:scale-95"
+                className="flex-1 rounded-pill border border-line bg-surface-2 px-3 py-1.5 font-mono text-xs text-neon-cyan active:scale-95"
               >
-                {mode === "datetime" ? "Now" : "Today"}
+                {mode === "datetime" ? "now" : "today"}
               </button>
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                className="flex-1 rounded-pill bg-neon-lime py-2 text-sm font-bold text-void active:scale-95"
+                className="flex-1 rounded-pill border border-line bg-surface-2 px-3 py-1.5 font-mono text-xs text-neon-cyan active:scale-95"
               >
-                Done
+                done
               </button>
             </div>
           </div>

@@ -127,7 +127,7 @@ export default async function GroupInfo({
         <Link href={`/groups/${id}`} className="text-xl text-ink-dim">
           ←
         </Link>
-        <h1 className="font-display text-xl font-bold text-ink">
+        <h1 className="font-display text-2xl font-bold text-ink">
           {group.name}
         </h1>
       </div>

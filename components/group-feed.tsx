@@ -192,7 +192,7 @@ export function GroupFeed({
             ←
           </Link>
           <Link href={`/groups/${groupId}/info`} className="flex-1">
-            <h1 className="font-display font-bold text-ink">
+            <h1 className="font-display font-bold text-xl text-ink">
               {group.name} <span className="text-xs text-ink-dim">ⓘ</span>
             </h1>
             <p className="font-mono text-[11px] text-ink-dim">
@@ -213,15 +213,15 @@ export function GroupFeed({
       </header>
 
       {locked && (
-        <p className="bg-gold/10 px-5 py-2 text-center text-sm text-gold">
-          🏁 This group is locked — read-only.
+        <p className="bg-gold/10 px-5 py-2 text-center text-xs font-mono text-gold">
+          🏁 this group is locked — read-only.
         </p>
       )}
 
       <div className="flex flex-1 flex-col gap-3 px-5 py-4">
         {messages.length === 0 && (
-          <div className="surface-card px-6 py-10 text-center text-sm text-ink-dim">
-            No bounties yet. Log an expense in a listened category to kick off
+          <div className="surface-card px-6 py-10 text-center text-xs font-mono text-ink-dim">
+            no bounties yet. log an expense in a listened category to kick off
             the feed.
           </div>
         )}
@@ -278,7 +278,7 @@ export function GroupFeed({
                 <span className="text-xl">
                   {avatarEmoji(sender?.avatar_id)}
                 </span>
-                <span className="text-sm font-semibold text-ink">
+                <span className="text-sm font-display text-ink">
                   {sender?.display_name ?? "Someone"}
                 </span>
                 <span className="ml-auto font-mono text-[11px] text-ink-dim">

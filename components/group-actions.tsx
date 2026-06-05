@@ -44,28 +44,28 @@ export function GroupActions({
         {!confirming ? (
           <button
             onClick={() => setConfirming(true)}
-            className="rounded-pill border border-over/40 bg-over/10 py-3 font-semibold text-over active:scale-95"
+            className="rounded-pill border border-over/40 bg-over/10 px-4 py-2.5 text-xl font-display font-bold text-over active:scale-95"
           >
             Delete group
           </button>
         ) : (
           <div className="surface-card flex flex-col gap-3 p-4">
-            <p className="text-sm text-ink-dim">
-              Delete this group for everyone? This can&apos;t be undone.
+            <p className="text-xs font-mono text-ink-dim">
+              delete this group for everyone? this can&apos;t be undone.
             </p>
             <div className="flex gap-2">
               <button
                 onClick={del}
                 disabled={busy}
-                className="flex-1 rounded-pill bg-over py-2.5 font-bold text-void active:scale-95 disabled:opacity-50"
+                className="flex-1 rounded-pill border border-over/40 bg-over/10 py-2 text-xs font-mono text-over active:scale-95 disabled:opacity-50"
               >
-                Yes, delete
+                yes, delete
               </button>
               <button
                 onClick={() => setConfirming(false)}
-                className="flex-1 rounded-pill border border-line py-2.5 text-ink"
+                className="flex-1 rounded-pill border border-line py-2 font-mono text-ink text-xs active:scale-95 disabled:opacity-50"
               >
-                Cancel
+                cancel
               </button>
             </div>
           </div>

@@ -113,13 +113,13 @@ export function HistoryView({ expenses }: { expenses: Expense[] }) {
       </p>
 
       {filtered.length === 0 ? (
-        <div className="surface-card px-6 py-10 text-center text-sm text-ink-dim">
-          Nothing matches these filters.
+        <div className="surface-card px-6 py-10 text-center text-sm font-mono text-ink-dim">
+          nothing matches these filters.
         </div>
       ) : grouped ? (
         groups.map(([k, items]) => (
           <div key={k} className="flex flex-col gap-2">
-            <h3 className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">
+            <h3 className="font-mono text-xs uppercase tracking-widest text-ink-dim mb-1">
               {dayLabel(items[0].spent_at)}
             </h3>
             {items.map((e) => (
@@ -170,7 +170,7 @@ function Dropdown<T extends string>({
       {open && (
         <>
           <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
-          <div className="absolute top-full z-20 mt-1 max-h-60 w-max min-w-full overflow-y-auto rounded-card border border-line bg-surface-2 p-1 shadow-card">
+          <div className="no-scrollbar absolute top-full z-20 mt-1 max-h-60 w-max min-w-full overflow-y-auto rounded-card border border-line bg-surface-2 p-1 shadow-card">
             {options.map((o) => (
               <button
                 key={o.id}

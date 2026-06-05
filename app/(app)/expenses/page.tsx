@@ -23,7 +23,7 @@ export default async function ExpensesPage() {
 
   return (
     <main className="flex flex-col gap-6 px-5 pt-8">
-      <h1 className="font-display text-2xl font-bold text-ink">History</h1>
+      <h1 className="font-display font-bold text-ink text-3xl">History</h1>
 
       {recurring && recurring.length > 0 && (
         <RecurringList templates={recurring} />

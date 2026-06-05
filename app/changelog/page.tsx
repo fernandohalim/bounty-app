@@ -60,7 +60,7 @@ export default function Changelog() {
 
       <div className="mx-auto max-w-xl px-5 pb-28 pt-8">
         <div className="mb-8">
-          <h1 className="text-neon font-display text-4xl font-extrabold tracking-tight">
+          <h1 className="text-neon font-display text-4xl font-bold">
             Changelog
           </h1>
           <p className="mt-1 font-mono text-xs text-ink-dim">

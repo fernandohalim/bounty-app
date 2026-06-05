@@ -12,7 +12,7 @@ export function RecentExpenses({ expenses }: { expenses: Expense[] }) {
   const [selected, setSelected] = useState<Expense | null>(null);
   return (
     <div className="flex flex-col gap-3 border-t border-line pt-3">
-      <span className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">
+      <span className="font-mono text-xs uppercase tracking-widest text-ink-dim">
         Recent
       </span>
       {expenses.map((e) => {

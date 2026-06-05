@@ -36,8 +36,8 @@ export function RecurringList({ templates }: { templates: Template[] }) {
             <span className="text-2xl">{m.emoji}</span>
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm text-ink">{t.note || m.label}</p>
-              <p className="font-mono text-[11px] text-ink-dim">
-                <span className="rounded-pill bg-neon-violet/15 px-1.5 py-0.5 capitalize text-neon-violet">
+              <p className="font-mono text-[11px] text-ink-dim mt-0.5">
+                <span className="rounded-pill bg-neon-violet/15 px-1.5 py-0.5 lowercase text-neon-violet">
                   {t.cadence}
                 </span>{" "}
                 · next {new Date(t.next_occurrence).toLocaleDateString()}
@@ -168,13 +168,13 @@ function RecurringDetailModal({
             <div className="flex gap-2">
               <button
                 onClick={() => setEditing(true)}
-                className="flex-1 rounded-pill bg-neon-cyan py-2.5 font-display font-bold text-void shadow-glow-cyan active:scale-95"
+                className="flex-1 rounded-pill bg-neon-cyan py-2.5 font-display font-bold text-xl text-void shadow-glow-cyan active:scale-95 disabled:opacity-50"
               >
                 Edit
               </button>
               <button
                 onClick={() => setConfirmStop(true)}
-                className="rounded-pill border border-over/40 bg-over/10 px-4 py-2.5 font-semibold text-over active:scale-95"
+                className="rounded-pill border border-over/40 bg-over/10 px-4 py-2.5 text-xl font-display font-bold text-over active:scale-95"
               >
                 Stop
               </button>
@@ -184,15 +184,15 @@ function RecurringDetailModal({
                 <button
                   onClick={stop}
                   disabled={busy}
-                  className="flex-1 rounded-pill bg-over py-2.5 font-bold text-void active:scale-95 disabled:opacity-50"
+                  className="flex-1 rounded-pill border border-line bg-surface-2 px-3 py-1.5 font-mono text-xs text-neon-cyan active:scale-95"
                 >
-                  Yes, stop it
+                  yes, stop it
                 </button>
                 <button
                   onClick={() => setConfirmStop(false)}
-                  className="flex-1 rounded-pill border border-line py-2.5 text-ink"
+                  className="flex-1 rounded-pill border border-line bg-surface-2 px-3 py-1.5 font-mono text-xs text-neon-cyan active:scale-95"
                 >
-                  Cancel
+                  cancel
                 </button>
               </div>
             )}
@@ -221,7 +221,7 @@ function RecurringDetailModal({
                 <button
                   key={c}
                   onClick={() => setCadence(c)}
-                  className={`flex-1 rounded-pill py-2 text-sm font-semibold capitalize transition ${cadence === c ? "bg-neon-violet text-void" : "text-ink-dim"}`}
+                  className={`flex-1 rounded-pill py-2 text-xs font-mono font-bold lowercase transition ${cadence === c ? "bg-neon-violet text-void" : "text-ink-dim"}`}
                 >
                   {c}
                 </button>
@@ -238,13 +238,13 @@ function RecurringDetailModal({
               <button
                 onClick={save}
                 disabled={busy || amount <= 0}
-                className="flex-1 rounded-pill bg-neon-lime py-2.5 font-display font-bold text-void shadow-glow-lime active:scale-95 disabled:opacity-40"
+                className="flex-2 rounded-pill bg-neon-lime py-2.5 font-display font-bold text-xl text-void shadow-glow-lime active:scale-95 disabled:opacity-50"
               >
                 Save
               </button>
               <button
                 onClick={() => setEditing(false)}
-                className="rounded-pill border border-line px-4 py-2.5 text-ink"
+                className="rounded-pill border border-over/40 bg-over/10 px-4 py-2.5 text-xl font-display font-bold text-over active:scale-95"
               >
                 Back
               </button>

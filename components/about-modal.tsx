@@ -42,9 +42,7 @@ export function AboutModal({ isOpen, onClose }: AboutModalProps) {
             🪙
           </div>
 
-          <h2 className="text-neon font-display text-3xl font-extrabold tracking-tight">
-            BOUNTY
-          </h2>
+          <h2 className="text-neon font-display text-3xl font-bold">BOUNTY</h2>
           <p className="mb-6 mt-1 text-sm text-ink-dim">
             Spend together, gamified.
           </p>

@@ -179,9 +179,9 @@ function Sheet({ show, onClose }: { show: boolean; onClose: () => void }) {
               <button
                 key={m}
                 onClick={() => setMode(m)}
-                className={`rounded-pill px-4 py-1.5 text-sm font-semibold transition ${mode === m ? "bg-neon-cyan text-void" : "text-ink-dim"}`}
+                className={`rounded-pill px-4 py-1.5 text-xs font-mono transition ${mode === m ? "bg-neon-cyan text-void" : "text-ink-dim"}`}
               >
-                {m === "oneoff" ? "One-off" : "Recurring"}
+                {m === "oneoff" ? "one-off" : "recurring"}
               </button>
             ))}
           </div>
@@ -204,7 +204,7 @@ function Sheet({ show, onClose }: { show: boolean; onClose: () => void }) {
             onChange={(e) => setNote(e.target.value)}
             placeholder="Add a note (optional)"
             maxLength={140}
-            className="rounded-pill border border-line bg-surface px-4 py-2.5 text-ink outline-none placeholder:text-ink-dim/50"
+            className="rounded-pill border border-line bg-surface px-4 py-2.5 text-ink outline-none placeholder:text-ink-dim/50 "
           />
 
           {mode === "recurring" && (
@@ -213,7 +213,7 @@ function Sheet({ show, onClose }: { show: boolean; onClose: () => void }) {
                 <button
                   key={c}
                   onClick={() => setCadence(c)}
-                  className={`flex-1 rounded-pill py-2 text-sm font-semibold capitalize transition ${cadence === c ? "bg-neon-violet text-void" : "text-ink-dim"}`}
+                  className={`flex-1 rounded-pill py-2 text-xs font-mono font-bold lowercase transition ${cadence === c ? "bg-neon-violet text-void" : "text-ink-dim"}`}
                 >
                   {c}
                 </button>

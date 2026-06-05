@@ -61,7 +61,9 @@ export function GroupMembersList({
           <div className="flex items-center gap-3">
             <span className="text-2xl">{avatarEmoji(m.avatar_id)}</span>
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm text-ink">{m.display_name}</p>
+              <p className="font-display truncate text-md text-ink">
+                {m.display_name}
+              </p>
               <p className="font-mono text-xs text-ink-dim">@{m.username}</p>
             </div>
             {m.role === "owner" && (
@@ -90,16 +92,16 @@ export function GroupMembersList({
               <button
                 onClick={() => transfer(m.user_id)}
                 disabled={busy}
-                className="flex-1 rounded-pill border border-gold/40 bg-gold/10 py-2 text-xs font-semibold text-gold active:scale-95 disabled:opacity-50"
+                className="flex-1 rounded-pill border border-gold/40 bg-gold/10 py-2 text-xs font-mono text-gold active:scale-95 disabled:opacity-50"
               >
-                👑 Make owner
+                👑 make owner
               </button>
               <button
                 onClick={() => kick(m.user_id)}
                 disabled={busy}
-                className="flex-1 rounded-pill border border-over/40 bg-over/10 py-2 text-xs font-semibold text-over active:scale-95 disabled:opacity-50"
+                className="flex-1 rounded-pill border border-over/40 bg-over/10 py-2 text-xs font-mono text-over active:scale-95 disabled:opacity-50"
               >
-                Remove
+                remove
               </button>
             </div>
           )}

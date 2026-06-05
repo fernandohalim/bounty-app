@@ -33,15 +33,15 @@ export function JoinGroup() {
         <input
           value={code}
           onChange={(e) => setCode(e.target.value.toUpperCase())}
-          placeholder="INVITE CODE"
-          className="flex-1 rounded-pill border border-line bg-surface-2 px-4 py-2.5 font-mono uppercase tracking-widest text-ink outline-none placeholder:text-ink-dim/40"
+          placeholder="invite code"
+          className="flex-1 rounded-pill border border-line bg-surface-2 px-4 py-2 font-mono text-xs tracking-widest text-ink outline-none placeholder:text-ink-dim/40"
         />
         <button
           onClick={join}
           disabled={busy || !code.trim()}
-          className="rounded-pill border border-neon-lime/50 px-4 py-2.5 font-semibold text-neon-lime active:scale-95 disabled:opacity-40"
+          className="rounded-pill border border-neon-lime/50 px-4 py-2 font-bold font-mono text-xs text-neon-lime active:scale-95 disabled:opacity-40"
         >
-          Join
+          join
         </button>
       </div>
       {err && <p className="text-sm text-over">{err}</p>}

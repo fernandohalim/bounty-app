@@ -115,13 +115,13 @@ export function ExpenseDetailModal({
             <div className="flex gap-2">
               <button
                 onClick={() => setEditing(true)}
-                className="flex-1 rounded-pill bg-neon-cyan py-2.5 font-display font-bold text-void shadow-glow-cyan active:scale-95"
+                className="flex-1 rounded-pill bg-neon-cyan py-2.5 font-display font-bold text-xl text-void shadow-glow-cyan active:scale-95 disabled:opacity-50"
               >
                 Edit
               </button>
               <button
                 onClick={() => setConfirmDel(true)}
-                className="rounded-pill border border-over/40 bg-over/10 px-4 py-2.5 font-semibold text-over active:scale-95"
+                className="rounded-pill border border-over/40 bg-over/10 px-4 py-2.5 text-xl font-display font-bold text-over active:scale-95"
               >
                 Delete
               </button>
@@ -131,15 +131,15 @@ export function ExpenseDetailModal({
                 <button
                   onClick={remove}
                   disabled={busy}
-                  className="flex-1 rounded-pill bg-over py-2.5 font-bold text-void active:scale-95 disabled:opacity-50"
+                  className="flex-1 rounded-pill border border-line bg-surface-2 px-3 py-1.5 font-mono text-xs text-neon-cyan active:scale-95"
                 >
-                  Yes, delete
+                  yes, delete
                 </button>
                 <button
                   onClick={() => setConfirmDel(false)}
-                  className="flex-1 rounded-pill border border-line py-2.5 text-ink"
+                  className="flex-1 rounded-pill border border-line bg-surface-2 px-3 py-1.5 font-mono text-xs text-neon-cyan active:scale-95"
                 >
-                  Cancel
+                  cancel
                 </button>
               </div>
             )}

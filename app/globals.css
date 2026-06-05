@@ -46,7 +46,7 @@
 
 /* Wire next/font CSS variables into the theme (must be `inline`) */
 @theme inline {
-  --font-display: var(--font-unbounded);
+  --font-display: var(--font-pixel);   /* was var(--font-unbounded) */
   --font-sans: var(--font-jakarta);
   --font-mono: var(--font-martian);
 }
@@ -118,5 +118,13 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* old Edge/IE */
+  &::-webkit-scrollbar {
+    display: none;              /* Chrome / Safari / new Edge */
   }
 }

@@ -1,12 +1,16 @@
 import type { Metadata, Viewport } from "next";
-import { Unbounded, Plus_Jakarta_Sans, Martian_Mono } from "next/font/google";
+import {
+  Pixelify_Sans,
+  Plus_Jakarta_Sans,
+  Martian_Mono,
+} from "next/font/google";
 import "./globals.css";
 import { ServiceWorkerRegister } from "@/components/service-worker-register";
 
-const display = Unbounded({
+const display = Pixelify_Sans({
   subsets: ["latin"],
-  weight: ["400", "600", "700", "800"],
-  variable: "--font-unbounded",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-pixel",
 });
 const sans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -56,7 +60,7 @@ export default function RootLayout({
       lang="en"
       className={`${display.variable} ${sans.variable} ${mono.variable}`}
     >
-      <body className="antialiased">
+      <body className="antialiased ${display.className}">
         {children}
         <ServiceWorkerRegister />
       </body>{" "}

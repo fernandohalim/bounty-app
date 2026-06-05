@@ -101,20 +101,24 @@ export default async function Dashboard() {
 
   return (
     <main className="flex flex-col gap-5 px-5 pb-4 pt-8">
+      {/* header */}
       <header className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <span className="flex h-12 w-12 items-center justify-center rounded-card border border-line bg-surface-2 text-2xl">
             {avatarEmoji(profile?.avatar_id)}
           </span>
           <div>
-            <p className="text-sm text-ink-dim">Welcome back</p>
-            <h1 className="font-display text-xl font-bold text-ink">
+            <p className="font-mono text-xs uppercase tracking-widest text-ink-dim">
+              WELCOME BACK
+            </p>
+            <h1 className="font-display text-2xl font-bold text-ink">
               {profile?.display_name}
             </h1>
           </div>
         </div>
       </header>
 
+      {/* stat card */}
       <div className="grid grid-cols-3 gap-3">
         <Stat
           label="Level"
@@ -129,17 +133,17 @@ export default async function Dashboard() {
         />
       </div>
 
-      {/* Today + recent, merged */}
+      {/* today sect */}
       <section className="surface-card flex flex-col gap-4 p-5">
         <div className="flex items-start justify-between">
           <div className="flex flex-col gap-0.5">
-            <span className="font-mono text-xs uppercase tracking-widest text-ink-dim">
+            <span className="font-display font-bold text-ink text-xl">
               Today
             </span>
             <span className="font-mono text-3xl font-bold text-neon-cyan">
               🪙{formatCoins(todayTotal)}
             </span>
-            <span className="font-mono text-[11px] text-ink-dim">
+            <span className="font-mono text-[10px] text-ink-dim mt-1">
               {todayCount === 0
                 ? "nothing logged yet"
                 : `${todayCount} ${todayCount === 1 ? "expense" : "expenses"} today`}
@@ -147,22 +151,24 @@ export default async function Dashboard() {
           </div>
           <Link
             href="/expenses"
-            className="rounded-pill border border-line bg-surface-2 px-3 py-1.5 font-mono text-xs text-ink-dim active:scale-95"
+            className="rounded-pill border border-line bg-surface-2 px-3 py-1.5 font-mono text-xs text-neon-cyan active:scale-95"
           >
-            History →
+            history
           </Link>
         </div>
 
         {recent.length > 0 && <RecentExpenses expenses={recent} />}
       </section>
 
+      {/* weekly budget card */}
       <BudgetCard
         spent={weekOneOff}
         weeklyLimit={budget?.weekly_limit ?? null}
       />
 
+      {/* pie chart */}
       <section className="surface-card flex flex-col gap-4 p-5">
-        <h2 className="font-display font-bold text-ink">
+        <h2 className="font-display font-bold text-ink text-xl">
           This month by category
         </h2>
         {monthTotal === 0 ? (
@@ -174,8 +180,11 @@ export default async function Dashboard() {
         )}
       </section>
 
+      {/* heatmap sect */}
       <section className="surface-card flex flex-col gap-3 p-5">
-        <h2 className="font-display font-bold text-ink">Spending heatmap</h2>
+        <h2 className="font-display font-bold text-ink text-xl">
+          Spending heatmap
+        </h2>
         <InteractiveHeatmap weeks={weeks} />
       </section>
     </main>
@@ -194,7 +203,7 @@ function Stat({
   return (
     <div className="surface-card flex flex-col items-center gap-1 py-4">
       <span className={`font-mono text-xl font-bold ${accent}`}>{value}</span>
-      <span className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">
+      <span className="font-mono text-xs uppercase tracking-widest text-ink-dim">
         {label}
       </span>
     </div>

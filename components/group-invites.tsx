@@ -56,14 +56,14 @@ export function GroupInvites({ invites }: { invites: Invite[] }) {
           <button
             onClick={() => respond(inv.id, true)}
             disabled={busy === inv.id}
-            className="rounded-pill bg-neon-lime px-3 py-1.5 text-xs font-bold text-void active:scale-95 disabled:opacity-50"
+            className="rounded-pill bg-neon-lime px-3 py-1.5 text-xs font-mono font-bold text-void active:scale-95 disabled:opacity-50"
           >
-            Join
+            join
           </button>
           <button
             onClick={() => respond(inv.id, false)}
             disabled={busy === inv.id}
-            className="rounded-pill border border-over/40 px-3 py-1.5 text-xs text-over active:scale-95 disabled:opacity-50"
+            className="rounded-pill border border-over/40 px-3 py-1.5 text-xs font-bold font-mono text-over active:scale-95 disabled:opacity-50"
           >
             ✕
           </button>

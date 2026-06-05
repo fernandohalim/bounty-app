@@ -58,14 +58,14 @@ export default function NewGroupPage() {
 
   return (
     <main className="flex flex-col gap-5 px-5 pb-6 pt-6">
-      <h1 className="font-display text-xl font-bold text-ink">New group</h1>
+      <h1 className="font-display text-3xl font-bold text-ink">New group</h1>
 
       <input
         value={name}
         onChange={(e) => setName(e.target.value)}
-        placeholder="Group name"
+        placeholder="group name"
         maxLength={40}
-        className="rounded-pill border border-line bg-surface px-4 py-2.5 text-ink outline-none placeholder:text-ink-dim/50"
+        className="rounded-pill border border-line bg-surface px-4 py-2.5 text-ink outline-none font-mono placeholder:text-ink-dim/50"
       />
 
       <div className="flex rounded-pill border border-line bg-surface p-1">
@@ -73,7 +73,7 @@ export default function NewGroupPage() {
           <button
             key={k}
             onClick={() => setKind(k)}
-            className={`flex-1 rounded-pill py-2 text-sm font-semibold capitalize transition ${
+            className={`flex-1 rounded-pill py-2 text-xs font-mono font-bold lowercase transition ${
               kind === k ? "bg-neon-cyan text-void" : "text-ink-dim"
             }`}
           >
@@ -88,7 +88,7 @@ export default function NewGroupPage() {
             <button
               key={d.days}
               onClick={() => setDays(d.days)}
-              className={`flex-1 rounded-pill border py-2 text-sm transition ${
+              className={`flex-1 rounded-pill py-2 text-xs border font-mono font-bold lowercase transition ${
                 days === d.days
                   ? "border-neon-violet bg-surface-2 text-ink"
                   : "border-line text-ink-dim"
@@ -126,7 +126,7 @@ export default function NewGroupPage() {
         </div>
       </div>
 
-      <label className="flex items-center justify-between rounded-pill border border-line bg-surface px-4 py-3 text-sm text-ink-dim">
+      <label className="flex items-center justify-between rounded-pill border border-line bg-surface px-5 py-3 text-sm text-ink-dim">
         <span className="flex flex-col">
           <span className="text-ink">Share budget blowouts</span>
           <span className="text-xs">
@@ -136,8 +136,8 @@ export default function NewGroupPage() {
         <Toggle checked={shareBlowout} onChange={setShareBlowout} />
       </label>
 
-      <label className="flex items-center justify-between rounded-pill border border-line bg-surface px-4 py-2 text-sm text-ink-dim">
-        Invite max uses (optional)
+      <label className="flex items-center justify-between font-mono text-xs rounded-pill border border-line bg-surface px-4 py-2 text-sm text-ink-dim">
+        invite max uses (optional)
         <input
           inputMode="numeric"
           value={maxUses}
@@ -152,7 +152,7 @@ export default function NewGroupPage() {
       <button
         onClick={create}
         disabled={!canCreate}
-        className="rounded-pill bg-neon-lime py-3.5 font-display font-bold text-void shadow-glow-lime active:scale-95 disabled:opacity-40"
+        className="rounded-pill bg-neon-lime py-2.5 font-display font-bold text-xl text-void shadow-glow-lime active:scale-95 disabled:opacity-50"
       >
         {busy ? "Creating…" : "Create group →"}
       </button>

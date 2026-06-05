@@ -46,7 +46,7 @@ export function CategoryChart({
       {/* total — now outside the donut */}
       <div className="flex items-end justify-between">
         <div className="flex flex-col">
-          <span className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">
+          <span className="font-mono text-xs uppercase tracking-widest text-ink-dim mb-1">
             {sel ? sel.label : "Total this month"}
           </span>
           <span className="font-mono text-2xl font-bold text-neon-lime">
@@ -54,7 +54,7 @@ export function CategoryChart({
           </span>
         </div>
         {sel && total > 0 && (
-          <span className="rounded-pill bg-surface-2 px-2.5 py-1 font-mono text-xs text-neon-cyan">
+          <span className="rounded-pill border border-line bg-surface-2 px-3 py-1.5 font-mono text-xs text-neon-cyan active:scale-95">
             {Math.round((sel.value / total) * 100)}% of spend
           </span>
         )}
@@ -81,7 +81,7 @@ export function CategoryChart({
                 </span>
               </>
             ) : (
-              <span className="px-2 text-center font-mono text-[9px] leading-tight text-ink-dim">
+              <span className="px-2 text-center font-mono text-[10px] text-ink-dim">
                 tap a slice
               </span>
             )}

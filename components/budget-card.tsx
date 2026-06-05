@@ -41,10 +41,12 @@ export function BudgetCard({
   return (
     <section className="surface-card flex flex-col gap-3 p-5">
       <div className="flex items-center justify-between">
-        <h2 className="font-display font-bold text-ink">Weekly budget</h2>
+        <h2 className="font-display font-bold text-ink text-xl">
+          Weekly budget
+        </h2>
         <button
           onClick={() => setEditing((e) => !e)}
-          className="font-mono text-xs text-neon-cyan"
+          className="rounded-pill border border-line bg-surface-2 px-3 py-1.5 font-mono text-xs text-neon-cyan active:scale-95"
         >
           {editing ? "close" : "edit"}
         </button>
@@ -53,9 +55,9 @@ export function BudgetCard({
       {weeklyLimit == null && !editing && (
         <button
           onClick={() => setEditing(true)}
-          className="rounded-pill border border-line bg-surface-2 py-2 text-sm text-ink-dim"
+          className="rounded-pill border border-line bg-surface-2 px-3 py-1.5 font-mono text-xs text-neon-cyan active:scale-95"
         >
-          Set a weekly budget →
+          set a weekly budget
         </button>
       )}
 
@@ -78,9 +80,14 @@ export function BudgetCard({
               }}
             />
           </div>
-          <p className="text-xs text-ink-dim">one-off spending this week</p>
+          <p
+            className="font-mono text-[10px] text-ink-dim
+"
+          >
+            one-off spending this week
+          </p>
           {over && (
-            <p className="rounded-pill bg-over/10 px-3 py-2 text-center text-sm text-over">
+            <p className="rounded-pill border border-line bg-surface-2 px-3 py-1.5 font-mono text-xs active:scale-95 text-over">
               💸 Blowout! Over by 🪙{formatCoins(spent - weeklyLimit)}{" "}
             </p>
           )}
@@ -89,7 +96,7 @@ export function BudgetCard({
 
       {editing && (
         <div className="flex flex-col gap-3 border-t border-line pt-3">
-          <label className="flex items-center justify-between text-sm text-ink-dim">
+          <label className="flex items-center justify-between font-mono text-xs uppercase tracking-widest text-ink-dim">
             Weekly limit
             <input
               inputMode="numeric"
@@ -102,7 +109,7 @@ export function BudgetCard({
           <button
             onClick={save}
             disabled={busy}
-            className="rounded-pill bg-neon-lime py-2.5 font-display font-bold text-void shadow-glow-lime active:scale-95 disabled:opacity-50"
+            className="rounded-pill bg-neon-lime py-2.5 font-display font-bold text-xl text-void shadow-glow-lime active:scale-95 disabled:opacity-50"
           >
             {busy ? "Saving…" : "Save budget"}
           </button>

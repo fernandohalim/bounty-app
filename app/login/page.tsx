@@ -13,9 +13,7 @@ export default async function LoginPage({
         <span className="font-mono text-xs uppercase tracking-[0.3em] text-neon-cyan">
           Neon Arcade
         </span>
-        <h1 className="text-neon font-display text-6xl font-extrabold tracking-tight">
-          BOUNTY
-        </h1>
+        <h1 className="text-neon font-display text-6xl font-bold">BOUNTY</h1>
         <p className="max-w-xs text-sm text-ink-dim">
           Spend together. Track expenses, broadcast bounties, climb the
           leaderboard.
@@ -29,10 +27,6 @@ export default async function LoginPage({
       )}
 
       <GoogleButton />
-
-      <p className="font-mono text-[11px] uppercase tracking-widest text-ink-dim">
-        Phase 3 · sign in
-      </p>
     </main>
   );
 }

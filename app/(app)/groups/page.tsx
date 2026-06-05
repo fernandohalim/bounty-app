@@ -56,10 +56,10 @@ export default async function GroupsPage() {
   return (
     <main className="flex flex-col gap-6 px-5 pb-4 pt-8">
       <div className="flex items-center justify-between">
-        <h1 className="font-display text-2xl font-bold text-ink">Groups</h1>
+        <h1 className="font-display font-bold text-ink text-3xl">Groups</h1>
         <Link
           href="/groups/new"
-          className="rounded-pill bg-neon-cyan px-4 py-2 font-display font-bold text-void shadow-glow-cyan active:scale-95"
+          className="rounded-pill bg-neon-cyan px-4 py-2 font-display font-bold text-xl text-void shadow-glow-cyan active:scale-95"
         >
           + New
         </Link>
@@ -77,8 +77,8 @@ export default async function GroupsPage() {
 
       <section className="flex flex-col gap-2">
         {groups.length === 0 ? (
-          <div className="surface-card px-6 py-8 text-center text-sm text-ink-dim">
-            No groups yet. Create one or join with a code.
+          <div className="surface-card px-6 py-8 text-center text-xs font-mono text-ink-dim">
+            no groups yet. create one or join with a code.
           </div>
         ) : (
           groups.map((g) => {
@@ -104,7 +104,7 @@ export default async function GroupsPage() {
                   </div>
                   <div className="mt-0.5 flex items-center gap-2">
                     <span className="truncate font-mono text-[11px] text-ink-dim">
-                      {g.kind === "temporal" ? "Temporal ⏳" : "Permanent ♾️"}
+                      {g.kind === "temporal" ? "temporal ⏳" : "permanent ♾️"}
                       {g.expires_at && g.status === "active"
                         ? ` · ends ${new Date(g.expires_at).toLocaleDateString()}`
                         : ""}

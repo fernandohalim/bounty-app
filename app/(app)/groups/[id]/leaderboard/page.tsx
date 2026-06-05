@@ -54,10 +54,10 @@ export default async function GroupLeaderboard({
           ←
         </Link>
         <div>
-          <h1 className="font-display text-xl font-bold text-ink">
+          <h1 className="font-display text-2xl font-bold text-ink">
             {group.name}
           </h1>
-          <p className="font-mono text-[11px] text-ink-dim">
+          <p className="font-mono uppercase tracking-widest text-xs text-ink-dim">
             {group.status === "locked"
               ? "Final standings 🏁"
               : "Live standings"}
@@ -81,7 +81,7 @@ export default async function GroupLeaderboard({
             </span>
             <span className="text-2xl">{avatarEmoji(r.avatar_id)}</span>
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm text-ink">
+              <p className="truncate font-display text-ink">
                 {r.display_name} {titles(r.user_id)}
               </p>
               <p className="font-mono text-[11px] text-ink-dim">

@@ -8,16 +8,13 @@ import { formatCoins } from "@/lib/format";
 export function BudgetCard({
   spent,
   weeklyLimit,
-  shareBlowout,
 }: {
   spent: number;
   weeklyLimit: number | null;
-  shareBlowout: boolean;
 }) {
   const router = useRouter();
   const [editing, setEditing] = useState(false);
   const [digits, setDigits] = useState(weeklyLimit ? String(weeklyLimit) : "");
-  const [share, setShare] = useState(shareBlowout);
   const [busy, setBusy] = useState(false);
 
   const over = weeklyLimit != null && spent > weeklyLimit;
@@ -33,7 +30,6 @@ export function BudgetCard({
       .from("budgets")
       .update({
         weekly_limit: parseInt(digits || "0", 10) || null,
-        share_blowout: share,
         updated_at: new Date().toISOString(),
       })
       .eq("user_id", userId);
@@ -85,8 +81,7 @@ export function BudgetCard({
           <p className="text-xs text-ink-dim">one-off spending this week</p>
           {over && (
             <p className="rounded-pill bg-over/10 px-3 py-2 text-center text-sm text-over">
-              💸 Blowout! Over by 🪙{formatCoins(spent - weeklyLimit)}
-              {shareBlowout ? " · your groups know 👀" : ""}
+              💸 Blowout! Over by 🪙{formatCoins(spent - weeklyLimit)}{" "}
             </p>
           )}
         </>
@@ -102,15 +97,6 @@ export function BudgetCard({
               onChange={(e) => setDigits(e.target.value.replace(/\D/g, ""))}
               placeholder="500,000"
               className="w-32 rounded-pill border border-line bg-surface-2 px-3 py-1.5 text-right font-mono text-ink outline-none"
-            />
-          </label>
-          <label className="flex items-center justify-between text-sm text-ink-dim">
-            Share blowouts to groups
-            <input
-              type="checkbox"
-              checked={share}
-              onChange={(e) => setShare(e.target.checked)}
-              className="h-5 w-5 accent-neon-pink"
             />
           </label>
           <button

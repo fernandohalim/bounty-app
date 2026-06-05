@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { CATEGORIES, type Category } from "@/lib/categories";
+import { Toggle } from "@/components/ui/toggle";
 
 const DURATIONS = [
   { label: "1 week", days: 7 },
@@ -20,6 +21,7 @@ export default function NewGroupPage() {
   const [maxUses, setMaxUses] = useState("");
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  const [shareBlowout, setShareBlowout] = useState(false);
 
   const canCreate = name.trim().length > 0 && cats.length > 0 && !busy;
 
@@ -43,6 +45,7 @@ export default function NewGroupPage() {
       p_categories: cats,
       p_invite_max_uses: maxUses ? parseInt(maxUses, 10) : null,
       p_invite_expires_at: null,
+      p_share_blowout: shareBlowout,
     });
     if (error) {
       setErr(error.message);
@@ -122,6 +125,16 @@ export default function NewGroupPage() {
           })}
         </div>
       </div>
+
+      <label className="flex items-center justify-between rounded-pill border border-line bg-surface px-4 py-3 text-sm text-ink-dim">
+        <span className="flex flex-col">
+          <span className="text-ink">Share budget blowouts</span>
+          <span className="text-xs">
+            Members&apos; blowouts &amp; budget changes post here
+          </span>
+        </span>
+        <Toggle checked={shareBlowout} onChange={setShareBlowout} />
+      </label>
 
       <label className="flex items-center justify-between rounded-pill border border-line bg-surface px-4 py-2 text-sm text-ink-dim">
         Invite max uses (optional)

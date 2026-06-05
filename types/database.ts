@@ -41,19 +41,16 @@ export type Database = {
         Row: {
           user_id: string;
           weekly_limit: number | null;
-          share_blowout: boolean;
           updated_at: string;
         };
         Insert: {
           user_id: string;
           weekly_limit?: number | null;
-          share_blowout?: boolean;
           updated_at?: string;
         };
         Update: {
           user_id?: string;
           weekly_limit?: number | null;
-          share_blowout?: boolean;
           updated_at?: string;
         };
         Relationships: [
@@ -210,6 +207,61 @@ export type Database = {
           },
         ];
       };
+      group_invitations: {
+        Row: {
+          id: string;
+          group_id: string;
+          group_name: string;
+          inviter_id: string;
+          invitee_id: string;
+          status: Database["bounty"]["Enums"]["group_invite_status"];
+          created_at: string;
+          responded_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          group_id: string;
+          group_name: string;
+          inviter_id: string;
+          invitee_id: string;
+          status?: Database["bounty"]["Enums"]["group_invite_status"];
+          created_at?: string;
+          responded_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          group_id?: string;
+          group_name?: string;
+          inviter_id?: string;
+          invitee_id?: string;
+          status?: Database["bounty"]["Enums"]["group_invite_status"];
+          created_at?: string;
+          responded_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "group_invitations_group_id_fkey";
+            columns: ["group_id"];
+            isOneToOne: false;
+            referencedRelation: "groups";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "group_invitations_inviter_id_fkey";
+            columns: ["inviter_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "group_invitations_invitee_id_fkey";
+            columns: ["invitee_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       group_listened_categories: {
         Row: {
           group_id: string;
@@ -341,6 +393,7 @@ export type Database = {
           final_leaderboard: Json | null;
           locked_at: string | null;
           created_at: string;
+          share_blowout: boolean;
         };
         Insert: {
           id?: string;
@@ -352,6 +405,7 @@ export type Database = {
           final_leaderboard?: Json | null;
           locked_at?: string | null;
           created_at?: string;
+          share_blowout?: boolean
         };
         Update: {
           id?: string;
@@ -363,6 +417,7 @@ export type Database = {
           final_leaderboard?: Json | null;
           locked_at?: string | null;
           created_at?: string;
+          share_blowout?: boolean
         };
         Relationships: [
           {
@@ -637,10 +692,6 @@ export type Database = {
         };
         Returns: undefined;
       };
-      add_friend_to_group: {
-        Args: { p_group: string; p_friend: string };
-        Returns: undefined;
-      };
       has_friendship: {
         Args: { p_other: string };
         Returns: boolean;
@@ -665,6 +716,7 @@ export type Database = {
           p_categories: Database["bounty"]["Enums"]["expense_category"][];
           p_invite_max_uses?: number | null;
           p_invite_expires_at?: string | null;
+          p_share_blowout?: boolean;
         };
         Returns: string;
       };
@@ -687,10 +739,12 @@ export type Database = {
         Args: { p_group: string };
         Returns: boolean;
       };
+      invite_to_group: { Args: { p_group: string; p_friend: string }; Returns: undefined };
       join_group_with_code: {
         Args: { p_code: string };
         Returns: string;
       };
+      kick_member: { Args: { p_group: string; p_user: string }; Returns: undefined }
       level_for_xp: {
         Args: { p_xp: number };
         Returns: number;
@@ -711,6 +765,7 @@ export type Database = {
         Args: { p_request: string; p_accept: boolean };
         Returns: undefined;
       };
+      respond_group_invite: { Args: { p_invite: string; p_accept: boolean }; Returns: string }
       send_friend_request: {
         Args: { p_identifier: string };
         Returns: string;
@@ -719,6 +774,7 @@ export type Database = {
         Args: { p_other: string };
         Returns: boolean;
       };
+      transfer_ownership: { Args: { p_group: string; p_new_owner: string }; Returns: undefined }
     };
     Enums: {
       expense_category:
@@ -736,9 +792,10 @@ export type Database = {
       group_kind: "permanent" | "temporal";
       group_status: "active" | "locked";
       member_role: "owner" | "member";
-      message_type: "bounty_card" | "budget_blowout" | "system";
+      message_type: "bounty_card" | "budget_blowout" | "system" | "limit_change";
       reaction_type: "fire" | "skull" | "coin_shower" | "clown" | "eyes" | "crown";
       recurrence: "weekly" | "monthly";
+      group_invite_status: "pending" | "accepted" | "declined"
     };
     CompositeTypes: {
       [_ in never]: never;
@@ -779,9 +836,10 @@ export const Constants = {
       group_kind: ["permanent", "temporal"],
       group_status: ["active", "locked"],
       member_role: ["owner", "member"],
-      message_type: ["bounty_card", "budget_blowout", "system"],
+      message_type: ["bounty_card", "budget_blowout", "system", "limit_change"],
       reaction_type: ["fire", "skull", "coin_shower", "clown", "eyes", "crown"],
       recurrence: ["weekly", "monthly"],
+      group_invite_status: ["pending","accepted","declined"],
     },
   },
 } as const;

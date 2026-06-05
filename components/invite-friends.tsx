@@ -25,7 +25,7 @@ export function InviteFriends({
   async function add(fid: string) {
     setBusy(fid);
     const supabase = createClient();
-    await supabase.rpc("add_friend_to_group", {
+    await supabase.rpc("invite_to_group", {
       p_group: groupId,
       p_friend: fid,
     });
@@ -37,7 +37,7 @@ export function InviteFriends({
   return (
     <section className="flex flex-col gap-2">
       <h2 className="font-mono text-xs uppercase tracking-widest text-ink-dim">
-        Add friends
+        Invite friends
       </h2>
       {friends.map((f) => (
         <div
@@ -54,7 +54,7 @@ export function InviteFriends({
             disabled={busy === f.id}
             className="rounded-pill bg-neon-cyan px-3 py-1.5 text-xs font-bold text-void active:scale-95 disabled:opacity-50"
           >
-            {busy === f.id ? "…" : "Add"}
+            {busy === f.id ? "…" : "Invite"}
           </button>
         </div>
       ))}

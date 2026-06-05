@@ -238,6 +238,12 @@ export function GroupFeed({
                     <span className="text-over">{who ?? "Someone"}</span>{" "}
                     {msg.body}
                   </>
+                ) : msg.type === "limit_change" ? (
+                  <>
+                    <span className="text-neon-cyan">{who ?? "Someone"}</span>{" "}
+                    {msg.body} 🪙
+                    {formatCoins(msg.amount ?? 0)}
+                  </>
                 ) : (
                   msg.body
                 )}

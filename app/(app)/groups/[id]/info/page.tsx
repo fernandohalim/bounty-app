@@ -7,6 +7,7 @@ import { InviteFriends } from "@/components/invite-friends";
 import { GroupActions } from "@/components/group-actions";
 import { getUserId } from "@/lib/supabase/user";
 import { InviteCode } from "@/components/invite-code";
+import { GroupMembersList } from "@/components/group-members-list";
 
 function Row({
   label,
@@ -40,7 +41,9 @@ export default async function GroupInfo({
 
   const { data: group } = await supabase
     .from("groups")
-    .select("id, name, kind, status, expires_at, owner_id, created_at")
+    .select(
+      "id, name, kind, status, expires_at, owner_id, created_at, share_blowout",
+    )
     .eq("id", id)
     .maybeSingle();
   if (!group) redirect("/groups");
@@ -63,6 +66,12 @@ export default async function GroupInfo({
     .eq("group_id", id)
     .limit(1)
     .maybeSingle();
+
+  const { data: pendingInv } = await supabase
+    .from("group_invitations")
+    .select("invitee_id")
+    .eq("group_id", id)
+    .eq("status", "pending");
 
   const { data: fr } = await supabase
     .from("friendships")
@@ -93,12 +102,22 @@ export default async function GroupInfo({
   };
 
   const memberRows = (members ?? []) as unknown as MemberRow[];
+  const flatMembers = memberRows.map((m) => ({
+    user_id: m.user_id,
+    role: m.role,
+    display_name: m.profile.display_name,
+    avatar_id: m.profile.avatar_id,
+    username: m.profile.username,
+    level: m.profile.level,
+  }));
   const memberIds = new Set(memberRows.map((m) => m.user_id));
   const friends = ((fr ?? []) as unknown as FrRow[]).map((r) =>
     r.requester_id === userId ? r.addressee : r.requester,
   );
-  const invitable = friends.filter((f) => !memberIds.has(f.id));
-
+  const pendingIds = new Set((pendingInv ?? []).map((p) => p.invitee_id));
+  const invitable = friends.filter(
+    (f) => !memberIds.has(f.id) && !pendingIds.has(f.id),
+  );
   const isOwner = group.owner_id === userId;
   const isActive = group.status === "active";
 
@@ -133,6 +152,10 @@ export default async function GroupInfo({
           />
         )}
         <Row label="Status" value={isActive ? "Active" : "Locked 🏁"} />
+        <Row
+          label="Shared blowouts"
+          value={group.share_blowout ? "On 👀" : "Off"}
+        />
         {invite && isActive && (
           <div className="flex justify-between">
             <span className="text-ink-dim">Invite code</span>
@@ -154,35 +177,7 @@ export default async function GroupInfo({
         </div>
       </section>
 
-      <section className="flex flex-col gap-2">
-        <h2 className="font-mono text-xs uppercase tracking-widest text-ink-dim">
-          Members · {memberRows.length}
-        </h2>
-        {memberRows.map((m) => (
-          <div
-            key={m.user_id}
-            className="surface-card flex items-center gap-3 px-4 py-3"
-          >
-            <span className="text-2xl">{avatarEmoji(m.profile.avatar_id)}</span>
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-sm text-ink">
-                {m.profile.display_name}
-              </p>
-              <p className="font-mono text-xs text-ink-dim">
-                @{m.profile.username}
-              </p>
-            </div>
-            {m.role === "owner" && (
-              <span className="rounded-pill bg-gold/15 px-2 py-0.5 font-mono text-[10px] text-gold">
-                owner
-              </span>
-            )}
-            <span className="rounded-pill bg-neon-cyan/10 px-2 py-0.5 font-mono text-xs text-neon-cyan">
-              LVL {m.profile.level}
-            </span>
-          </div>
-        ))}
-      </section>
+      <GroupMembersList groupId={id} members={flatMembers} isOwner={isOwner} />
 
       {isActive && <InviteFriends groupId={id} friends={invitable} />}
 

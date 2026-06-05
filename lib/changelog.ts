@@ -10,6 +10,19 @@ export type Release = {
 
 export const releases: Release[] = [
   {
+    version: "1.5.0",
+    date: "June 2026",
+    title: "Groups, fair & in your control 🤝",
+    badge: "feature",
+    features: [
+      "Inviting a friend to a group now sends them a request they accept or decline — no more being added without a say. Pending invites show at the top of your Groups list",
+      "Group owners can remove a member, or hand ownership to someone else, right from the group info page",
+      "Shared blowouts are now a group setting chosen when you create it — turn it on and every member's budget busts (and budget changes) post to that group's feed, keeping it fair for everyone",
+      "Changing your weekly budget now announces the new limit to any group you're in that shares blowouts",
+      "Retired the personal 'share blowouts' switch — it lives at the group level now",
+    ],
+  },
+  {
     version: "1.4.1",
     date: "June 2026",
     title: "Edits that actually stick 🔧",

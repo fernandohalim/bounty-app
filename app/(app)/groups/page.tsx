@@ -3,11 +3,22 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { JoinGroup } from "@/components/join-group";
 import { getUserId } from "@/lib/supabase/user";
+import { GroupInvites } from "@/components/group-invites";
 
 export default async function GroupsPage() {
   const supabase = await createClient();
   const userId = await getUserId();
   if (!userId) redirect("/login");
+
+  const { data: invites } = await supabase
+    .from("group_invitations")
+    .select(
+      `id, group_name,
+     inviter:profiles!group_invitations_inviter_id_fkey(display_name, avatar_id, username)`,
+    )
+    .eq("invitee_id", userId)
+    .eq("status", "pending")
+    .order("created_at", { ascending: false });
 
   const { data: memberships } = await supabase
     .from("group_members")
@@ -53,6 +64,14 @@ export default async function GroupsPage() {
           + New
         </Link>
       </div>
+
+      {invites && invites.length > 0 && (
+        <GroupInvites
+          invites={
+            invites as unknown as Parameters<typeof GroupInvites>[0]["invites"]
+          }
+        />
+      )}
 
       <JoinGroup />
 

@@ -31,7 +31,7 @@ export default async function Dashboard() {
 
   const { data: budget } = await supabase
     .from("budgets")
-    .select("weekly_limit, share_blowout")
+    .select("weekly_limit")
     .eq("user_id", userId)
     .maybeSingle();
 
@@ -159,7 +159,6 @@ export default async function Dashboard() {
       <BudgetCard
         spent={weekOneOff}
         weeklyLimit={budget?.weekly_limit ?? null}
-        shareBlowout={budget?.share_blowout ?? false}
       />
 
       <section className="surface-card flex flex-col gap-4 p-5">

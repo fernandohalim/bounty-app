@@ -7,17 +7,9 @@ import { SignOutButton } from "@/components/sign-out-button";
 import { EditProfile } from "@/components/edit-profile";
 import { getUserId } from "@/lib/supabase/user";
 import { AboutButton } from "@/components/about-button";
-
-function Stat({ label, value }: { label: string; value: React.ReactNode }) {
-  return (
-    <div className="surface-card flex flex-col items-center gap-1 py-4">
-      <span className="font-mono text-xl font-bold text-ink">{value}</span>
-      <span className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">
-        {label}
-      </span>
-    </div>
-  );
-}
+import { Stat } from "@/components/ui/stat";
+import { Eyebrow } from "@/components/ui/eyebrow";
+import { NavRow } from "@/components/ui/nav-row";
 
 export default async function Profile() {
   const supabase = await createClient();
@@ -64,7 +56,7 @@ export default async function Profile() {
           level={p?.level ?? 1}
         />
         <div>
-          <h1 className="font-display text-2xl font-bold text-ink">
+          <h1 className="font-display text-3xl font-bold text-ink">
             {p?.display_name}
           </h1>
           <p className="font-mono text-sm text-ink-dim">@{p?.username}</p>
@@ -91,21 +83,14 @@ export default async function Profile() {
         <Stat label="Friends" value={friends ?? 0} />
       </div>
 
-      <Link
-        href="/friends"
-        className="rounded-pill border border-line bg-surface-2 py-3 text-center font-semibold text-ink active:scale-95"
-      >
-        Friends &amp; requests →
-      </Link>
+      <NavRow href="/friends">Friends &amp; requests →</NavRow>
 
       <p className="text-center font-mono text-xs text-ink-dim">
         joined{" "}
         {p?.created_at ? new Date(p.created_at).toLocaleDateString() : "—"}
       </p>
       <section className="flex flex-col gap-2">
-        <h2 className="font-mono text-xs uppercase tracking-widest text-gold">
-          🏆 Trophy room · {trophies?.length ?? 0}
-        </h2>
+        <Eyebrow tone="gold">🏆 Trophy room · {trophies?.length ?? 0}</Eyebrow>
         {!trophies || trophies.length === 0 ? (
           <div className="surface-card px-6 py-6 text-center text-sm text-ink-dim">
             No trophies yet. Win a temporal group to earn titles!
@@ -132,12 +117,7 @@ export default async function Profile() {
           </div>
         )}
       </section>
-      <Link
-        href="/settings"
-        className="rounded-pill border border-line bg-surface-2 py-3 text-center font-semibold text-ink active:scale-95"
-      >
-        ⚙️ Notification settings
-      </Link>
+      <NavRow href="/settings">⚙️ Notification settings</NavRow>
       <AboutButton />
       <SignOutButton />
     </main>

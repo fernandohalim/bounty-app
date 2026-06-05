@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { avatarEmoji } from "@/lib/avatars";
+import { Button } from "./ui/button";
+import { Eyebrow } from "./ui/eyebrow";
 
 type Friend = {
   id: string;
@@ -36,9 +38,7 @@ export function InviteFriends({
 
   return (
     <section className="flex flex-col gap-2">
-      <h2 className="font-mono text-xs uppercase tracking-widest text-ink-dim">
-        Invite friends
-      </h2>
+      <Eyebrow>Invite friends</Eyebrow>
       {friends.map((f) => (
         <div
           key={f.id}
@@ -49,13 +49,14 @@ export function InviteFriends({
             <p className="truncate text-sm text-ink">{f.display_name}</p>
             <p className="font-mono text-xs text-ink-dim">@{f.username}</p>
           </div>
-          <button
+          <Button
+            variant="accent"
+            size="sm"
+            busy={busy === f.id}
             onClick={() => add(f.id)}
-            disabled={busy === f.id}
-            className="rounded-pill bg-neon-cyan px-3 py-1.5 text-xs font-bold text-void active:scale-95 disabled:opacity-50"
           >
             {busy === f.id ? "…" : "Invite"}
-          </button>
+          </Button>
         </div>
       ))}
     </section>

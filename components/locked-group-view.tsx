@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { avatarEmoji } from "@/lib/avatars";
 import { formatCoins } from "@/lib/format";
+import { Eyebrow } from "./ui/eyebrow";
 
 type Rank = {
   user_id: string;
@@ -52,7 +53,7 @@ export function LockedGroupView({
           ←
         </Link>
         <div>
-          <h1 className="font-display text-xl font-bold text-ink">
+          <h1 className="font-display text-2xl font-bold text-ink">
             {groupName}
           </h1>
           <p className="font-mono text-[11px] text-gold">
@@ -87,9 +88,7 @@ export function LockedGroupView({
       </section>
 
       <section className="flex flex-col gap-2">
-        <h2 className="font-mono text-xs uppercase tracking-widest text-ink-dim">
-          Final standings
-        </h2>
+        <Eyebrow>Final standings</Eyebrow>
         {ranking.length === 0 && (
           <div className="surface-card px-6 py-8 text-center text-sm text-ink-dim">
             No spending was tracked.

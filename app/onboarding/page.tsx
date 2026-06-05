@@ -4,6 +4,10 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { STARTER_AVATARS, avatarEmoji } from "@/lib/avatars";
+import { TextInput } from "@/components/ui/text-input";
+import { Button } from "@/components/ui/button";
+import { Eyebrow } from "@/components/ui/eyebrow";
+import { Select } from "@/components/ui/select";
 
 const TIMEZONES = [
   "Asia/Jakarta",
@@ -82,9 +86,9 @@ export default function OnboardingPage() {
       <div className="surface-card flex flex-col gap-5 p-6">
         {/* avatar */}
         <div>
-          <label className="mb-2 block font-mono text-xs uppercase tracking-widest text-ink-dim">
+          <Eyebrow as="label" className="mb-2 block">
             Avatar
-          </label>
+          </Eyebrow>
           <div className="flex gap-3">
             {STARTER_AVATARS.map((id) => (
               <button
@@ -104,9 +108,9 @@ export default function OnboardingPage() {
 
         {/* username */}
         <div>
-          <label className="mb-2 block font-mono text-xs uppercase tracking-widest text-ink-dim">
+          <Eyebrow as="label" className="mb-2 block">
             Username · permanent
-          </label>
+          </Eyebrow>
           <div className="flex items-center rounded-pill border border-line bg-surface-2 px-4">
             <span className="text-ink-dim">@</span>
             <input
@@ -126,46 +130,44 @@ export default function OnboardingPage() {
 
         {/* display name */}
         <div>
-          <label className="mb-2 block font-mono text-xs uppercase tracking-widest text-ink-dim">
+          <Eyebrow as="label" className="mb-2 block">
             Display name · changeable
-          </label>
-          <input
+          </Eyebrow>
+          <TextInput
             value={display}
             onChange={(e) => setDisplay(e.target.value)}
             placeholder="Coin Slayer"
             maxLength={30}
-            className="w-full rounded-pill border border-line bg-surface-2 px-4 py-2.5 text-ink outline-none placeholder:text-ink-dim/50"
           />
         </div>
 
         {/* timezone */}
         <div>
-          <label className="mb-2 block font-mono text-xs uppercase tracking-widest text-ink-dim">
+          <Eyebrow as="label" className="mb-2 block">
             Timezone · for streaks
-          </label>
-          <select
+          </Eyebrow>
+          <Select
             value={timezone}
-            onChange={(e) => setTimezone(e.target.value)}
-            className="w-full rounded-pill border border-line bg-surface-2 px-4 py-2.5 text-ink outline-none"
-          >
-            {tzOptions.map((tz) => (
-              <option key={tz} value={tz} className="bg-surface">
-                {tz}
-              </option>
-            ))}
-          </select>
+            options={tzOptions.map((tz) => ({ id: tz, label: tz }))}
+            onChange={setTimezone}
+            tone="surface2"
+            size="md"
+            fullWidth
+          />
         </div>
       </div>
 
       {err && <p className="text-center text-sm text-over">{err}</p>}
 
-      <button
-        onClick={submit}
+      <Button
+        variant="primary"
+        busy={submitting}
         disabled={!canSubmit}
-        className="rounded-pill bg-neon-lime px-6 py-3.5 font-display font-bold text-void shadow-glow-lime transition active:scale-95 disabled:opacity-40 disabled:shadow-none"
+        fullWidth
+        onClick={submit}
       >
         {submitting ? "Creating…" : "Enter the arcade →"}
-      </button>
+      </Button>
     </main>
   );
 }

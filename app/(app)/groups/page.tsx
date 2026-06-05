@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { JoinGroup } from "@/components/join-group";
 import { getUserId } from "@/lib/supabase/user";
 import { GroupInvites } from "@/components/group-invites";
+import { LinkButton } from "@/components/ui/link-button";
 
 export default async function GroupsPage() {
   const supabase = await createClient();
@@ -57,12 +58,9 @@ export default async function GroupsPage() {
     <main className="flex flex-col gap-6 px-5 pb-4 pt-8">
       <div className="flex items-center justify-between">
         <h1 className="font-display font-bold text-ink text-3xl">Groups</h1>
-        <Link
-          href="/groups/new"
-          className="rounded-pill bg-neon-cyan px-4 py-2 font-display font-bold text-xl text-void shadow-glow-cyan active:scale-95"
-        >
+        <LinkButton href="/groups/new" variant="accent">
           + New
-        </Link>
+        </LinkButton>
       </div>
 
       {invites && invites.length > 0 && (

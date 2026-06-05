@@ -10,6 +10,18 @@ export type Release = {
 
 export const releases: Release[] = [
   {
+    version: "1.6",
+    date: "June 2026",
+    title: "A sharper, pixel-perfect Bounty 🎨",
+    badge: "feature",
+    features: [
+      "A brand-new pixel-art typeface across every heading — the BOUNTY wordmark and page titles now carry a proper arcade-cabinet look",
+      "A top-to-bottom pass on text sizes, spacing and alignment — the little inconsistencies that made screens feel slightly off are gone, so the whole app reads as one cohesive game",
+      "Dropdowns and pickers ditched their clunky scrollbars — they still scroll, the bar just stays out of the way now",
+      "Rebuilt a chunk of the app's plumbing behind the scenes — shared bits of UI now live in reusable components, so new features land faster and with fewer bugs from here on",
+    ],
+  },
+  {
     version: "1.5.1",
     date: "June 2026",
     title: "Budget changes ping the group 🔔",

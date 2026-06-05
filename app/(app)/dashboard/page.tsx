@@ -16,6 +16,9 @@ import { CategoryChart } from "@/components/category-chart";
 import { InteractiveHeatmap } from "@/components/interactive-heatmap";
 import { BudgetCard } from "@/components/budget-card";
 import { getUserId } from "@/lib/supabase/user";
+import { Stat } from "@/components/ui/stat";
+import { Eyebrow } from "@/components/ui/eyebrow";
+import { LinkButton } from "@/components/ui/link-button";
 
 export default async function Dashboard() {
   const supabase = await createClient();
@@ -108,10 +111,8 @@ export default async function Dashboard() {
             {avatarEmoji(profile?.avatar_id)}
           </span>
           <div>
-            <p className="font-mono text-xs uppercase tracking-widest text-ink-dim">
-              WELCOME BACK
-            </p>
-            <h1 className="font-display text-2xl font-bold text-ink">
+            <Eyebrow as="p">WELCOME BACK</Eyebrow>
+            <h1 className="font-display text-3xl font-bold text-ink">
               {profile?.display_name}
             </h1>
           </div>
@@ -149,12 +150,9 @@ export default async function Dashboard() {
                 : `${todayCount} ${todayCount === 1 ? "expense" : "expenses"} today`}
             </span>
           </div>
-          <Link
-            href="/expenses"
-            className="rounded-pill border border-line bg-surface-2 px-3 py-1.5 font-mono text-xs text-neon-cyan active:scale-95"
-          >
+          <LinkButton href="/expenses" variant="chip" size="sm">
             history
-          </Link>
+          </LinkButton>
         </div>
 
         {recent.length > 0 && <RecentExpenses expenses={recent} />}
@@ -188,24 +186,5 @@ export default async function Dashboard() {
         <InteractiveHeatmap weeks={weeks} />
       </section>
     </main>
-  );
-}
-
-function Stat({
-  label,
-  value,
-  accent,
-}: {
-  label: string;
-  value: React.ReactNode;
-  accent: string;
-}) {
-  return (
-    <div className="surface-card flex flex-col items-center gap-1 py-4">
-      <span className={`font-mono text-xl font-bold ${accent}`}>{value}</span>
-      <span className="font-mono text-xs uppercase tracking-widest text-ink-dim">
-        {label}
-      </span>
-    </div>
   );
 }

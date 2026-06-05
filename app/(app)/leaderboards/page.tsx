@@ -47,7 +47,7 @@ export default async function LeaderboardsPage() {
   return (
     <main className="flex flex-col gap-4 px-5 pb-4 pt-8">
       <div>
-        <h1 className="font-display text-2xl font-bold text-ink">
+        <h1 className="font-display text-3xl font-bold text-ink">
           Leaderboard
         </h1>
         <p className="font-mono text-xs text-ink-dim">

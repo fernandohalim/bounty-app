@@ -2,17 +2,13 @@
 
 import { useState } from "react";
 import { AboutModal } from "@/components/about-modal";
+import { NavRow } from "./ui/nav-row";
 
 export function AboutButton() {
   const [open, setOpen] = useState(false);
   return (
     <>
-      <button
-        onClick={() => setOpen(true)}
-        className="rounded-pill border border-line bg-surface-2 py-3 text-center font-semibold text-ink active:scale-95"
-      >
-        ℹ️ About Bounty
-      </button>
+      <NavRow onClick={() => setOpen(true)}>ℹ️ About Bounty</NavRow>
       <AboutModal isOpen={open} onClose={() => setOpen(false)} />
     </>
   );

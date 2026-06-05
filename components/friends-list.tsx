@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { avatarEmoji } from "@/lib/avatars";
 import { ProfileView } from "@/components/profile-view";
+import { Eyebrow } from "./ui/eyebrow";
 
 type Prof = {
   id: string;
@@ -29,9 +30,7 @@ export function FriendsList({ friends }: { friends: Friend[] }) {
 
   return (
     <section className="flex flex-col gap-2">
-      <h2 className="font-mono text-xs uppercase tracking-widest text-ink-dim">
-        Friends · {friends.length}
-      </h2>
+      <Eyebrow>Friends · {friends.length}</Eyebrow>
       {friends.length === 0 ? (
         <div className="surface-card px-6 py-8 text-center text-sm text-ink-dim">
           No friends yet. Add someone above!

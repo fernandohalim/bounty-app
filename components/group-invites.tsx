@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { avatarEmoji } from "@/lib/avatars";
+import { Button } from "./ui/button";
+import { Eyebrow } from "./ui/eyebrow";
 
 type Invite = {
   id: string;
@@ -36,9 +38,7 @@ export function GroupInvites({ invites }: { invites: Invite[] }) {
 
   return (
     <section className="flex flex-col gap-2">
-      <h2 className="font-mono text-xs uppercase tracking-widest text-neon-pink">
-        Group invites · {invites.length}
-      </h2>
+      <Eyebrow tone="pink">Group invites · {invites.length}</Eyebrow>
       {invites.map((inv) => (
         <div
           key={inv.id}
@@ -53,20 +53,22 @@ export function GroupInvites({ invites }: { invites: Invite[] }) {
               from {inv.inviter?.display_name ?? "someone"}
             </p>
           </div>
-          <button
+          <Button
+            variant="primary"
+            size="sm"
+            busy={busy === inv.id}
             onClick={() => respond(inv.id, true)}
-            disabled={busy === inv.id}
-            className="rounded-pill bg-neon-lime px-3 py-1.5 text-xs font-mono font-bold text-void active:scale-95 disabled:opacity-50"
           >
             join
-          </button>
-          <button
+          </Button>
+          <Button
+            variant="danger"
+            size="sm"
+            busy={busy === inv.id}
             onClick={() => respond(inv.id, false)}
-            disabled={busy === inv.id}
-            className="rounded-pill border border-over/40 px-3 py-1.5 text-xs font-bold font-mono text-over active:scale-95 disabled:opacity-50"
           >
             ✕
-          </button>
+          </Button>
         </div>
       ))}
     </section>

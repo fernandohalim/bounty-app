@@ -1,5 +1,7 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+
 export default function AppError({
   reset,
 }: {
@@ -15,12 +17,9 @@ export default function AppError({
       <p className="max-w-xs text-sm text-ink-dim">
         That screen failed to load. It&apos;s usually a hiccup — try again.
       </p>
-      <button
-        onClick={reset}
-        className="rounded-pill bg-neon-cyan px-6 py-3 font-display font-bold text-void shadow-glow-cyan active:scale-95"
-      >
+      <Button variant="accent" onClick={reset}>
         Retry
-      </button>
+      </Button>
     </main>
   );
 }

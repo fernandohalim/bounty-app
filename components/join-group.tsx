@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { Button } from "./ui/button";
+import { TextInput } from "./ui/text-input";
 
 export function JoinGroup() {
   const router = useRouter();
@@ -30,19 +32,23 @@ export function JoinGroup() {
   return (
     <div className="flex flex-col gap-1">
       <div className="flex gap-2">
-        <input
+        <TextInput
           value={code}
           onChange={(e) => setCode(e.target.value.toUpperCase())}
           placeholder="invite code"
-          className="flex-1 rounded-pill border border-line bg-surface-2 px-4 py-2 font-mono text-xs tracking-widest text-ink outline-none placeholder:text-ink-dim/40"
+          mono
+          size="sm"
+          className="flex-1 tracking-widest"
         />
-        <button
+        <Button
+          variant="primary"
+          size="sm"
+          busy={busy}
+          disabled={!code.trim()}
           onClick={join}
-          disabled={busy || !code.trim()}
-          className="rounded-pill border border-neon-lime/50 px-4 py-2 font-bold font-mono text-xs text-neon-lime active:scale-95 disabled:opacity-40"
         >
           join
-        </button>
+        </Button>
       </div>
       {err && <p className="text-sm text-over">{err}</p>}
     </div>

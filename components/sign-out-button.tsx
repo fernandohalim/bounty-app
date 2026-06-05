@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { Button } from "./ui/button";
 
 export function SignOutButton() {
   const router = useRouter();
@@ -14,11 +15,8 @@ export function SignOutButton() {
   }
 
   return (
-    <button
-      onClick={signOut}
-      className="rounded-pill border border-over/40 bg-over/10 px-6 py-3 font-semibold text-over transition active:scale-95"
-    >
+    <Button variant="danger" fullWidth onClick={signOut}>
       Sign out
-    </button>
+    </Button>
   );
 }

@@ -7,14 +7,13 @@ import {
   ExpenseDetailModal,
   type Expense,
 } from "@/components/expense-detail-modal";
+import { Eyebrow } from "./ui/eyebrow";
 
 export function RecentExpenses({ expenses }: { expenses: Expense[] }) {
   const [selected, setSelected] = useState<Expense | null>(null);
   return (
     <div className="flex flex-col gap-3 border-t border-line pt-3">
-      <span className="font-mono text-xs uppercase tracking-widest text-ink-dim">
-        Recent
-      </span>
+      <Eyebrow as="span">Recent</Eyebrow>
       {expenses.map((e) => {
         const m = categoryMeta(e.category as Category);
         return (

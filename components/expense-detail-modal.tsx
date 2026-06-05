@@ -7,6 +7,9 @@ import { categoryMeta, type Category } from "@/lib/categories";
 import { formatCoins } from "@/lib/format";
 import { CategorySelect } from "@/components/ui/category-select";
 import { DateTimePicker } from "@/components/ui/datetime-picker";
+import { Modal } from "./ui/modal";
+import { Button } from "./ui/button";
+import { TextInput } from "./ui/text-input";
 
 export type Expense = {
   id: string;
@@ -84,7 +87,7 @@ export function ExpenseDetailModal({
         className="absolute inset-0 bg-void/70 backdrop-blur-sm"
         onClick={onClose}
       />
-      <div className="animate-pop-in relative z-10 w-full max-w-md rounded-t-card border border-line bg-surface p-5 sm:rounded-card">
+      <Modal onClose={onClose}>
         {!editing ? (
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
@@ -113,34 +116,36 @@ export function ExpenseDetailModal({
               )}
             </div>
             <div className="flex gap-2">
-              <button
+              <Button
+                variant="accent"
+                className="flex-1"
                 onClick={() => setEditing(true)}
-                className="flex-1 rounded-pill bg-neon-cyan py-2.5 font-display font-bold text-xl text-void shadow-glow-cyan active:scale-95 disabled:opacity-50"
               >
                 Edit
-              </button>
-              <button
-                onClick={() => setConfirmDel(true)}
-                className="rounded-pill border border-over/40 bg-over/10 px-4 py-2.5 text-xl font-display font-bold text-over active:scale-95"
-              >
+              </Button>
+              <Button variant="danger" onClick={() => setConfirmDel(true)}>
                 Delete
-              </button>
+              </Button>
             </div>
             {confirmDel && (
               <div className="flex gap-2">
-                <button
+                <Button
+                  variant="danger"
+                  size="sm"
+                  busy={busy}
+                  className="flex-1"
                   onClick={remove}
-                  disabled={busy}
-                  className="flex-1 rounded-pill border border-line bg-surface-2 px-3 py-1.5 font-mono text-xs text-neon-cyan active:scale-95"
                 >
                   yes, delete
-                </button>
-                <button
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="flex-1"
                   onClick={() => setConfirmDel(false)}
-                  className="flex-1 rounded-pill border border-line bg-surface-2 px-3 py-1.5 font-mono text-xs text-neon-cyan active:scale-95"
                 >
                   cancel
-                </button>
+                </Button>
               </div>
             )}
           </div>
@@ -156,12 +161,11 @@ export function ExpenseDetailModal({
               />
             </div>
             <CategorySelect value={category} onChange={setCategory} />
-            <input
+            <TextInput
               value={note}
               onChange={(e) => setNote(e.target.value)}
               placeholder="Note"
               maxLength={140}
-              className="rounded-pill border border-line bg-surface px-4 py-2.5 text-ink outline-none placeholder:text-ink-dim/50"
             />
             <DateTimePicker
               value={when}
@@ -171,23 +175,22 @@ export function ExpenseDetailModal({
             />
             {err && <p className="text-center text-sm text-over">{err}</p>}
             <div className="flex gap-2">
-              <button
+              <Button
+                variant="primary"
+                busy={busy}
+                disabled={amount <= 0}
+                className="flex-1"
                 onClick={save}
-                disabled={busy || amount <= 0}
-                className="flex-1 rounded-pill bg-neon-lime py-2.5 font-display font-bold text-void shadow-glow-lime active:scale-95 disabled:opacity-40"
               >
                 Save
-              </button>
-              <button
-                onClick={() => setEditing(false)}
-                className="rounded-pill border border-line px-4 py-2.5 text-ink"
-              >
+              </Button>
+              <Button variant="ghost" onClick={() => setEditing(false)}>
                 Back
-              </button>
+              </Button>
             </div>
           </div>
         )}
-      </div>
+      </Modal>
     </div>
   );
 }

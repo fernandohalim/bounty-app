@@ -5,6 +5,7 @@ import { AddFriend } from "@/components/add-friend";
 import { IncomingRequests } from "@/components/incoming-requests";
 import { getUserId } from "@/lib/supabase/user";
 import { FriendsList } from "@/components/friends-list";
+import { Eyebrow } from "@/components/ui/eyebrow";
 
 type Prof = {
   id: string;
@@ -67,9 +68,7 @@ export default async function FriendsPage() {
 
       {outgoing.length > 0 && (
         <section className="flex flex-col gap-2">
-          <h2 className="font-mono text-xs uppercase tracking-widest text-ink-dim">
-            Sent · {outgoing.length}
-          </h2>
+          <Eyebrow>Sent · {outgoing.length}</Eyebrow>
           {outgoing.map((o) => (
             <div
               key={o.id}

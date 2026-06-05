@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { enablePush, isPushEnabled, pushSupported } from "@/lib/push";
 import { Toggle } from "./ui/toggle";
+import { Button } from "./ui/button";
+import { Eyebrow } from "./ui/eyebrow";
 
 type Settings = {
   on_bounty_card: boolean;
@@ -88,7 +90,7 @@ export function NotificationSettings({ initial }: { initial: Settings }) {
     <div className="flex flex-col gap-5">
       <section className="surface-card flex flex-col gap-3 p-5">
         <div className="flex items-center justify-between">
-          <h2 className="font-display font-bold text-ink">
+          <h2 className="font-display font-bold text-ink text-xl">
             Push on this device
           </h2>
           <span
@@ -107,21 +109,15 @@ export function NotificationSettings({ initial }: { initial: Settings }) {
             You&apos;ll get notifications here. Toggle categories below.
           </p>
         ) : (
-          <button
-            onClick={turnOnPush}
-            disabled={busy}
-            className="rounded-pill bg-neon-cyan py-3 font-display font-bold text-void shadow-glow-cyan active:scale-95 disabled:opacity-50"
-          >
+          <Button variant="accent" busy={busy} fullWidth onClick={turnOnPush}>
             {busy ? "Enabling…" : "Enable push notifications"}
-          </button>
+          </Button>
         )}
         {msg && <p className="text-center text-sm text-ink-dim">{msg}</p>}
       </section>
 
       <section className="flex flex-col gap-2">
-        <h2 className="font-mono text-xs uppercase tracking-widest text-ink-dim">
-          What to notify
-        </h2>
+        <Eyebrow>What to notify</Eyebrow>
         {TOGGLES.map((t) => (
           <label
             key={t.key}

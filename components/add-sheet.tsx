@@ -8,6 +8,10 @@ import { formatCoins } from "@/lib/format";
 import { enqueue } from "@/lib/offline-queue";
 import { CategorySelect } from "@/components/ui/category-select";
 import { DateTimePicker } from "@/components/ui/datetime-picker";
+import { IconButton } from "./ui/button";
+import { TextInput } from "./ui/text-input";
+import { Button } from "./ui/button";
+import { SegmentedToggle } from "./ui/segmented-toggle";
 
 type Mode = "oneoff" | "recurring";
 const KEYS = ["7", "8", "9", "4", "5", "6", "1", "2", "3", "000", "0", "del"];
@@ -168,23 +172,15 @@ function Sheet({ show, onClose }: { show: boolean; onClose: () => void }) {
       >
         {/* header */}
         <div className="flex items-center justify-between px-5 pt-5">
-          <button
-            onClick={onClose}
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-line bg-surface-2 text-lg text-ink-dim active:scale-90"
-          >
-            ×
-          </button>
-          <div className="flex rounded-pill border border-line bg-surface p-1">
-            {(["oneoff", "recurring"] as Mode[]).map((m) => (
-              <button
-                key={m}
-                onClick={() => setMode(m)}
-                className={`rounded-pill px-4 py-1.5 text-xs font-mono transition ${mode === m ? "bg-neon-cyan text-void" : "text-ink-dim"}`}
-              >
-                {m === "oneoff" ? "one-off" : "recurring"}
-              </button>
-            ))}
-          </div>
+          <IconButton onClick={onClose}>×</IconButton>
+          <SegmentedToggle
+            value={mode}
+            onChange={setMode}
+            options={[
+              { id: "oneoff", label: "one-off" },
+              { id: "recurring", label: "recurring" },
+            ]}
+          />
           <div className="w-9" />
         </div>
 
@@ -199,26 +195,25 @@ function Sheet({ show, onClose }: { show: boolean; onClose: () => void }) {
 
           <CategorySelect value={category} onChange={setCategory} />
 
-          <input
+          <TextInput
             value={note}
             onChange={(e) => setNote(e.target.value)}
             placeholder="Add a note (optional)"
             maxLength={140}
-            className="rounded-pill border border-line bg-surface px-4 py-2.5 text-ink outline-none placeholder:text-ink-dim/50 "
+            tone="surface"
           />
 
           {mode === "recurring" && (
-            <div className="flex rounded-pill border border-line bg-surface p-1">
-              {(["weekly", "monthly"] as const).map((c) => (
-                <button
-                  key={c}
-                  onClick={() => setCadence(c)}
-                  className={`flex-1 rounded-pill py-2 text-xs font-mono font-bold lowercase transition ${cadence === c ? "bg-neon-violet text-void" : "text-ink-dim"}`}
-                >
-                  {c}
-                </button>
-              ))}
-            </div>
+            <SegmentedToggle
+              value={cadence}
+              onChange={setCadence}
+              options={[
+                { id: "weekly", label: "weekly" },
+                { id: "monthly", label: "monthly" },
+              ]}
+              accent="violet"
+              fullWidth
+            />
           )}
 
           <DateTimePicker
@@ -244,17 +239,19 @@ function Sheet({ show, onClose }: { show: boolean; onClose: () => void }) {
               </button>
             ))}
           </div>
-          <button
-            onClick={save}
+          <Button
+            variant="primary"
+            busy={saving}
             disabled={!canSave}
-            className="rounded-pill bg-neon-lime py-3.5 font-display font-bold text-void shadow-glow-lime transition active:scale-95 disabled:opacity-40 disabled:shadow-none"
+            fullWidth
+            onClick={save}
           >
             {saving
               ? "Saving…"
               : mode === "oneoff"
                 ? "Log it →"
                 : "Schedule it →"}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

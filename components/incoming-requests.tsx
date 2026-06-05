@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { avatarEmoji } from "@/lib/avatars";
+import { Button } from "./ui/button";
+import { Eyebrow } from "./ui/eyebrow";
 
 type Req = {
   id: string;
@@ -32,9 +34,7 @@ export function IncomingRequests({ requests }: { requests: Req[] }) {
 
   return (
     <section className="flex flex-col gap-2">
-      <h2 className="font-mono text-xs uppercase tracking-widest text-neon-pink">
-        Requests · {requests.length}
-      </h2>
+      <Eyebrow tone="pink">Requests · {requests.length}</Eyebrow>
       {requests.map((r) => (
         <div
           key={r.id}
@@ -49,20 +49,22 @@ export function IncomingRequests({ requests }: { requests: Req[] }) {
               @{r.profile.username}
             </p>
           </div>
-          <button
+          <Button
+            variant="primary"
+            size="sm"
+            busy={busy === r.id}
             onClick={() => respond(r.id, true)}
-            disabled={busy === r.id}
-            className="rounded-pill bg-neon-lime px-3 py-1.5 text-xs font-bold text-void active:scale-95 disabled:opacity-50"
           >
             Accept
-          </button>
-          <button
+          </Button>
+          <Button
+            variant="danger"
+            size="sm"
+            busy={busy === r.id}
             onClick={() => respond(r.id, false)}
-            disabled={busy === r.id}
-            className="rounded-pill border border-over/40 px-3 py-1.5 text-xs text-over active:scale-95 disabled:opacity-50"
           >
             ✕
-          </button>
+          </Button>
         </div>
       ))}
     </section>

@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { CATEGORIES, type Category } from "@/lib/categories";
 import { Toggle } from "@/components/ui/toggle";
+import { TextInput } from "@/components/ui/text-input";
+import { Button } from "@/components/ui/button";
+import { SegmentedToggle } from "@/components/ui/segmented-toggle";
 
 const DURATIONS = [
   { label: "1 week", days: 7 },
@@ -60,27 +63,23 @@ export default function NewGroupPage() {
     <main className="flex flex-col gap-5 px-5 pb-6 pt-6">
       <h1 className="font-display text-3xl font-bold text-ink">New group</h1>
 
-      <input
+      <TextInput
         value={name}
         onChange={(e) => setName(e.target.value)}
         placeholder="group name"
         maxLength={40}
-        className="rounded-pill border border-line bg-surface px-4 py-2.5 text-ink outline-none font-mono placeholder:text-ink-dim/50"
+        tone="surface"
       />
 
-      <div className="flex rounded-pill border border-line bg-surface p-1">
-        {(["permanent", "temporal"] as const).map((k) => (
-          <button
-            key={k}
-            onClick={() => setKind(k)}
-            className={`flex-1 rounded-pill py-2 text-xs font-mono font-bold lowercase transition ${
-              kind === k ? "bg-neon-cyan text-void" : "text-ink-dim"
-            }`}
-          >
-            {k}
-          </button>
-        ))}
-      </div>
+      <SegmentedToggle
+        value={kind}
+        onChange={setKind}
+        options={[
+          { id: "permanent", label: "permanent" },
+          { id: "temporal", label: "temporal" },
+        ]}
+        fullWidth
+      />
 
       {kind === "temporal" && (
         <div className="flex gap-2">
@@ -136,7 +135,7 @@ export default function NewGroupPage() {
         <Toggle checked={shareBlowout} onChange={setShareBlowout} />
       </label>
 
-      <label className="flex items-center justify-between font-mono text-xs rounded-pill border border-line bg-surface px-4 py-2 text-sm text-ink-dim">
+      <label className="flex items-center justify-between font-mono text-xs rounded-pill border border-line bg-surface px-4 py-2 text-ink-dim">
         invite max uses (optional)
         <input
           inputMode="numeric"
@@ -149,13 +148,15 @@ export default function NewGroupPage() {
 
       {err && <p className="text-center text-sm text-over">{err}</p>}
 
-      <button
-        onClick={create}
+      <Button
+        variant="primary"
+        busy={busy}
         disabled={!canCreate}
-        className="rounded-pill bg-neon-lime py-2.5 font-display font-bold text-xl text-void shadow-glow-lime active:scale-95 disabled:opacity-50"
+        fullWidth
+        onClick={create}
       >
         {busy ? "Creating…" : "Create group →"}
-      </button>
+      </Button>
     </main>
   );
 }

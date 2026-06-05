@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { formatCoins } from "@/lib/format";
+import { Button } from "./ui/button";
+import { Eyebrow } from "./ui/eyebrow";
 
 export function BudgetCard({
   spent,
@@ -44,21 +46,15 @@ export function BudgetCard({
         <h2 className="font-display font-bold text-ink text-xl">
           Weekly budget
         </h2>
-        <button
-          onClick={() => setEditing((e) => !e)}
-          className="rounded-pill border border-line bg-surface-2 px-3 py-1.5 font-mono text-xs text-neon-cyan active:scale-95"
-        >
+        <Button variant="chip" size="sm" onClick={() => setEditing((e) => !e)}>
           {editing ? "close" : "edit"}
-        </button>
+        </Button>
       </div>
 
       {weeklyLimit == null && !editing && (
-        <button
-          onClick={() => setEditing(true)}
-          className="rounded-pill border border-line bg-surface-2 px-3 py-1.5 font-mono text-xs text-neon-cyan active:scale-95"
-        >
+        <Button variant="chip" size="sm" onClick={() => setEditing(true)}>
           set a weekly budget
-        </button>
+        </Button>
       )}
 
       {weeklyLimit != null && (
@@ -96,7 +92,7 @@ export function BudgetCard({
 
       {editing && (
         <div className="flex flex-col gap-3 border-t border-line pt-3">
-          <label className="flex items-center justify-between font-mono text-xs uppercase tracking-widest text-ink-dim">
+          <Eyebrow as="label" className="flex items-center justify-between">
             Weekly limit
             <input
               inputMode="numeric"
@@ -105,14 +101,10 @@ export function BudgetCard({
               placeholder="500,000"
               className="w-32 rounded-pill border border-line bg-surface-2 px-3 py-1.5 text-right font-mono text-ink outline-none"
             />
-          </label>
-          <button
-            onClick={save}
-            disabled={busy}
-            className="rounded-pill bg-neon-lime py-2.5 font-display font-bold text-xl text-void shadow-glow-lime active:scale-95 disabled:opacity-50"
-          >
+          </Eyebrow>
+          <Button variant="primary" busy={busy} fullWidth onClick={save}>
             {busy ? "Saving…" : "Save budget"}
-          </button>
+          </Button>
         </div>
       )}
     </section>

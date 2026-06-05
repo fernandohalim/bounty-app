@@ -1,3 +1,4 @@
+import { LinkButton } from "@/components/ui/link-button";
 import Link from "next/link";
 
 export default function NotFound() {
@@ -8,12 +9,9 @@ export default function NotFound() {
         Lost in the void
       </h1>
       <p className="text-sm text-ink-dim">That page doesn&apos;t exist.</p>
-      <Link
-        href="/dashboard"
-        className="rounded-pill bg-neon-lime px-6 py-3 font-display font-bold text-void shadow-glow-lime active:scale-95"
-      >
+      <LinkButton href="/dashboard" variant="primary">
         Back to dashboard
-      </Link>
+      </LinkButton>
     </main>
   );
 }

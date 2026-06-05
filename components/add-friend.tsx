@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { TextInput } from "./ui/text-input";
+import { Button } from "./ui/button";
 
 function friendly(m: string) {
   if (m.includes("no user"))
@@ -49,19 +51,20 @@ export function AddFriend({ myUsername }: { myUsername: string }) {
   return (
     <section className="surface-card flex flex-col gap-3 p-5">
       <div className="flex gap-2">
-        <input
+        <TextInput
           value={value}
           onChange={(e) => setValue(e.target.value)}
           placeholder="username or email"
-          className="flex-1 rounded-pill border border-line bg-surface-2 px-4 py-2.5 text-ink outline-none placeholder:text-ink-dim/50"
+          className="flex-1"
         />
-        <button
-          onClick={add}
+        <Button
+          variant="accent"
+          size="sm"
           disabled={busy || !value.trim()}
-          className="rounded-pill bg-neon-cyan px-5 py-2.5 font-display font-bold text-void shadow-glow-cyan active:scale-95 disabled:opacity-40"
+          onClick={add}
         >
           Add
-        </button>
+        </Button>
       </div>
       {msg && (
         <p className={`text-sm ${msg.ok ? "text-neon-lime" : "text-over"}`}>

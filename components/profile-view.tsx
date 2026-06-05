@@ -4,6 +4,10 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { avatarEmoji } from "@/lib/avatars";
 import { levelInfo } from "@/lib/xp";
+import { Modal } from "./ui/modal";
+import { Button } from "./ui/button";
+import { Stat } from "./ui/stat";
+import { Eyebrow } from "./ui/eyebrow";
 
 type Profile = {
   username: string;
@@ -23,17 +27,6 @@ type Trophy = {
   group_name: string;
   awarded_at: string;
 };
-
-function Stat({ label, value }: { label: string; value: React.ReactNode }) {
-  return (
-    <div className="surface-card flex flex-col items-center gap-1 py-4">
-      <span className="font-mono text-xl font-bold text-ink">{value}</span>
-      <span className="font-mono text-[10px] uppercase tracking-widest text-ink-dim">
-        {label}
-      </span>
-    </div>
-  );
-}
 
 export function ProfileView({
   userId,
@@ -98,7 +91,10 @@ export function ProfileView({
         className="absolute inset-0 bg-void/70 backdrop-blur-sm"
         onClick={onClose}
       />
-      <div className="animate-pop-in relative z-10 flex max-h-[85vh] w-full max-w-md flex-col gap-5 overflow-y-auto rounded-t-card border border-line bg-surface p-5 sm:rounded-card">
+      <Modal
+        onClose={onClose}
+        className="flex max-h-[85vh] flex-col gap-5 overflow-y-auto"
+      >
         <div className="flex flex-col items-center gap-3 text-center">
           <span className="flex h-20 w-20 items-center justify-center rounded-card border border-neon-cyan/40 bg-surface-2 text-5xl shadow-glow-cyan">
             {avatarEmoji(avatar)}
@@ -145,9 +141,9 @@ export function ProfileView({
             </div>
 
             <section className="flex flex-col gap-2">
-              <h3 className="font-mono text-xs uppercase tracking-widest text-gold">
+              <Eyebrow as="h3" tone="gold">
                 🏆 Trophy room · {trophies.length}
-              </h3>
+              </Eyebrow>
               {trophies.length === 0 ? (
                 <div className="surface-card px-6 py-6 text-center text-sm text-ink-dim">
                   No trophies yet.
@@ -181,36 +177,36 @@ export function ProfileView({
         {onUnfriend &&
           (confirmUnfriend ? (
             <div className="flex gap-2">
-              <button
+              <Button
+                variant="danger"
+                busy={busy}
+                className="flex-1"
                 onClick={doUnfriend}
-                disabled={busy}
-                className="flex-1 rounded-pill bg-over py-2.5 font-bold text-void active:scale-95 disabled:opacity-50"
               >
                 Yes, unfriend
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="ghost"
+                className="flex-1"
                 onClick={() => setConfirmUnfriend(false)}
-                className="flex-1 rounded-pill border border-line py-2.5 text-ink"
               >
                 Cancel
-              </button>
+              </Button>
             </div>
           ) : (
-            <button
+            <Button
+              variant="danger"
+              fullWidth
               onClick={() => setConfirmUnfriend(true)}
-              className="rounded-pill border border-over/40 bg-over/10 py-3 font-semibold text-over active:scale-95"
             >
               Unfriend
-            </button>
+            </Button>
           ))}
 
-        <button
-          onClick={onClose}
-          className="rounded-pill border border-line bg-surface-2 py-3 font-semibold text-ink active:scale-95"
-        >
+        <Button variant="neutral" fullWidth onClick={onClose}>
           Close
-        </button>
-      </div>
+        </Button>
+      </Modal>
     </div>
   );
 }

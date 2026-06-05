@@ -7,6 +7,7 @@ import {
   ExpenseDetailModal,
   type Expense,
 } from "@/components/expense-detail-modal";
+import { Select } from "./ui/select";
 export type { Expense };
 
 type Sort = "newest" | "oldest" | "highest" | "lowest" | "az" | "za";
@@ -102,9 +103,9 @@ export function HistoryView({ expenses }: { expenses: Expense[] }) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap gap-2">
-        <Dropdown value={month} options={monthOpts} onChange={setMonth} />
-        <Dropdown value={cat} options={catOpts} onChange={setCat} />
-        <Dropdown value={sort} options={SORTS} onChange={setSort} />
+        <Select value={month} options={monthOpts} onChange={setMonth} />
+        <Select value={cat} options={catOpts} onChange={setCat} />
+        <Select value={sort} options={SORTS} onChange={setSort} />
       </div>
 
       <p className="font-mono text-[11px] text-ink-dim">
@@ -140,53 +141,6 @@ export function HistoryView({ expenses }: { expenses: Expense[] }) {
           expense={selected}
           onClose={() => setSelected(null)}
         />
-      )}
-    </div>
-  );
-}
-
-function Dropdown<T extends string>({
-  value,
-  options,
-  onChange,
-}: {
-  value: T;
-  options: { id: T; label: string; emoji?: string }[];
-  onChange: (v: T) => void;
-}) {
-  const [open, setOpen] = useState(false);
-  const cur = options.find((o) => o.id === value) ?? options[0];
-  return (
-    <div className="relative">
-      <button
-        type="button"
-        onClick={() => setOpen((o) => !o)}
-        className="flex items-center gap-1.5 rounded-pill border border-line bg-surface px-3 py-2 text-xs text-ink"
-      >
-        {cur.emoji && <span>{cur.emoji}</span>}
-        {cur.label}
-        <span className="text-ink-dim">⌄</span>
-      </button>
-      {open && (
-        <>
-          <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
-          <div className="no-scrollbar absolute top-full z-20 mt-1 max-h-60 w-max min-w-full overflow-y-auto rounded-card border border-line bg-surface-2 p-1 shadow-card">
-            {options.map((o) => (
-              <button
-                key={o.id}
-                type="button"
-                onClick={() => {
-                  onChange(o.id);
-                  setOpen(false);
-                }}
-                className={`flex w-full items-center gap-1.5 rounded-pill px-3 py-1.5 text-xs ${o.id === value ? "bg-surface text-ink" : "text-ink-dim active:bg-surface"}`}
-              >
-                {o.emoji && <span>{o.emoji}</span>}
-                {o.label}
-              </button>
-            ))}
-          </div>
-        </>
       )}
     </div>
   );

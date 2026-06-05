@@ -7,6 +7,11 @@ import { categoryMeta, type Category } from "@/lib/categories";
 import { formatCoins } from "@/lib/format";
 import { CategorySelect } from "@/components/ui/category-select";
 import { DateTimePicker } from "@/components/ui/datetime-picker";
+import { Modal } from "./ui/modal";
+import { Button } from "./ui/button";
+import { TextInput } from "./ui/text-input";
+import { Eyebrow } from "./ui/eyebrow";
+import { SegmentedToggle } from "./ui/segmented-toggle";
 
 type Template = {
   id: string;
@@ -22,9 +27,7 @@ export function RecurringList({ templates }: { templates: Template[] }) {
 
   return (
     <section className="flex flex-col gap-2">
-      <h2 className="font-mono text-xs uppercase tracking-widest text-ink-dim">
-        Recurring · {templates.length}
-      </h2>
+      <Eyebrow>Recurring · {templates.length}</Eyebrow>
       {templates.map((t) => {
         const m = categoryMeta(t.category as Category);
         return (
@@ -134,7 +137,7 @@ function RecurringDetailModal({
         className="absolute inset-0 bg-void/70 backdrop-blur-sm"
         onClick={onClose}
       />
-      <div className="animate-pop-in relative z-10 w-full max-w-md rounded-t-card border border-line bg-surface p-5 sm:rounded-card">
+      <Modal onClose={onClose}>
         {!editing ? (
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
@@ -166,34 +169,36 @@ function RecurringDetailModal({
               />
             </div>
             <div className="flex gap-2">
-              <button
+              <Button
+                variant="accent"
+                className="flex-1"
                 onClick={() => setEditing(true)}
-                className="flex-1 rounded-pill bg-neon-cyan py-2.5 font-display font-bold text-xl text-void shadow-glow-cyan active:scale-95 disabled:opacity-50"
               >
                 Edit
-              </button>
-              <button
-                onClick={() => setConfirmStop(true)}
-                className="rounded-pill border border-over/40 bg-over/10 px-4 py-2.5 text-xl font-display font-bold text-over active:scale-95"
-              >
+              </Button>
+              <Button variant="danger" onClick={() => setConfirmStop(true)}>
                 Stop
-              </button>
+              </Button>
             </div>
             {confirmStop && (
               <div className="flex gap-2">
-                <button
+                <Button
+                  variant="danger"
+                  size="sm"
+                  busy={busy}
+                  className="flex-1"
                   onClick={stop}
-                  disabled={busy}
-                  className="flex-1 rounded-pill border border-line bg-surface-2 px-3 py-1.5 font-mono text-xs text-neon-cyan active:scale-95"
                 >
                   yes, stop it
-                </button>
-                <button
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="flex-1"
                   onClick={() => setConfirmStop(false)}
-                  className="flex-1 rounded-pill border border-line bg-surface-2 px-3 py-1.5 font-mono text-xs text-neon-cyan active:scale-95"
                 >
                   cancel
-                </button>
+                </Button>
               </div>
             )}
           </div>
@@ -209,24 +214,22 @@ function RecurringDetailModal({
               />
             </div>
             <CategorySelect value={category} onChange={setCategory} />
-            <input
+            <TextInput
               value={note}
               onChange={(e) => setNote(e.target.value)}
               placeholder="Note"
               maxLength={140}
-              className="rounded-pill border border-line bg-surface px-4 py-2.5 text-ink outline-none placeholder:text-ink-dim/50"
             />
-            <div className="flex rounded-pill border border-line bg-surface p-1">
-              {(["weekly", "monthly"] as const).map((c) => (
-                <button
-                  key={c}
-                  onClick={() => setCadence(c)}
-                  className={`flex-1 rounded-pill py-2 text-xs font-mono font-bold lowercase transition ${cadence === c ? "bg-neon-violet text-void" : "text-ink-dim"}`}
-                >
-                  {c}
-                </button>
-              ))}
-            </div>
+            <SegmentedToggle
+              value={cadence}
+              onChange={setCadence}
+              options={[
+                { id: "weekly", label: "weekly" },
+                { id: "monthly", label: "monthly" },
+              ]}
+              accent="violet"
+              fullWidth
+            />
             <DateTimePicker
               value={when}
               onChange={setWhen}
@@ -235,23 +238,22 @@ function RecurringDetailModal({
             />
             {err && <p className="text-center text-sm text-over">{err}</p>}
             <div className="flex gap-2">
-              <button
+              <Button
+                variant="primary"
+                busy={busy}
+                disabled={amount <= 0}
+                className="flex-1"
                 onClick={save}
-                disabled={busy || amount <= 0}
-                className="flex-2 rounded-pill bg-neon-lime py-2.5 font-display font-bold text-xl text-void shadow-glow-lime active:scale-95 disabled:opacity-50"
               >
                 Save
-              </button>
-              <button
-                onClick={() => setEditing(false)}
-                className="rounded-pill border border-over/40 bg-over/10 px-4 py-2.5 text-xl font-display font-bold text-over active:scale-95"
-              >
+              </Button>
+              <Button variant="ghost" onClick={() => setEditing(false)}>
                 Back
-              </button>
+              </Button>
             </div>
           </div>
         )}
-      </div>
+      </Modal>
     </div>
   );
 }

@@ -60,7 +60,7 @@ export default function RootLayout({
       lang="en"
       className={`${display.variable} ${sans.variable} ${mono.variable}`}
     >
-      <body className="antialiased ${display.className}">
+      <body className="antialiased">
         {children}
         <ServiceWorkerRegister />
       </body>{" "}

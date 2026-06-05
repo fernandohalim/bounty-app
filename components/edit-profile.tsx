@@ -4,6 +4,10 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { avatarEmoji } from "@/lib/avatars";
+import { Modal } from "./ui/modal";
+import { TextInput } from "./ui/text-input";
+import { Button } from "./ui/button";
+import { Eyebrow } from "./ui/eyebrow";
 
 type Avatar = { id: string; display_name: string; unlock_level: number };
 
@@ -73,27 +77,26 @@ export function EditProfile({
             className="absolute inset-0 bg-void/70 backdrop-blur-sm"
             onClick={cancel}
           />
-          <div className="animate-pop-in relative z-10 flex w-full max-w-md flex-col gap-4 rounded-t-card border border-line bg-surface p-5 sm:rounded-card">
+          <Modal onClose={cancel} className="flex flex-col gap-4">
             <h2 className="font-display text-lg font-bold text-ink">
               Edit profile
             </h2>
 
             <div>
-              <label className="mb-2 block font-mono text-xs uppercase tracking-widest text-ink-dim">
+              <Eyebrow as="label" className="mb-2 block">
                 Display name
-              </label>
-              <input
+              </Eyebrow>
+              <TextInput
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 maxLength={30}
-                className="w-full rounded-pill border border-line bg-surface-2 px-4 py-2.5 text-ink outline-none placeholder:text-ink-dim/50"
               />
             </div>
 
             <div>
-              <label className="mb-2 block font-mono text-xs uppercase tracking-widest text-ink-dim">
+              <Eyebrow as="label" className="mb-2 block">
                 Avatar
-              </label>
+              </Eyebrow>
               <div className="grid grid-cols-4 gap-3">
                 {avatars.map((a) => {
                   const locked = a.unlock_level > level;
@@ -124,21 +127,20 @@ export function EditProfile({
             {err && <p className="text-center text-sm text-over">{err}</p>}
 
             <div className="flex gap-2">
-              <button
+              <Button
+                variant="primary"
+                busy={busy}
+                disabled={!nameOk || !dirty}
+                className="flex-1"
                 onClick={save}
-                disabled={busy || !nameOk || !dirty}
-                className="flex-1 rounded-pill bg-neon-lime py-3 font-display font-bold text-void shadow-glow-lime active:scale-95 disabled:opacity-40"
               >
                 {busy ? "Saving…" : "Save changes"}
-              </button>
-              <button
-                onClick={cancel}
-                className="rounded-pill border border-line px-5 py-3 text-ink active:scale-95"
-              >
+              </Button>
+              <Button variant="ghost" onClick={cancel}>
                 Cancel
-              </button>
+              </Button>
             </div>
-          </div>
+          </Modal>
         </div>
       )}
     </>

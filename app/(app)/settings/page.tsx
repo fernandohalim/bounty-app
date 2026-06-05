@@ -32,7 +32,7 @@ export default async function SettingsPage() {
         <Link href="/profile" className="text-xl text-ink-dim">
           ←
         </Link>
-        <h1 className="font-display text-xl font-bold text-ink">
+        <h1 className="font-display text-2xl font-bold text-ink">
           Notifications
         </h1>
       </div>

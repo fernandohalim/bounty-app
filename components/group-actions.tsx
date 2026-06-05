@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { Button } from "./ui/button";
 
 export function GroupActions({
   groupId,
@@ -42,31 +43,32 @@ export function GroupActions({
     return (
       <div className="flex flex-col gap-2">
         {!confirming ? (
-          <button
-            onClick={() => setConfirming(true)}
-            className="rounded-pill border border-over/40 bg-over/10 px-4 py-2.5 text-xl font-display font-bold text-over active:scale-95"
-          >
+          <Button variant="danger" onClick={() => setConfirming(true)}>
             Delete group
-          </button>
+          </Button>
         ) : (
           <div className="surface-card flex flex-col gap-3 p-4">
             <p className="text-xs font-mono text-ink-dim">
               delete this group for everyone? this can&apos;t be undone.
             </p>
             <div className="flex gap-2">
-              <button
+              <Button
+                variant="danger"
+                size="sm"
+                busy={busy}
+                className="flex-1"
                 onClick={del}
-                disabled={busy}
-                className="flex-1 rounded-pill border border-over/40 bg-over/10 py-2 text-xs font-mono text-over active:scale-95 disabled:opacity-50"
               >
                 yes, delete
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="flex-1"
                 onClick={() => setConfirming(false)}
-                className="flex-1 rounded-pill border border-line py-2 font-mono text-ink text-xs active:scale-95 disabled:opacity-50"
               >
                 cancel
-              </button>
+              </Button>
             </div>
           </div>
         )}
@@ -75,12 +77,8 @@ export function GroupActions({
   }
 
   return (
-    <button
-      onClick={leave}
-      disabled={busy}
-      className="rounded-pill border border-over/40 bg-over/10 py-3 font-semibold text-over active:scale-95 disabled:opacity-50"
-    >
+    <Button variant="danger" fullWidth busy={busy} onClick={leave}>
       Leave group
-    </button>
+    </Button>
   );
 }

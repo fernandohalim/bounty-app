@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { avatarEmoji } from "@/lib/avatars";
 import { formatCoins } from "@/lib/format";
 import { getUserId } from "@/lib/supabase/user";
+import { Eyebrow } from "@/components/ui/eyebrow";
 
 export default async function GroupLeaderboard({
   params,
@@ -57,11 +58,11 @@ export default async function GroupLeaderboard({
           <h1 className="font-display text-2xl font-bold text-ink">
             {group.name}
           </h1>
-          <p className="font-mono uppercase tracking-widest text-xs text-ink-dim">
+          <Eyebrow as="p">
             {group.status === "locked"
               ? "Final standings 🏁"
               : "Live standings"}
-          </p>
+          </Eyebrow>
         </div>
       </div>
 

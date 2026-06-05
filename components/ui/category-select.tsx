@@ -44,7 +44,8 @@ export function CategorySelect({
       </button>
 
       {open && (
-        <div className="absolute top-full z-10 mt-2 max-h-60 w-full overflow-y-auto rounded-card border border-line bg-surface-2 p-1 shadow-card">
+        <div className="no-scrollbar absolute top-full z-10 mt-2 max-h-60 w-full overflow-y-auto rounded-card border border-line bg-surface-2 p-1 shadow-card">
+          {" "}
           {CATEGORIES.map((c) => {
             const on = value === c.id;
             return (

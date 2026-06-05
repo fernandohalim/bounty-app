@@ -278,7 +278,7 @@ export function GroupFeed({
                 <span className="text-xl">
                   {avatarEmoji(sender?.avatar_id)}
                 </span>
-                <span className="text-sm font-display text-ink">
+                <span className="text-sm text-ink">
                   {sender?.display_name ?? "Someone"}
                 </span>
                 <span className="ml-auto font-mono text-[11px] text-ink-dim">

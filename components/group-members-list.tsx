@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { avatarEmoji } from "@/lib/avatars";
+import { Button } from "./ui/button";
+import { Eyebrow } from "./ui/eyebrow";
 
 type Member = {
   user_id: string;
@@ -50,9 +52,7 @@ export function GroupMembersList({
 
   return (
     <section className="flex flex-col gap-2">
-      <h2 className="font-mono text-xs uppercase tracking-widest text-ink-dim">
-        Members · {members.length}
-      </h2>
+      <Eyebrow>Members · {members.length}</Eyebrow>
       {members.map((m) => (
         <div
           key={m.user_id}
@@ -61,9 +61,7 @@ export function GroupMembersList({
           <div className="flex items-center gap-3">
             <span className="text-2xl">{avatarEmoji(m.avatar_id)}</span>
             <div className="min-w-0 flex-1">
-              <p className="font-display truncate text-md text-ink">
-                {m.display_name}
-              </p>
+              <p className="truncate text-sm text-ink"> {m.display_name}</p>
               <p className="font-mono text-xs text-ink-dim">@{m.username}</p>
             </div>
             {m.role === "owner" && (
@@ -89,20 +87,24 @@ export function GroupMembersList({
 
           {isOwner && openFor === m.user_id && (
             <div className="flex gap-2 border-t border-line pt-2">
-              <button
+              <Button
+                variant="gold"
+                size="sm"
+                busy={busy}
+                className="flex-1"
                 onClick={() => transfer(m.user_id)}
-                disabled={busy}
-                className="flex-1 rounded-pill border border-gold/40 bg-gold/10 py-2 text-xs font-mono text-gold active:scale-95 disabled:opacity-50"
               >
                 👑 make owner
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="danger"
+                size="sm"
+                busy={busy}
+                className="flex-1"
                 onClick={() => kick(m.user_id)}
-                disabled={busy}
-                className="flex-1 rounded-pill border border-over/40 bg-over/10 py-2 text-xs font-mono text-over active:scale-95 disabled:opacity-50"
               >
                 remove
-              </button>
+              </Button>
             </div>
           )}
         </div>

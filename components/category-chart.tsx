@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { formatCoins } from "@/lib/format";
 import type { Category } from "@/lib/categories";
+import { Eyebrow } from "./ui/eyebrow";
 
 type Item = {
   id: Category;
@@ -46,9 +47,9 @@ export function CategoryChart({
       {/* total — now outside the donut */}
       <div className="flex items-end justify-between">
         <div className="flex flex-col">
-          <span className="font-mono text-xs uppercase tracking-widest text-ink-dim mb-1">
+          <Eyebrow as="span" className="mb-1">
             {sel ? sel.label : "Total this month"}
-          </span>
+          </Eyebrow>
           <span className="font-mono text-2xl font-bold text-neon-lime">
             🪙{formatCoins(sel ? sel.value : total)}
           </span>

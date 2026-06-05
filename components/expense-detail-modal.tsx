@@ -157,7 +157,7 @@ export function ExpenseDetailModal({
                 inputMode="numeric"
                 value={formatCoins(amount)}
                 onChange={(e) => setDigits(e.target.value.replace(/\D/g, ""))}
-                className="w-40 bg-transparent text-center font-mono text-3xl font-bold text-neon-lime outline-none"
+                className="min-w-0 flex-1 bg-transparent text-center font-mono text-3xl font-bold text-neon-lime outline-none"
               />
             </div>
             <CategorySelect value={category} onChange={setCategory} />

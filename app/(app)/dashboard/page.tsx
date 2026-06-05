@@ -136,13 +136,21 @@ export default async function Dashboard() {
 
       {/* today sect */}
       <section className="surface-card flex flex-col gap-4 p-5">
-        <div className="flex items-start justify-between">
-          <div className="flex flex-col gap-0.5">
+        {/* title + history on one row, so the amount can use the full card width */}
+        <div className="flex flex-col gap-1.5">
+          <div className="flex items-center justify-between">
             <span className="font-display font-bold text-ink text-xl">
               Today
             </span>
-            <span className="font-mono text-3xl font-bold text-neon-cyan">
-              🪙{formatCoins(todayTotal)}
+            <LinkButton href="/expenses" variant="chip" size="sm">
+              history
+            </LinkButton>
+          </div>
+
+          <div className="flex flex-col gap-0.5">
+            <span className="font-mono text-3xl font-bold text-neon-cyan whitespace-nowrap tabular-nums">
+              <span className="mr-1">🪙</span>
+              {formatCoins(todayTotal)}
             </span>
             <span className="font-mono text-[10px] text-ink-dim mt-1">
               {todayCount === 0
@@ -150,9 +158,6 @@ export default async function Dashboard() {
                 : `${todayCount} ${todayCount === 1 ? "expense" : "expenses"} today`}
             </span>
           </div>
-          <LinkButton href="/expenses" variant="chip" size="sm">
-            history
-          </LinkButton>
         </div>
 
         {recent.length > 0 && <RecentExpenses expenses={recent} />}

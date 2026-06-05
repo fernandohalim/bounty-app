@@ -1,6 +1,6 @@
 {
   "name": "bounty",
-  "version": "1.6",
+  "version": "1.6.1",
   "private": true,
   "scripts": {
     "dev": "next dev",

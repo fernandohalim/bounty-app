@@ -10,6 +10,16 @@ export type Release = {
 
 export const releases: Release[] = [
   {
+    version: "1.6.1",
+    date: "June 2026",
+    title: "Numbers that fit 🔢",
+    badge: "patch",
+    features: [
+      "Today's total on Home no longer wraps under the coin — big spending days stay on one clean line",
+      "The amount field when editing an expense or recurring template now stretches to fit, so long numbers aren't clipped",
+    ],
+  },
+  {
     version: "1.6",
     date: "June 2026",
     title: "A sharper, pixel-perfect Bounty 🎨",

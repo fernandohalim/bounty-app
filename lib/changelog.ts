@@ -10,6 +10,17 @@ export type Release = {
 
 export const releases: Release[] = [
   {
+    version: "1.7",
+    date: "June 2026",
+    title: "Slice your spending your way 🔍",
+    badge: "feature",
+    features: [
+      "The category breakdown now toggles between this week and this month — flip between them without leaving Home",
+      "The spending heatmap got a category filter — pick a category to see just that habit light up across 12 weeks, with the color scale rescaling to fit",
+      "Pinch-to-zoom is now disabled across the app and installed PWA, so the layout stays locked the way it's meant to look",
+    ],
+  },
+  {
     version: "1.6.1",
     date: "June 2026",
     title: "Numbers that fit 🔢",

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { CATEGORIES, type Category } from "@/lib/categories";
@@ -12,7 +11,7 @@ import {
   todayLocal,
 } from "@/lib/metrics";
 import { avatarEmoji } from "@/lib/avatars";
-import { CategoryChart } from "@/components/category-chart";
+import { CategoryBreakdown } from "@/components/category-breakdown";
 import { InteractiveHeatmap } from "@/components/interactive-heatmap";
 import { BudgetCard } from "@/components/budget-card";
 import { getUserId } from "@/lib/supabase/user";
@@ -71,34 +70,43 @@ export default async function Dashboard() {
   const monthExps = exps.filter((e) => e.day.startsWith(monthKey));
   const monthTotal = sum(monthExps);
 
-  const catTotals = new Map<Category, number>();
-  for (const e of monthExps)
-    catTotals.set(
-      e.category as Category,
-      (catTotals.get(e.category as Category) ?? 0) + e.amount,
-    );
-  const catItems = CATEGORIES.map((c) => ({
-    ...c,
-    value: catTotals.get(c.id) ?? 0,
-  }))
-    .filter((c) => c.value > 0)
-    .sort((a, b) => b.value - a.value);
+  const buildCatItems = (xs: typeof exps) => {
+    const totals = new Map<Category, number>();
+    for (const e of xs)
+      totals.set(
+        e.category as Category,
+        (totals.get(e.category as Category) ?? 0) + e.amount,
+      );
+    return CATEGORIES.map((c) => ({ ...c, value: totals.get(c.id) ?? 0 }))
+      .filter((c) => c.value > 0)
+      .sort((a, b) => b.value - a.value);
+  };
 
-  // heatmap: 12 weeks ending the current week
-  const dayTotals = new Map<string, number>();
-  for (const e of exps)
-    dayTotals.set(e.day, (dayTotals.get(e.day) ?? 0) + e.amount);
-  const maxDay = Math.max(1, ...Array.from(dayTotals.values()));
+  const weekExps = exps.filter((e) => e.day >= wkStart);
+  const weekItems = buildCatItems(weekExps);
+  const weekTotal = sum(weekExps);
+  const monthItems = buildCatItems(monthExps);
+
+  // heatmap: 12 weeks ending the current week. Keep per-category daily totals
+  // so the category filter + color intensity recompute client-side.
+  const dayCatTotals = new Map<string, Map<Category, number>>();
+  for (const e of exps) {
+    let m = dayCatTotals.get(e.day);
+    if (!m) {
+      m = new Map();
+      dayCatTotals.set(e.day, m);
+    }
+    const c = e.category as Category;
+    m.set(c, (m.get(c) ?? 0) + e.amount);
+  }
   const startMon = addDays(wkStart, -11 * 7);
   const weeks = Array.from({ length: 12 }, (_, w) =>
     Array.from({ length: 7 }, (_, d) => {
       const date = addDays(startMon, w * 7 + d);
-      const amount = dayTotals.get(date) ?? 0;
-      const level =
-        amount === 0
-          ? 0
-          : Math.min(4, 1 + Math.floor((amount / maxDay) * 3.999));
-      return { date, amount, level, future: date > today };
+      const catMap = dayCatTotals.get(date);
+      const byCat: Partial<Record<Category, number>> = {};
+      if (catMap) for (const [c, amt] of catMap) byCat[c] = amt;
+      return { date, byCat, future: date > today };
     }),
   );
 
@@ -169,19 +177,11 @@ export default async function Dashboard() {
         weeklyLimit={budget?.weekly_limit ?? null}
       />
 
-      {/* pie chart */}
-      <section className="surface-card flex flex-col gap-4 p-5">
-        <h2 className="font-display font-bold text-ink text-xl">
-          This month by category
-        </h2>
-        {monthTotal === 0 ? (
-          <p className="py-6 text-center text-sm text-ink-dim">
-            Nothing logged this month yet.
-          </p>
-        ) : (
-          <CategoryChart items={catItems} total={monthTotal} />
-        )}
-      </section>
+      {/* category breakdown — week / month toggle */}
+      <CategoryBreakdown
+        week={{ items: weekItems, total: weekTotal }}
+        month={{ items: monthItems, total: monthTotal }}
+      />
 
       {/* heatmap sect */}
       <section className="surface-card flex flex-col gap-3 p-5">

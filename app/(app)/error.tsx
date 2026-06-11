@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { PixelIcon } from "@/components/ui/pixel-icon";
 
 export default function AppError({
   reset,
@@ -10,7 +11,7 @@ export default function AppError({
 }) {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center gap-4 px-6 text-center">
-      <span className="text-5xl">🪙💥</span>
+      <PixelIcon name="brand/coin-crash" size={56} />
       <h1 className="font-display text-xl font-bold text-ink">
         Something glitched
       </h1>

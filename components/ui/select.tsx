@@ -2,6 +2,7 @@
 "use client";
 
 import { useState } from "react";
+import { PixelIcon } from "./pixel-icon";
 
 type Tone = "surface" | "surface2";
 type Size = "sm" | "md";
@@ -24,7 +25,7 @@ export function Select<T extends string>({
   fullWidth = false,
 }: {
   value: T;
-  options: { id: T; label: string; emoji?: string }[];
+  options: { id: T; label: string; emoji?: string; icon?: string }[];
   onChange: (v: T) => void;
   tone?: Tone;
   size?: Size;
@@ -42,7 +43,11 @@ export function Select<T extends string>({
         }`}
       >
         <span className="flex items-center gap-1.5 truncate">
-          {cur?.emoji && <span>{cur.emoji}</span>}
+          {cur?.icon ? (
+            <PixelIcon name={cur.icon} size={16} />
+          ) : (
+            cur?.emoji && <span>{cur.emoji}</span>
+          )}
           {cur?.label}
         </span>
         <span className="text-ink-dim">⌄</span>
@@ -69,7 +74,11 @@ export function Select<T extends string>({
                     : "text-ink-dim active:bg-surface"
                 }`}
               >
-                {o.emoji && <span>{o.emoji}</span>}
+                {o.icon ? (
+                  <PixelIcon name={o.icon} size={16} />
+                ) : (
+                  o.emoji && <span>{o.emoji}</span>
+                )}
                 {o.label}
               </button>
             ))}

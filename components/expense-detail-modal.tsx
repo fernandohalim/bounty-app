@@ -1,15 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { categoryMeta, type Category } from "@/lib/categories";
+import { categoryIcon, categoryMeta, type Category } from "@/lib/categories";
 import { formatCoins } from "@/lib/format";
 import { CategorySelect } from "@/components/ui/category-select";
 import { DateTimePicker } from "@/components/ui/datetime-picker";
 import { Modal } from "./ui/modal";
 import { Button } from "./ui/button";
 import { TextInput } from "./ui/text-input";
+import { PixelIcon } from "./ui/pixel-icon";
+import { Coins } from "./ui/coins";
 
 export type Expense = {
   id: string;
@@ -20,7 +22,7 @@ export type Expense = {
   spent_at: string;
 };
 
-function InfoRow({ label, value }: { label: string; value: string }) {
+function InfoRow({ label, value }: { label: string; value: ReactNode }) {
   return (
     <div className="flex justify-between">
       <span className="text-ink-dim">{label}</span>
@@ -91,7 +93,10 @@ export function ExpenseDetailModal({
         {!editing ? (
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
-              <span className="text-3xl">{m.emoji}</span>
+              <PixelIcon
+                name={categoryIcon(expense.category as Category)}
+                size={30}
+              />
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm text-ink">
                   {expense.note || m.label}
@@ -99,7 +104,7 @@ export function ExpenseDetailModal({
                 <p className="font-mono text-[11px] text-ink-dim">{m.label}</p>
               </div>
               <span className="font-mono text-lg font-bold text-neon-lime">
-                🪙{formatCoins(expense.amount)}
+                <Coins amount={expense.amount} size={18} />
               </span>
             </div>
             <div className="surface-card flex flex-col gap-1 p-3 text-sm">
@@ -110,7 +115,18 @@ export function ExpenseDetailModal({
                   timeStyle: "short",
                 })}
               />
-              <InfoRow label="Category" value={`${m.emoji} ${m.label}`} />
+              <InfoRow
+                label="Category"
+                value={
+                  <span className="inline-flex items-center gap-1">
+                    <PixelIcon
+                      name={categoryIcon(expense.category as Category)}
+                      size={16}
+                    />
+                    {m.label}
+                  </span>
+                }
+              />{" "}
               {expense.is_recurring && (
                 <InfoRow label="Type" value="Recurring" />
               )}
@@ -152,7 +168,7 @@ export function ExpenseDetailModal({
         ) : (
           <div className="flex flex-col gap-3">
             <div className="surface-card flex items-center justify-center gap-2 py-4">
-              <span className="text-xl">🪙</span>
+              <PixelIcon name="brand/coin" size={20} />
               <input
                 inputMode="numeric"
                 value={formatCoins(amount)}

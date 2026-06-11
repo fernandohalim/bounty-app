@@ -1,7 +1,8 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { CATEGORIES, type Category } from "@/lib/categories";
-import { formatCoins } from "@/lib/format";
+import { PixelIcon } from "@/components/ui/pixel-icon";
+import { Coins } from "@/components/ui/coins";
 import { RecentExpenses } from "@/components/recent-expenses";
 import {
   localDate,
@@ -10,7 +11,7 @@ import {
   daysAgoISO,
   todayLocal,
 } from "@/lib/metrics";
-import { avatarEmoji } from "@/lib/avatars";
+import { avatarIcon } from "@/lib/avatars";
 import { CategoryBreakdown } from "@/components/category-breakdown";
 import { InteractiveHeatmap } from "@/components/interactive-heatmap";
 import { BudgetCard } from "@/components/budget-card";
@@ -115,8 +116,8 @@ export default async function Dashboard() {
       {/* header */}
       <header className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <span className="flex h-12 w-12 items-center justify-center rounded-card border border-line bg-surface-2 text-2xl">
-            {avatarEmoji(profile?.avatar_id)}
+          <span className="flex h-12 w-12 items-center justify-center rounded-card border border-line bg-surface-2">
+            <PixelIcon name={avatarIcon(profile?.avatar_id)} size={28} />
           </span>
           <div>
             <Eyebrow as="p">WELCOME BACK</Eyebrow>
@@ -137,7 +138,12 @@ export default async function Dashboard() {
         <Stat label="XP" value={profile?.xp ?? 0} accent="text-neon-lime" />
         <Stat
           label="Streak"
-          value={`${profile?.current_streak ?? 0}🔥`}
+          value={
+            <span className="inline-flex items-center gap-1">
+              {profile?.current_streak ?? 0}
+              <PixelIcon name="reactions/fire" size={18} />
+            </span>
+          }
           accent="text-gold"
         />
       </div>
@@ -156,9 +162,8 @@ export default async function Dashboard() {
           </div>
 
           <div className="flex flex-col gap-0.5">
-            <span className="font-mono text-3xl font-bold text-neon-cyan whitespace-nowrap tabular-nums">
-              <span className="mr-1">🪙</span>
-              {formatCoins(todayTotal)}
+            <span className="font-mono text-3xl font-bold text-neon-cyan">
+              <Coins amount={todayTotal} size={26} />
             </span>
             <span className="font-mono text-[10px] text-ink-dim mt-1">
               {todayCount === 0

@@ -3,9 +3,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { avatarEmoji } from "@/lib/avatars";
+import { avatarIcon } from "@/lib/avatars";
 import { Button } from "./ui/button";
 import { Eyebrow } from "./ui/eyebrow";
+import { PixelIcon } from "./ui/pixel-icon";
 
 type Req = {
   id: string;
@@ -40,7 +41,7 @@ export function IncomingRequests({ requests }: { requests: Req[] }) {
           key={r.id}
           className="surface-card flex items-center gap-3 px-4 py-3"
         >
-          <span className="text-2xl">{avatarEmoji(r.profile.avatar_id)}</span>
+          <PixelIcon name={avatarIcon(r.profile.avatar_id)} size={24} />{" "}
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm text-ink">
               {r.profile.display_name}

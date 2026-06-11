@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { avatarEmoji } from "@/lib/avatars";
-import { categoryMeta, type Category } from "@/lib/categories";
+import { categoryIcon, categoryMeta, type Category } from "@/lib/categories";
 import { InviteFriends } from "@/components/invite-friends";
 import { GroupActions } from "@/components/group-actions";
 import { getUserId } from "@/lib/supabase/user";
 import { InviteCode } from "@/components/invite-code";
 import { GroupMembersList } from "@/components/group-members-list";
+import { ReactNode } from "react";
+import { PixelIcon } from "@/components/ui/pixel-icon";
 
 function Row({
   label,
@@ -15,7 +16,7 @@ function Row({
   mono,
 }: {
   label: string;
-  value: string;
+  value: ReactNode;
   mono?: boolean;
 }) {
   return (
@@ -135,7 +136,19 @@ export default async function GroupInfo({
       <section className="surface-card flex flex-col gap-2 p-5 text-sm">
         <Row
           label="Type"
-          value={group.kind === "temporal" ? "Temporal ⏳" : "Permanent ♾️"}
+          value={
+            <span className="inline-flex items-center gap-1">
+              <PixelIcon
+                name={
+                  group.kind === "temporal"
+                    ? "ui/group-temporal"
+                    : "ui/group-permanent"
+                }
+                size={14}
+              />
+              {group.kind === "temporal" ? "Temporal" : "Permanent"}
+            </span>
+          }
         />
         <Row
           label="Formed"
@@ -151,10 +164,29 @@ export default async function GroupInfo({
             }
           />
         )}
-        <Row label="Status" value={isActive ? "Active" : "Locked 🏁"} />
+        <Row
+          label="Status"
+          value={
+            isActive ? (
+              "Active"
+            ) : (
+              <span className="inline-flex items-center gap-1">
+                <PixelIcon name="ui/group-locked" size={14} /> Locked
+              </span>
+            )
+          }
+        />
         <Row
           label="Shared blowouts"
-          value={group.share_blowout ? "On 👀" : "Off"}
+          value={
+            group.share_blowout ? (
+              <span className="inline-flex items-center gap-1">
+                On <PixelIcon name="reactions/eyes" size={14} />
+              </span>
+            ) : (
+              "Off"
+            )
+          }
         />
         {invite && isActive && (
           <div className="flex justify-between">
@@ -168,9 +200,13 @@ export default async function GroupInfo({
             return (
               <span
                 key={c.category}
-                className="rounded-pill bg-surface-2 px-2 py-0.5 text-[10px] text-ink-dim"
+                className="inline-flex items-center gap-1 rounded-pill bg-surface-2 px-2 py-0.5 text-[10px] text-ink-dim"
               >
-                {m.emoji} {m.label}
+                <PixelIcon
+                  name={categoryIcon(c.category as Category)}
+                  size={12}
+                />{" "}
+                {m.label}
               </span>
             );
           })}

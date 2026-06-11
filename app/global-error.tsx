@@ -26,7 +26,14 @@ export default function GlobalError({
             gap: 12,
           }}
         >
-          <div style={{ fontSize: 48 }}>🪙</div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/pixel/brand/coin.png"
+            alt=""
+            width={48}
+            height={48}
+            style={{ imageRendering: "pixelated" }}
+          />
           <p>The app crashed. Reload to try again.</p>
           <button
             onClick={reset}

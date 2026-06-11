@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { avatarEmoji } from "@/lib/avatars";
-import { formatCoins } from "@/lib/format";
+import { avatarIcon } from "@/lib/avatars";
 import { Eyebrow } from "./ui/eyebrow";
+import { PixelIcon } from "./ui/pixel-icon";
+import { Coins } from "./ui/coins";
 
 type Rank = {
   user_id: string;
@@ -26,12 +27,12 @@ export type Final = {
 const TITLE_META: {
   key: keyof Final["titles"];
   label: string;
-  emoji: string;
+  icon: string;
 }[] = [
-  { key: "whale", label: "The Whale", emoji: "🐋" },
-  { key: "sniper", label: "The Sniper", emoji: "🎯" },
-  { key: "sticky_fingers", label: "Sticky Fingers", emoji: "🫳" },
-  { key: "monk", label: "The Monk", emoji: "🧘" },
+  { key: "whale", label: "The Whale", icon: "badges/whale" },
+  { key: "sniper", label: "The Sniper", icon: "badges/sniper" },
+  { key: "sticky_fingers", label: "Sticky Fingers", icon: "badges/sticky" },
+  { key: "monk", label: "The Monk", icon: "badges/monk" },
 ];
 
 export function LockedGroupView({
@@ -57,7 +58,10 @@ export function LockedGroupView({
             {groupName}
           </h1>
           <p className="font-mono text-[11px] text-gold">
-            🏁 Locked · final results
+            <p className="flex items-center gap-1 font-mono text-[11px] text-gold">
+              <PixelIcon name="ui/group-locked" size={11} /> Locked · final
+              results
+            </p>{" "}
           </p>
         </div>
       </div>
@@ -71,13 +75,14 @@ export function LockedGroupView({
               key={t.key}
               className="surface-card flex flex-col items-center gap-1 p-4 text-center"
             >
-              <span className="text-3xl">{t.emoji}</span>
+              <PixelIcon name={t.icon} size={36} />{" "}
               <span className="font-display text-sm font-bold text-gold">
                 {t.label}
               </span>
               {winner ? (
                 <span className="flex items-center gap-1 text-xs text-ink">
-                  {avatarEmoji(winner.avatar_id)} {winner.display_name}
+                  <PixelIcon name={avatarIcon(winner.avatar_id)} size={16} />
+                  {winner.display_name}
                 </span>
               ) : (
                 <span className="text-xs text-ink-dim">—</span>
@@ -102,15 +107,17 @@ export function LockedGroupView({
             <span className="w-5 text-center font-mono text-sm font-bold text-ink-dim">
               {i + 1}
             </span>
-            <span className="text-2xl">{avatarEmoji(r.avatar_id)}</span>
+            <PixelIcon name={avatarIcon(r.avatar_id)} size={24} />
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm text-ink">{r.display_name}</p>
               <p className="font-mono text-[11px] text-ink-dim">
-                {r.txns} txns · max 🪙{formatCoins(r.biggest)}
+                <p className="flex items-center gap-1 font-mono text-[11px] text-ink-dim">
+                  {r.txns} txns · max <Coins amount={r.biggest} size={12} />
+                </p>
               </p>
             </div>
             <span className="font-mono text-sm font-bold text-ink">
-              🪙{formatCoins(r.total)}
+              <Coins amount={r.total} size={14} />
             </span>
           </div>
         ))}

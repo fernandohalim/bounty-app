@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import { formatCoins } from "@/lib/format";
-import type { Category } from "@/lib/categories";
+import { categoryIcon, type Category } from "@/lib/categories";
 import { Eyebrow } from "./ui/eyebrow";
+import { Coins } from "./ui/coins";
+import { PixelIcon } from "./ui/pixel-icon";
 
 type Item = {
   id: Category;
@@ -51,7 +53,7 @@ export function CategoryChart({
             {sel ? sel.label : "Total this month"}
           </Eyebrow>
           <span className="font-mono text-2xl font-bold text-neon-lime">
-            🪙{formatCoins(sel ? sel.value : total)}
+            <Coins amount={sel ? sel.value : total} size={22} />
           </span>
         </div>
         {sel && total > 0 && (
@@ -76,7 +78,7 @@ export function CategoryChart({
           <div className="absolute inset-[26%] flex flex-col items-center justify-center rounded-full bg-surface shadow-[inset_0_0_12px_rgba(0,0,0,0.6)]">
             {sel ? (
               <>
-                <span className="text-lg leading-none">{sel.emoji}</span>
+                <PixelIcon name={categoryIcon(sel.id)} size={20} />
                 <span className="mt-0.5 font-mono text-xs font-bold text-ink">
                   {Math.round((sel.value / total) * 100)}%
                 </span>
@@ -101,14 +103,16 @@ export function CategoryChart({
                 onClick={() => toggle(it.id)}
                 className={`flex items-center gap-2 text-left transition active:scale-[0.99] ${dim ? "opacity-40" : "opacity-100"}`}
               >
-                <span className="w-5 text-center text-sm">{it.emoji}</span>
+                <span className="flex w-5 justify-center">
+                  <PixelIcon name={categoryIcon(it.id)} size={18} />
+                </span>
                 <div className="flex-1">
                   <div className="mb-1 flex justify-between text-xs">
                     <span className={on ? "text-ink" : "text-ink-dim"}>
                       {it.label}
                     </span>
                     <span className="font-mono text-ink">
-                      🪙{formatCoins(it.value)}
+                      <Coins amount={it.value} size={13} />
                     </span>
                   </div>
                   <div className="h-1.5 rounded-pill bg-surface-2">

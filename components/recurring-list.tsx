@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { categoryMeta, type Category } from "@/lib/categories";
+import { categoryIcon, categoryMeta, type Category } from "@/lib/categories";
 import { formatCoins } from "@/lib/format";
 import { CategorySelect } from "@/components/ui/category-select";
 import { DateTimePicker } from "@/components/ui/datetime-picker";
@@ -12,6 +12,8 @@ import { Button } from "./ui/button";
 import { TextInput } from "./ui/text-input";
 import { Eyebrow } from "./ui/eyebrow";
 import { SegmentedToggle } from "./ui/segmented-toggle";
+import { PixelIcon } from "./ui/pixel-icon";
+import { Coins } from "./ui/coins";
 
 type Template = {
   id: string;
@@ -36,7 +38,7 @@ export function RecurringList({ templates }: { templates: Template[] }) {
             onClick={() => setSelected(t)}
             className="surface-card flex w-full items-center gap-3 px-4 py-3 text-left active:scale-[0.99]"
           >
-            <span className="text-2xl">{m.emoji}</span>
+            <PixelIcon name={categoryIcon(t.category as Category)} size={24} />
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm text-ink">{t.note || m.label}</p>
               <p className="font-mono text-[11px] text-ink-dim mt-0.5">
@@ -47,7 +49,7 @@ export function RecurringList({ templates }: { templates: Template[] }) {
               </p>
             </div>
             <span className="font-mono text-sm font-bold text-ink">
-              🪙{formatCoins(t.amount)}
+              <Coins amount={t.amount} size={14} />
             </span>
           </button>
         );
@@ -141,7 +143,10 @@ function RecurringDetailModal({
         {!editing ? (
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
-              <span className="text-3xl">{m.emoji}</span>
+              <PixelIcon
+                name={categoryIcon(template.category as Category)}
+                size={30}
+              />
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm text-ink">
                   {template.note || m.label}
@@ -151,11 +156,15 @@ function RecurringDetailModal({
                 </p>
               </div>
               <span className="font-mono text-lg font-bold text-neon-lime">
-                🪙{formatCoins(template.amount)}
+                <Coins amount={template.amount} size={18} />
               </span>
             </div>
             <div className="surface-card flex flex-col gap-1 p-3 text-sm">
-              <InfoRow label="Category" value={`${m.emoji} ${m.label}`} />
+              <PixelIcon
+                name={categoryIcon(template.category as Category)}
+                size={16}
+              />{" "}
+              {m.label}{" "}
               <InfoRow
                 label="Repeats"
                 value={template.cadence === "weekly" ? "Weekly" : "Monthly"}
@@ -205,7 +214,7 @@ function RecurringDetailModal({
         ) : (
           <div className="flex flex-col gap-3">
             <div className="surface-card flex items-center justify-center gap-2 py-4">
-              <span className="text-xl">🪙</span>
+              <PixelIcon name="brand/coin" size={20} />
               <input
                 inputMode="numeric"
                 value={formatCoins(amount)}

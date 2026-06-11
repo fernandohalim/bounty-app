@@ -1,13 +1,19 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { CATEGORIES, categoryMeta, type Category } from "@/lib/categories";
-import { formatCoins } from "@/lib/format";
+import {
+  CATEGORIES,
+  categoryIcon,
+  categoryMeta,
+  type Category,
+} from "@/lib/categories";
 import {
   ExpenseDetailModal,
   type Expense,
 } from "@/components/expense-detail-modal";
 import { Select } from "./ui/select";
+import { Coins } from "./ui/coins";
+import { PixelIcon } from "./ui/pixel-icon";
 export type { Expense };
 
 type Sort = "newest" | "oldest" | "highest" | "lowest" | "az" | "za";
@@ -96,8 +102,12 @@ export function HistoryView({ expenses }: { expenses: Expense[] }) {
     ...months.map((m) => ({ id: m, label: monthLabel(m) })),
   ];
   const catOpts = [
-    { id: "all" as const, label: "All", emoji: "🏷️" },
-    ...CATEGORIES.map((c) => ({ id: c.id, label: c.label, emoji: c.emoji })),
+    { id: "all" as const, label: "All", icon: "ui/tag" },
+    ...CATEGORIES.map((c) => ({
+      id: c.id,
+      label: c.label,
+      icon: categoryIcon(c.id),
+    })),
   ];
 
   return (
@@ -109,8 +119,8 @@ export function HistoryView({ expenses }: { expenses: Expense[] }) {
       </div>
 
       <p className="font-mono text-[11px] text-ink-dim">
-        {filtered.length} {filtered.length === 1 ? "expense" : "expenses"} · 🪙
-        {formatCoins(total)}
+        {filtered.length} {filtered.length === 1 ? "expense" : "expenses"} ·
+        <Coins amount={total} size={13} />
       </p>
 
       {filtered.length === 0 ? (
@@ -153,7 +163,7 @@ function Row({ e, onTap }: { e: Expense; onTap: () => void }) {
       onClick={onTap}
       className="surface-card flex w-full items-center gap-3 px-4 py-3 text-left active:scale-[0.99]"
     >
-      <span className="text-2xl">{m.emoji}</span>
+      <PixelIcon name={categoryIcon(e.category as Category)} size={24} />
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm text-ink">{e.note || m.label}</p>
         <p className="font-mono text-[11px] text-ink-dim">
@@ -171,7 +181,7 @@ function Row({ e, onTap }: { e: Expense; onTap: () => void }) {
         </p>
       </div>
       <span className="font-mono text-sm font-bold text-ink">
-        🪙{formatCoins(e.amount)}
+        <Coins amount={e.amount} size={14} />
       </span>
     </button>
   );

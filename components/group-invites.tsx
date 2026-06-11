@@ -3,9 +3,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { avatarEmoji } from "@/lib/avatars";
+import { avatarIcon } from "@/lib/avatars";
 import { Button } from "./ui/button";
 import { Eyebrow } from "./ui/eyebrow";
+import { PixelIcon } from "./ui/pixel-icon";
 
 type Invite = {
   id: string;
@@ -44,9 +45,7 @@ export function GroupInvites({ invites }: { invites: Invite[] }) {
           key={inv.id}
           className="surface-card flex items-center gap-3 px-4 py-3"
         >
-          <span className="text-2xl">
-            {avatarEmoji(inv.inviter?.avatar_id)}
-          </span>
+          <PixelIcon name={avatarIcon(inv.inviter?.avatar_id)} size={24} />
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm text-ink">{inv.group_name}</p>
             <p className="font-mono text-xs text-ink-dim">

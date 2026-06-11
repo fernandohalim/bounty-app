@@ -3,9 +3,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { avatarEmoji } from "@/lib/avatars";
+import { avatarIcon } from "@/lib/avatars";
 import { ProfileView } from "@/components/profile-view";
 import { Eyebrow } from "./ui/eyebrow";
+import { PixelIcon } from "./ui/pixel-icon";
 
 type Prof = {
   id: string;
@@ -42,7 +43,7 @@ export function FriendsList({ friends }: { friends: Friend[] }) {
             onClick={() => setViewing(f)}
             className="surface-card flex w-full items-center gap-3 px-4 py-3 text-left active:scale-[0.99]"
           >
-            <span className="text-2xl">{avatarEmoji(f.profile.avatar_id)}</span>
+            <PixelIcon name={avatarIcon(f.profile.avatar_id)} size={24} />
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm text-ink">
                 {f.profile.display_name}

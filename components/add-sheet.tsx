@@ -12,6 +12,7 @@ import { IconButton } from "./ui/button";
 import { TextInput } from "./ui/text-input";
 import { Button } from "./ui/button";
 import { SegmentedToggle } from "./ui/segmented-toggle";
+import { PixelIcon } from "./ui/pixel-icon";
 
 type Mode = "oneoff" | "recurring";
 const KEYS = ["7", "8", "9", "4", "5", "6", "1", "2", "3", "000", "0", "del"];
@@ -187,7 +188,7 @@ function Sheet({ show, onClose }: { show: boolean; onClose: () => void }) {
         {/* body — never scrolls; popovers float instead of expanding layout */}
         <div className="flex flex-1 flex-col gap-3 px-5 pt-4">
           <div className="surface-card flex items-center justify-center gap-2 py-5">
-            <span className="text-2xl">🪙</span>
+            <PixelIcon name="brand/coin" size={28} />{" "}
             <span className="font-mono text-4xl font-bold text-neon-lime">
               {formatCoins(amount)}
             </span>

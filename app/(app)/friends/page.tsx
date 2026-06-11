@@ -1,11 +1,12 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { avatarEmoji } from "@/lib/avatars";
+import { avatarIcon } from "@/lib/avatars";
 import { AddFriend } from "@/components/add-friend";
 import { IncomingRequests } from "@/components/incoming-requests";
 import { getUserId } from "@/lib/supabase/user";
 import { FriendsList } from "@/components/friends-list";
 import { Eyebrow } from "@/components/ui/eyebrow";
+import { PixelIcon } from "@/components/ui/pixel-icon";
 
 type Prof = {
   id: string;
@@ -74,9 +75,7 @@ export default async function FriendsPage() {
               key={o.id}
               className="surface-card flex items-center gap-3 px-4 py-3"
             >
-              <span className="text-2xl">
-                {avatarEmoji(o.profile.avatar_id)}
-              </span>
+              <PixelIcon name={avatarIcon(o.profile.avatar_id)} size={24} />
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm text-ink">
                   {o.profile.display_name}

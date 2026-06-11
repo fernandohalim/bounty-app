@@ -3,11 +3,12 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { STARTER_AVATARS, avatarEmoji } from "@/lib/avatars";
+import { STARTER_AVATARS, avatarIcon } from "@/lib/avatars";
 import { TextInput } from "@/components/ui/text-input";
 import { Button } from "@/components/ui/button";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { Select } from "@/components/ui/select";
+import { PixelIcon } from "@/components/ui/pixel-icon";
 
 const TIMEZONES = [
   "Asia/Jakarta",
@@ -94,13 +95,13 @@ export default function OnboardingPage() {
               <button
                 key={id}
                 onClick={() => setAvatar(id)}
-                className={`flex h-16 w-16 items-center justify-center rounded-card border text-3xl transition ${
+                className={`flex h-16 w-16 items-center justify-center rounded-card border transition ${
                   avatar === id
                     ? "border-neon-cyan bg-surface-2 shadow-glow-cyan"
                     : "border-line bg-surface-2 opacity-60"
                 }`}
               >
-                {avatarEmoji(id)}
+                <PixelIcon name={avatarIcon(id)} size={48} />{" "}
               </button>
             ))}
           </div>

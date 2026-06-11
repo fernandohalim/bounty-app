@@ -1,7 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { CATEGORIES, categoryMeta, type Category } from "@/lib/categories";
+import {
+  CATEGORIES,
+  categoryIcon,
+  categoryMeta,
+  type Category,
+} from "@/lib/categories";
+import { PixelIcon } from "./pixel-icon";
 
 export function CategorySelect({
   value,
@@ -32,7 +38,9 @@ export function CategorySelect({
         style={m ? { borderColor: m.accent } : {}}
         className={`flex w-full items-center gap-2 rounded-pill border bg-surface px-4 py-2.5 text-sm transition ${m ? "text-ink" : "border-line text-ink-dim"}`}
       >
-        <span className="text-lg">{m ? m.emoji : "🏷️"}</span>
+        <span className="flex h-5 w-5 items-center justify-center">
+          <PixelIcon name={m ? categoryIcon(value!) : "ui/tag"} size={20} />
+        </span>{" "}
         <span className="flex-1 text-left">
           {m ? m.label : "Pick a category"}
         </span>
@@ -59,7 +67,7 @@ export function CategorySelect({
                 style={on ? { boxShadow: `inset 0 0 0 1px ${c.accent}` } : {}}
                 className={`flex w-full items-center gap-2 rounded-pill px-3 py-2 text-sm transition ${on ? "bg-surface text-ink" : "text-ink-dim active:bg-surface"}`}
               >
-                <span className="text-lg">{c.emoji}</span>
+                <PixelIcon name={categoryIcon(c.id)} size={20} />{" "}
                 <span className="flex-1 text-left">{c.label}</span>
                 {on && <span style={{ color: c.accent }}>✓</span>}
               </button>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { PixelIcon } from "./ui/pixel-icon";
 
 type BIPEvent = Event & {
   prompt: () => Promise<void>;
@@ -24,7 +25,7 @@ export function InstallPrompt() {
 
   return (
     <div className="mx-5 mt-3 flex items-center gap-3 rounded-pill border border-neon-cyan/40 bg-surface px-4 py-2">
-      <span className="text-lg">📲</span>
+      <PixelIcon name="ui/install" size={20} />
       <span className="flex-1 text-xs text-ink-dim">
         Install Bounty for the full app feel
       </span>

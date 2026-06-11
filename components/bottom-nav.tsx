@@ -3,13 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAddSheet } from "@/components/add-sheet";
+import { PixelIcon } from "./ui/pixel-icon";
 
 const NAV = [
-  { href: "/dashboard", label: "Home", icon: "🏠", enabled: true },
-  { href: "/groups", label: "Groups", icon: "💬", enabled: true },
+  { href: "/dashboard", label: "Home", icon: "ui/nav-home", enabled: true },
+  { href: "/groups", label: "Groups", icon: "ui/nav-groups", enabled: true },
   { href: "/add", label: "Add", icon: "＋", center: true, enabled: true },
-  { href: "/leaderboards", label: "Ranks", icon: "🏆", enabled: true },
-  { href: "/profile", label: "You", icon: "🎮", enabled: true },
+  { href: "/leaderboards", label: "Ranks", icon: "ui/trophy", enabled: true },
+  { href: "/profile", label: "You", icon: "ui/controller", enabled: true },
 ];
 
 export function BottomNav() {
@@ -50,7 +51,7 @@ export function BottomNav() {
                   : "text-ink-dim/40"
             }`}
           >
-            <span className="text-lg">{item.icon}</span>
+            <PixelIcon name={item.icon} size={22} />
             {item.label}
           </span>
         );

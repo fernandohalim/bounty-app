@@ -3,10 +3,11 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { categoryMeta, type Category } from "@/lib/categories";
-import { REACTIONS, reactionEmoji, type ReactionType } from "@/lib/reactions";
-import { avatarEmoji } from "@/lib/avatars";
-import { formatCoins } from "@/lib/format";
+import { categoryIcon, categoryMeta, type Category } from "@/lib/categories";
+import { REACTIONS, reactionIcon, type ReactionType } from "@/lib/reactions";
+import { avatarIcon } from "@/lib/avatars";
+import { PixelIcon } from "./ui/pixel-icon";
+import { Coins } from "./ui/coins";
 
 export type Member = {
   user_id: string;
@@ -58,7 +59,7 @@ export function GroupFeed({
   const [supabase] = useState(() => createClient());
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [floaters, setFloaters] = useState<
-    { key: number; msgId: string; emoji: string }[]
+    { key: number; msgId: string; type: ReactionType }[]
   >([]);
   const floatId = useRef(0);
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -66,9 +67,9 @@ export function GroupFeed({
   const memberMap = new Map(members.map((m) => [m.user_id, m.profile]));
   const locked = group.status === "locked";
 
-  function spawnFloater(msgId: string, emoji: string) {
+  function spawnFloater(msgId: string, type: ReactionType) {
     const key = ++floatId.current;
-    setFloaters((p) => [...p, { key, msgId, emoji }]);
+    setFloaters((p) => [...p, { key, msgId, type }]);
     setTimeout(() => setFloaters((p) => p.filter((f) => f.key !== key)), 1200);
   }
 
@@ -81,7 +82,7 @@ export function GroupFeed({
         return { ...m, reactions: [...m.reactions, r] };
       }),
     );
-    if (isNew) spawnFloater(msgId, reactionEmoji(r.type));
+    if (isNew) spawnFloater(msgId, r.type);
   }
 
   function removeReaction(msgId: string, reactionId: string) {
@@ -204,17 +205,18 @@ export function GroupFeed({
           </Link>
           <Link
             href={`/groups/${groupId}/leaderboard`}
-            className="text-lg"
+            className="flex items-center"
             title="Leaderboard"
           >
-            🏆
+            <PixelIcon name="ui/trophy" size={20} />
           </Link>
         </div>
       </header>
 
       {locked && (
-        <p className="bg-gold/10 px-5 py-2 text-center text-xs font-mono text-gold">
-          🏁 this group is locked — read-only.
+        <p className="flex items-center justify-center gap-1 bg-gold/10 px-5 py-2 text-center text-xs font-mono text-gold">
+          <PixelIcon name="ui/group-locked" size={12} /> this group is locked —
+          read-only.
         </p>
       )}
 
@@ -241,8 +243,7 @@ export function GroupFeed({
                 ) : msg.type === "limit_change" ? (
                   <>
                     <span className="text-neon-cyan">{who ?? "Someone"}</span>{" "}
-                    {msg.body} 🪙
-                    {formatCoins(msg.amount ?? 0)}
+                    {msg.body} <Coins amount={msg.amount ?? 0} size={12} />
                   </>
                 ) : (
                   msg.body
@@ -268,16 +269,14 @@ export function GroupFeed({
               {cardFloaters.map((f) => (
                 <span
                   key={f.key}
-                  className="animate-float-up pointer-events-none absolute bottom-10 right-8 text-2xl"
+                  className="animate-float-up pointer-events-none absolute bottom-10 right-8"
                 >
-                  {f.emoji}
+                  <PixelIcon name={reactionIcon(f.type)} size={28} />
                 </span>
               ))}
 
               <div className="flex items-center gap-2">
-                <span className="text-xl">
-                  {avatarEmoji(sender?.avatar_id)}
-                </span>
+                <PixelIcon name={avatarIcon(sender?.avatar_id)} size={22} />
                 <span className="text-sm text-ink">
                   {sender?.display_name ?? "Someone"}
                 </span>
@@ -292,16 +291,24 @@ export function GroupFeed({
               <div className="flex items-center gap-2">
                 {cat && (
                   <span
-                    className="rounded-pill px-2 py-0.5 text-xs"
+                    className="flex items-center gap-1 rounded-pill px-2 py-0.5 text-xs"
                     style={{ background: `${cat.accent}22`, color: cat.accent }}
                   >
-                    {cat.emoji} {cat.label}
+                    <PixelIcon
+                      name={categoryIcon(msg.category as Category)}
+                      size={14}
+                    />{" "}
+                    {cat.label}
                   </span>
                 )}
-                <span className="ml-auto font-mono font-bold text-ink">
-                  {msg.amount == null
-                    ? "🪙 —"
-                    : `🪙 ${formatCoins(msg.amount)}`}
+                <span className="ml-auto inline-flex items-center gap-1 font-mono font-bold text-ink">
+                  {msg.amount == null ? (
+                    <>
+                      <PixelIcon name="brand/coin" size={16} /> —
+                    </>
+                  ) : (
+                    <Coins amount={msg.amount} size={16} />
+                  )}
                 </span>
               </div>
 
@@ -312,9 +319,9 @@ export function GroupFeed({
                   {[...counts.entries()].map(([t, n]) => (
                     <span
                       key={t}
-                      className="rounded-pill bg-surface-2 px-2 py-0.5 text-xs"
+                      className="flex items-center gap-1 rounded-pill bg-surface-2 px-2 py-0.5 text-xs"
                     >
-                      {reactionEmoji(t)} {n}
+                      <PixelIcon name={reactionIcon(t)} size={14} /> {n}
                     </span>
                   ))}
                 </div>
@@ -330,9 +337,9 @@ export function GroupFeed({
                       <button
                         key={r.type}
                         onClick={() => toggleReaction(msg, r.type)}
-                        className={`rounded-pill px-2 py-1 text-lg transition active:scale-125 ${mine ? "bg-neon-cyan/20" : ""}`}
+                        className={`flex items-center rounded-pill px-2 py-1 transition active:scale-125 ${mine ? "bg-neon-cyan/20" : ""}`}
                       >
-                        {r.emoji}
+                        <PixelIcon name={reactionIcon(r.type)} size={20} />
                       </button>
                     );
                   })}

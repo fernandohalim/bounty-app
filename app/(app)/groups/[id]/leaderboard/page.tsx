@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { avatarEmoji } from "@/lib/avatars";
-import { formatCoins } from "@/lib/format";
+import { avatarIcon } from "@/lib/avatars";
 import { getUserId } from "@/lib/supabase/user";
 import { Eyebrow } from "@/components/ui/eyebrow";
+import { BADGES } from "@/lib/badges";
+import { PixelIcon } from "@/components/ui/pixel-icon";
+import { Coins } from "@/components/ui/coins";
 
 export default async function GroupLeaderboard({
   params,
@@ -36,15 +38,13 @@ export default async function GroupLeaderboard({
   const sticky = top("txns");
   const monk = board.slice().sort((a, b) => a.total - b.total)[0]?.user_id;
 
-  const titles = (uid: string) =>
+  const titleIcons = (uid: string) =>
     [
-      uid === whale && "🐋",
-      uid === sniper && "🎯",
-      uid === sticky && "🫳",
-      uid === monk && "🧘",
-    ]
-      .filter(Boolean)
-      .join(" ");
+      uid === whale && BADGES.whale.icon,
+      uid === sniper && BADGES.sniper.icon,
+      uid === sticky && BADGES.sticky.icon,
+      uid === monk && BADGES.monk.icon,
+    ].filter(Boolean) as string[];
 
   const ranked = board.slice().sort((a, b) => b.total - a.total);
 
@@ -59,9 +59,13 @@ export default async function GroupLeaderboard({
             {group.name}
           </h1>
           <Eyebrow as="p">
-            {group.status === "locked"
-              ? "Final standings 🏁"
-              : "Live standings"}
+            {group.status === "locked" ? (
+              <span className="inline-flex items-center gap-1">
+                Final standings <PixelIcon name="ui/group-locked" size={12} />
+              </span>
+            ) : (
+              "Live standings"
+            )}
           </Eyebrow>
         </div>
       </div>
@@ -80,27 +84,38 @@ export default async function GroupLeaderboard({
             <span className="w-5 text-center font-mono text-sm font-bold text-ink-dim">
               {i + 1}
             </span>
-            <span className="text-2xl">{avatarEmoji(r.avatar_id)}</span>
+            <PixelIcon name={avatarIcon(r.avatar_id)} size={24} />{" "}
             <div className="min-w-0 flex-1">
-              <p className="truncate font-display text-ink">
-                {r.display_name} {titles(r.user_id)}
+              <p className="flex items-center gap-1 truncate font-display text-ink">
+                <span className="truncate">{r.display_name}</span>
+                {titleIcons(r.user_id).map((icon) => (
+                  <PixelIcon key={icon} name={icon} size={14} />
+                ))}
               </p>
-              <p className="font-mono text-[11px] text-ink-dim">
-                {r.txns} txns · max 🪙{formatCoins(r.biggest)}
+              <p className="flex items-center gap-1 font-mono text-[11px] text-ink-dim">
+                {r.txns} txns · max <Coins amount={r.biggest} size={12} />
               </p>
             </div>
             <span className="font-mono text-sm font-bold text-ink">
-              🪙{formatCoins(r.total)}
+              <Coins amount={r.total} size={14} />
             </span>
           </div>
         ))}
       </section>
 
       <div className="flex flex-wrap justify-center gap-3 text-xs text-ink-dim">
-        <span>🐋 Whale</span>
-        <span>🎯 Sniper</span>
-        <span>🫳 Sticky Fingers</span>
-        <span>🧘 Monk</span>
+        <span className="flex items-center gap-1">
+          <PixelIcon name="badges/whale" size={14} /> Whale
+        </span>
+        <span className="flex items-center gap-1">
+          <PixelIcon name="badges/sniper" size={14} /> Sniper
+        </span>
+        <span className="flex items-center gap-1">
+          <PixelIcon name="badges/sticky" size={14} /> Sticky Fingers
+        </span>
+        <span className="flex items-center gap-1">
+          <PixelIcon name="badges/monk" size={14} /> Monk
+        </span>
       </div>
     </main>
   );

@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import packageJson from "../package.json";
+import { PixelIcon } from "./ui/pixel-icon";
 
 type AboutModalProps = { isOpen: boolean; onClose: () => void };
 
@@ -38,8 +39,8 @@ export function AboutModal({ isOpen, onClose }: AboutModalProps) {
         </button>
 
         <div className="flex flex-col items-center px-6 pb-6 pt-10 text-center">
-          <div className="animate-pulse-glow mb-4 flex h-20 w-20 items-center justify-center rounded-2xl border border-neon-cyan/40 bg-surface-2 text-4xl shadow-glow-cyan">
-            🪙
+          <div className="animate-pulse-glow mb-4 flex h-20 w-20 items-center justify-center rounded-2xl border border-neon-cyan/40 bg-surface-2 shadow-glow-cyan">
+            <PixelIcon name="brand/coin" size={56} />
           </div>
 
           <h2 className="text-neon font-display text-3xl font-bold">BOUNTY</h2>
@@ -55,7 +56,7 @@ export function AboutModal({ isOpen, onClose }: AboutModalProps) {
               }}
               className="flex w-full items-center gap-3 rounded-2xl border border-neon-cyan/30 bg-surface-2 px-4 py-3 text-left transition hover:border-neon-cyan/70 hover:shadow-glow-cyan active:scale-[0.98]"
             >
-              <span className="text-lg">📜</span>
+              <PixelIcon name="ui/changelog" size={20} />
               <span className="flex-1 text-sm font-semibold text-ink">
                 Changelog
               </span>
@@ -70,7 +71,7 @@ export function AboutModal({ isOpen, onClose }: AboutModalProps) {
               rel="noopener noreferrer"
               className="flex w-full items-center gap-3 rounded-2xl border border-neon-violet/30 bg-surface-2 px-4 py-3 text-left transition hover:border-neon-violet/70 active:scale-[0.98]"
             >
-              <span className="text-lg">💾</span>
+              <PixelIcon name="ui/code" size={20} />
               <span className="flex-1 text-sm font-semibold text-ink">
                 Source Code
               </span>

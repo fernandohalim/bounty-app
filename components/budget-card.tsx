@@ -6,6 +6,8 @@ import { createClient } from "@/lib/supabase/client";
 import { formatCoins } from "@/lib/format";
 import { Button } from "./ui/button";
 import { Eyebrow } from "./ui/eyebrow";
+import { Coins } from "./ui/coins";
+import { PixelIcon } from "./ui/pixel-icon";
 
 export function BudgetCard({
   spent,
@@ -61,7 +63,7 @@ export function BudgetCard({
         <>
           <div className="flex justify-between font-mono text-sm">
             <span className={over ? "text-over" : "text-ink"}>
-              🪙{formatCoins(spent)}
+              <Coins amount={spent} size={14} />
             </span>
             <span className="text-ink-dim">/ {formatCoins(weeklyLimit)}</span>
           </div>
@@ -83,8 +85,9 @@ export function BudgetCard({
             one-off spending this week
           </p>
           {over && (
-            <p className="rounded-pill border border-line bg-surface-2 px-3 py-1.5 font-mono text-xs active:scale-95 text-over">
-              💸 Blowout! Over by 🪙{formatCoins(spent - weeklyLimit)}{" "}
+            <p className="flex items-center gap-1 rounded-pill border border-line bg-surface-2 px-3 py-1.5 font-mono text-xs active:scale-95 text-over">
+              <PixelIcon name="ui/blowout" size={14} /> Blowout! Over by{" "}
+              <Coins amount={spent - weeklyLimit} size={13} />
             </p>
           )}
         </>

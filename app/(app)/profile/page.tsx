@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { avatarEmoji } from "@/lib/avatars";
+import { avatarIcon } from "@/lib/avatars";
 import { levelInfo } from "@/lib/xp";
 import { SignOutButton } from "@/components/sign-out-button";
 import { EditProfile } from "@/components/edit-profile";
@@ -10,6 +10,8 @@ import { AboutButton } from "@/components/about-button";
 import { Stat } from "@/components/ui/stat";
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { NavRow } from "@/components/ui/nav-row";
+import { PixelIcon } from "@/components/ui/pixel-icon";
+import { badgeIconForEmoji } from "@/lib/badges";
 
 export default async function Profile() {
   const supabase = await createClient();
@@ -46,8 +48,8 @@ export default async function Profile() {
   return (
     <main className="flex flex-col gap-6 px-5 pb-4 pt-10">
       <div className="surface-card flex flex-col items-center gap-3 px-6 py-8 text-center">
-        <span className="flex h-20 w-20 items-center justify-center rounded-card border border-neon-cyan/40 bg-surface-2 text-5xl shadow-glow-cyan">
-          {avatarEmoji(p?.avatar_id)}
+        <span className="flex h-20 w-20 items-center justify-center rounded-card border border-neon-cyan/40 bg-surface-2 shadow-glow-cyan">
+          <PixelIcon name={avatarIcon(p?.avatar_id)} size={64} />{" "}
         </span>
         <EditProfile
           avatars={avatars ?? []}
@@ -78,7 +80,15 @@ export default async function Profile() {
       </div>
 
       <div className="grid grid-cols-3 gap-3">
-        <Stat label="Streak" value={`${p?.current_streak ?? 0}🔥`} />
+        <Stat
+          label="Streak"
+          value={
+            <span className="inline-flex items-center gap-1">
+              {p?.current_streak ?? 0}
+              <PixelIcon name="reactions/fire" size={18} />
+            </span>
+          }
+        />
         <Stat label="Best" value={p?.longest_streak ?? 0} />
         <Stat label="Friends" value={friends ?? 0} />
       </div>
@@ -90,7 +100,12 @@ export default async function Profile() {
         {p?.created_at ? new Date(p.created_at).toLocaleDateString() : "—"}
       </p>
       <section className="flex flex-col gap-2">
-        <Eyebrow tone="gold">🏆 Trophy room · {trophies?.length ?? 0}</Eyebrow>
+        <Eyebrow tone="gold">
+          <span className="inline-flex items-center gap-1">
+            <PixelIcon name="ui/trophy" size={14} /> Trophy room ·{" "}
+            {trophies?.length ?? 0}
+          </span>
+        </Eyebrow>
         {!trophies || trophies.length === 0 ? (
           <div className="surface-card px-6 py-6 text-center text-sm text-ink-dim">
             No trophies yet. Win a temporal group to earn titles!
@@ -102,7 +117,11 @@ export default async function Profile() {
                 key={t.id}
                 className="surface-card flex flex-col items-center gap-1 p-4 text-center"
               >
-                <span className="text-3xl">{t.emoji}</span>
+                {badgeIconForEmoji(t.emoji) ? (
+                  <PixelIcon name={badgeIconForEmoji(t.emoji)!} size={36} />
+                ) : (
+                  <span className="text-3xl">{t.emoji}</span>
+                )}{" "}
                 <span className="font-display text-sm font-bold text-gold">
                   {t.title}
                 </span>
@@ -117,7 +136,11 @@ export default async function Profile() {
           </div>
         )}
       </section>
-      <NavRow href="/settings">⚙️ Notification settings</NavRow>
+      <NavRow href="/settings">
+        <span className="inline-flex items-center justify-center gap-2">
+          <PixelIcon name="ui/settings" size={18} /> Notification settings
+        </span>
+      </NavRow>
       <AboutButton />
       <SignOutButton />
     </main>

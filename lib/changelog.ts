@@ -10,9 +10,19 @@ export type Release = {
 
 export const releases: Release[] = [
   {
+  version: "1.8",
+  date: "June 2026",
+  title: "Pixel-art everything",
+  badge: "feature",
+  features: [
+    "Every icon across the app — categories, reactions, avatars, coins, medals, group titles and more — is now custom pixel art, so Bounty looks identical on every device instead of borrowing each phone's emoji set",
+    "A fresh app icon, home-screen icon, and link-preview image to match the new arcade look",
+  ],
+},
+  {
     version: "1.7",
     date: "June 2026",
-    title: "Slice your spending your way 🔍",
+    title: "Slice your spending your way",
     badge: "feature",
     features: [
       "The category breakdown now toggles between this week and this month — flip between them without leaving Home",
@@ -23,7 +33,7 @@ export const releases: Release[] = [
   {
     version: "1.6.1",
     date: "June 2026",
-    title: "Numbers that fit 🔢",
+    title: "Numbers that fit",
     badge: "patch",
     features: [
       "Today's total on Home no longer wraps under the coin — big spending days stay on one clean line",
@@ -33,7 +43,7 @@ export const releases: Release[] = [
   {
     version: "1.6",
     date: "June 2026",
-    title: "A sharper, pixel-perfect Bounty 🎨",
+    title: "A sharper, pixel-perfect Bounty",
     badge: "feature",
     features: [
       "A brand-new pixel-art typeface across every heading — the BOUNTY wordmark and page titles now carry a proper arcade-cabinet look",
@@ -45,7 +55,7 @@ export const releases: Release[] = [
   {
     version: "1.5.1",
     date: "June 2026",
-    title: "Budget changes ping the group 🔔",
+    title: "Budget changes ping the group",
     badge: "patch",
     features: [
       "When someone in a shared-blowout group changes their weekly budget, the group now gets a push notification — not just a feed message",
@@ -54,7 +64,7 @@ export const releases: Release[] = [
   {
     version: "1.5",
     date: "June 2026",
-    title: "Groups, fair & in your control 🤝",
+    title: "Groups, fair & in your control",
     badge: "feature",
     features: [
       "Inviting a friend to a group now sends them a request they accept or decline — no more being added without a say. Pending invites show at the top of your Groups list",
@@ -67,7 +77,7 @@ export const releases: Release[] = [
   {
     version: "1.4.1",
     date: "June 2026",
-    title: "Edits that actually stick 🔧",
+    title: "Edits that actually stick",
     badge: "patch",
     features: [
       "Editing an expense now keeps its bounty card in sync across every group — amount, category and note update instead of drifting, and the card leaves a group's feed if you move it to a category that group isn't watching",
@@ -80,7 +90,7 @@ export const releases: Release[] = [
   {
     version: "1.4",
     date: "June 2026",
-    title: "Home & Groups, refreshed 💬",
+    title: "Home & Groups, refreshed",
     badge: "feature",
     features: [
       "Groups list now reads like a chat home — each group shows its last activity, type, and when it ends",
@@ -93,7 +103,7 @@ export const releases: Release[] = [
   {
     version: "1.3.3",
     date: "June 2026",
-    title: "Tap to see anyone 👤",
+    title: "Tap to see anyone",
     badge: "patch",
     features: [
       "Tap any friend — in your friends list or on the leaderboard — to see their full profile: level, XP, streaks and trophy room, in a quick pop-up",
@@ -104,7 +114,7 @@ export const releases: Release[] = [
   {
     version: "1.3.2",
     date: "June 2026",
-    title: "Profiles, toggles & editable recurring ✏️",
+    title: "Profiles, toggles & editable recurring",
     badge: "patch",
     features: [
       "Notification settings traded their tickboxes for sliding toggles — on/off is obvious at a glance now",
@@ -116,7 +126,7 @@ export const releases: Release[] = [
   {
     version: "1.3.1",
     date: "June 2026",
-    title: "Cleaner category donut 🍩",
+    title: "Cleaner category donut",
     badge: "patch",
     features: [
       "The month total now sits above the category breakdown instead of crammed inside the donut",
@@ -126,7 +136,7 @@ export const releases: Release[] = [
   {
     version: "1.3",
     date: "June 2026",
-    title: "Logging & history, reborn ⚡",
+    title: "Logging & history, reborn",
     badge: "feature",
     features: [
       "Tap + and the add screen now slides up full-screen — categories in a custom dropdown, an exact date & time via a custom picker, and a keypad the keyboard can't shove around anymore",
@@ -139,14 +149,14 @@ export const releases: Release[] = [
   {
     version: "1.2.1",
     date: "June 2026",
-    title: "Wipe recurring vs. one-off 🏠",
+    title: "Wipe recurring vs. one-off",
     badge: "patch",
     features: ["Removing unecessary section in home dashboard"],
   },
   {
     version: "1.2",
     date: "June 2026",
-    title: "Home, leveled up 🏠",
+    title: "Home, leveled up",
     badge: "feature",
     features: [
       "Today and Recent are now one card — today's total, how many you've logged today, and your latest expenses at a glance",
@@ -158,7 +168,7 @@ export const releases: Release[] = [
   {
     version: "1.1",
     date: "June 2026",
-    title: "Faster & fresher 🚀",
+    title: "Faster & fresher",
     badge: "feature",
     features: [
       "Snappier navigation — screens you've visited reuse their data instead of re-fetching everything on every tap",
@@ -169,16 +179,16 @@ export const releases: Release[] = [
   {
     version: "1.0",
     date: "June 2026",
-    title: "Bounty is Live 🪙",
+    title: "Bounty is Live",
     badge: "launch",
     features: [
       "Log one-off and recurring expenses with a silent keypad, fixed categories, and notes",
       "A personal dashboard — today's total, a weekly budget bar that turns red on a blowout, a category donut, the recurring-vs-one-off split, and a 12-week spending heatmap",
       "Add friends by username, then form permanent or timed groups that watch the categories you pick",
       "Every spend in a watched category broadcasts a bounty card to the group feed in real time",
-      "React with 🔥 🪙 💀 🤡 👀 👑 — reactions float up the card and sync live to everyone",
+      "Reactions float up the card and sync live to everyone",
       "Climb XP levels, keep daily streaks, and unlock avatars as you go",
-      "Win titles when a timed group locks — the whale 🐋, the sniper 🎯, sticky fingers 🫳, the monk 🧘 — and keep them in your trophy room",
+      "Win titles when a timed group locks — the whale, the sniper, sticky fingers, the monk — and keep them in your trophy room",
       "Install it to your home screen, log offline and auto-sync on reconnect, and get push notifications",
     ],
   },

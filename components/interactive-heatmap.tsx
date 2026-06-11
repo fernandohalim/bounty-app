@@ -1,9 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { formatCoins } from "@/lib/format";
-import { CATEGORIES, type Category } from "@/lib/categories";
+import { CATEGORIES, categoryIcon, type Category } from "@/lib/categories";
 import { Select } from "./ui/select";
+import { Coins } from "./ui/coins";
 
 type Day = {
   date: string;
@@ -47,8 +47,12 @@ export function InteractiveHeatmap({ weeks }: { weeks: Day[][] }) {
     : null;
 
   const catOpts = [
-    { id: "all" as const, label: "All categories", emoji: "🏷️" },
-    ...CATEGORIES.map((c) => ({ id: c.id, label: c.label, emoji: c.emoji })),
+    { id: "all" as const, label: "All categories", icon: "ui/tag" },
+    ...CATEGORIES.map((c) => ({
+      id: c.id,
+      label: c.label,
+      icon: categoryIcon(c.id),
+    })),
   ];
 
   return (
@@ -81,9 +85,14 @@ export function InteractiveHeatmap({ weeks }: { weeks: Day[][] }) {
 
       <div className="flex min-h-5 items-center justify-between font-mono text-[10px] text-ink-dim">
         <span>
-          {selDay
-            ? `${new Date(selDay.date + "T00:00:00").toLocaleDateString()} · 🪙${formatCoins(selDay.amount)}`
-            : "tap a day for details"}
+          {selDay ? (
+            <span className="inline-flex items-center gap-1">
+              {new Date(selDay.date + "T00:00:00").toLocaleDateString()} ·
+              <Coins amount={selDay.amount} size={13} />
+            </span>
+          ) : (
+            "tap a day for details"
+          )}
         </span>
         <span className="flex items-center gap-1">
           less

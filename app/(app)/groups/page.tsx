@@ -5,6 +5,7 @@ import { JoinGroup } from "@/components/join-group";
 import { getUserId } from "@/lib/supabase/user";
 import { GroupInvites } from "@/components/group-invites";
 import { LinkButton } from "@/components/ui/link-button";
+import { PixelIcon } from "@/components/ui/pixel-icon";
 
 export default async function GroupsPage() {
   const supabase = await createClient();
@@ -101,15 +102,23 @@ export default async function GroupsPage() {
                     </span>
                   </div>
                   <div className="mt-0.5 flex items-center gap-2">
-                    <span className="truncate font-mono text-[11px] text-ink-dim">
-                      {g.kind === "temporal" ? "temporal ⏳" : "permanent ♾️"}
+                    <span className="flex items-center gap-1 truncate font-mono text-[11px] text-ink-dim">
+                      <PixelIcon
+                        name={
+                          g.kind === "temporal"
+                            ? "ui/group-temporal"
+                            : "ui/group-permanent"
+                        }
+                        size={12}
+                      />
+                      {g.kind === "temporal" ? "temporal" : "permanent"}
                       {g.expires_at && g.status === "active"
                         ? ` · ends ${new Date(g.expires_at).toLocaleDateString()}`
                         : ""}
                     </span>
                     {locked && (
-                      <span className="ml-auto shrink-0 rounded-pill bg-gold/15 px-2 py-0.5 font-mono text-[10px] text-gold">
-                        locked 🏁
+                      <span className="ml-auto flex shrink-0 items-center gap-1 rounded-pill bg-gold/15 px-2 py-0.5 font-mono text-[10px] text-gold">
+                        locked <PixelIcon name="ui/group-locked" size={11} />
                       </span>
                     )}
                   </div>

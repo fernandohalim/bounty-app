@@ -3,11 +3,12 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { avatarEmoji } from "@/lib/avatars";
+import { avatarIcon } from "@/lib/avatars";
 import { Modal } from "./ui/modal";
 import { TextInput } from "./ui/text-input";
 import { Button } from "./ui/button";
 import { Eyebrow } from "./ui/eyebrow";
+import { PixelIcon } from "./ui/pixel-icon";
 
 type Avatar = { id: string; display_name: string; unlock_level: number };
 
@@ -66,9 +67,9 @@ export function EditProfile({
     <>
       <button
         onClick={() => setOpen(true)}
-        className="font-mono text-xs text-neon-cyan"
+        className="inline-flex items-center gap-1 font-mono text-xs text-neon-cyan"
       >
-        ✏️ edit profile
+        <PixelIcon name="ui/edit" size={12} /> edit profile
       </button>
 
       {open && (
@@ -108,11 +109,11 @@ export function EditProfile({
                       onClick={() => !locked && setAvatar(a.id)}
                       disabled={locked}
                       title={a.display_name}
-                      className={`relative flex h-14 w-14 items-center justify-center rounded-card border text-2xl ${
+                      className={`relative flex h-14 w-14 items-center justify-center rounded-card border ${
                         on ? "border-neon-cyan shadow-glow-cyan" : "border-line"
                       } ${locked ? "opacity-40" : ""}`}
                     >
-                      {avatarEmoji(a.id)}
+                      <PixelIcon name={avatarIcon(a.id)} size={40} />
                       {locked && (
                         <span className="absolute -bottom-1 -right-1 rounded-full bg-surface-2 px-1 text-[9px] text-ink-dim">
                           L{a.unlock_level}

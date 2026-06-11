@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { PixelIcon } from "./pixel-icon";
 
 const MONTHS = [
   "Jan",
@@ -84,7 +85,9 @@ export function DateTimePicker({
         className="flex w-full items-center justify-between rounded-pill border border-line bg-surface px-4 py-2.5 text-sm"
       >
         <span className="text-ink-dim">{label}</span>
-        <span className="font-mono text-neon-cyan">{summary} 📅</span>
+        <span className="flex items-center gap-1 font-mono text-neon-cyan">
+          {summary} <PixelIcon name="ui/calendar" size={14} />
+        </span>
       </button>
 
       {open && (

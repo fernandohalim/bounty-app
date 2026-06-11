@@ -2,12 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { avatarEmoji } from "@/lib/avatars";
+import { avatarIcon } from "@/lib/avatars";
 import { levelInfo } from "@/lib/xp";
 import { Modal } from "./ui/modal";
 import { Button } from "./ui/button";
 import { Stat } from "./ui/stat";
 import { Eyebrow } from "./ui/eyebrow";
+import { PixelIcon } from "./ui/pixel-icon";
+import { badgeIconForEmoji } from "@/lib/badges";
 
 type Profile = {
   username: string;
@@ -96,8 +98,8 @@ export function ProfileView({
         className="flex max-h-[85vh] flex-col gap-5 overflow-y-auto"
       >
         <div className="flex flex-col items-center gap-3 text-center">
-          <span className="flex h-20 w-20 items-center justify-center rounded-card border border-neon-cyan/40 bg-surface-2 text-5xl shadow-glow-cyan">
-            {avatarEmoji(avatar)}
+          <span className="flex h-20 w-20 items-center justify-center rounded-card border border-neon-cyan/40 bg-surface-2 shadow-glow-cyan">
+            <PixelIcon name={avatarIcon(avatar)} size={64} />
           </span>
           <div>
             <h2 className="font-display text-2xl font-bold text-ink">{name}</h2>
@@ -136,13 +138,24 @@ export function ProfileView({
         ) : (
           <>
             <div className="grid grid-cols-2 gap-3">
-              <Stat label="Streak" value={`${profile.current_streak}🔥`} />
+              <Stat
+                label="Streak"
+                value={
+                  <span className="inline-flex items-center gap-1">
+                    {profile.current_streak}
+                    <PixelIcon name="reactions/fire" size={18} />
+                  </span>
+                }
+              />
               <Stat label="Best" value={profile.longest_streak} />
             </div>
 
             <section className="flex flex-col gap-2">
               <Eyebrow as="h3" tone="gold">
-                🏆 Trophy room · {trophies.length}
+                <span className="inline-flex items-center gap-1">
+                  <PixelIcon name="ui/trophy" size={14} /> Trophy room ·{" "}
+                  {trophies.length}
+                </span>
               </Eyebrow>
               {trophies.length === 0 ? (
                 <div className="surface-card px-6 py-6 text-center text-sm text-ink-dim">
@@ -155,7 +168,14 @@ export function ProfileView({
                       key={t.id}
                       className="surface-card flex flex-col items-center gap-1 p-4 text-center"
                     >
-                      <span className="text-3xl">{t.emoji}</span>
+                      {badgeIconForEmoji(t.emoji) ? (
+                        <PixelIcon
+                          name={badgeIconForEmoji(t.emoji)!}
+                          size={36}
+                        />
+                      ) : (
+                        <span className="text-3xl">{t.emoji}</span>
+                      )}
                       <span className="font-display text-sm font-bold text-gold">
                         {t.title}
                       </span>

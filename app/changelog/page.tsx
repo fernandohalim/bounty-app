@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import packageJson from "../../package.json";
 import { releases, type ReleaseBadge } from "@/lib/changelog";
+import { PixelIcon } from "@/components/ui/pixel-icon";
 
 const ACCENT: Record<
   ReleaseBadge,
@@ -47,7 +48,7 @@ export default function Changelog() {
             <span>←</span> back
           </button>
           <div className="flex items-center gap-2">
-            <span className="text-base">🪙</span>
+            <PixelIcon name="brand/coin" size={16} />
             <span className="font-display text-sm font-bold text-ink">
               changelog
             </span>

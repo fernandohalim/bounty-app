@@ -11,5 +11,7 @@ export const REACTIONS: { type: ReactionType; emoji: string; label: string }[] =
   { type: "crown", emoji: "👑", label: "Crown" },
 ];
 
+export const reactionIcon = (t: string) => `reactions/${t}`;
+
 export const reactionEmoji = (t: string) =>
   REACTIONS.find((r) => r.type === t)?.emoji ?? "❓";

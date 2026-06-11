@@ -20,5 +20,7 @@ export const CATEGORIES: {
   { id: "other", label: "Other", emoji: "✨", accent: "#9b96bd" },
 ];
 
+export const categoryIcon = (id: Category) => `categories/${id}`;
+
 export const categoryMeta = (id: Category) =>
   CATEGORIES.find((c) => c.id === id) ?? CATEGORIES[CATEGORIES.length - 1];

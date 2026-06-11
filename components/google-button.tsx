@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { PixelIcon } from "./ui/pixel-icon";
 
 export function GoogleButton() {
   const [loading, setLoading] = useState(false);
@@ -22,7 +23,11 @@ export function GoogleButton() {
       disabled={loading}
       className="animate-pulse-glow flex items-center gap-3 rounded-pill border border-neon-cyan/50 bg-surface px-7 py-3.5 font-semibold text-ink transition active:scale-95 disabled:opacity-60"
     >
-      <span className="text-lg">{loading ? "⏳" : "🎮"}</span>
+      {loading ? (
+        <PixelIcon name="ui/group-temporal" size={20} />
+      ) : (
+        <PixelIcon name="ui/controller" size={20} />
+      )}
       {loading ? "Connecting…" : "Continue with Google"}
     </button>
   );

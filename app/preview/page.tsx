@@ -269,8 +269,7 @@ function drawOG(ctx: CanvasRenderingContext2D, coin: HTMLImageElement) {
   ctx.restore();
 
   // hero coin
-  drawCoin(ctx, coin, 940, 290, 256, COL.cyan, 60);
-
+  drawCoin(ctx, coin, 940, 315, 320, COL.cyan, 70);
   // wordmark
   neonText(
     ctx,
